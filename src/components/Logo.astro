@@ -1,13 +1,13 @@
 ---
 /**
- * The Dryhouse logo (house + drop, "DRY HOUSE"), vectorised from the original
+ * The Dryhouse logo (house + drop, "DRY HOUSE", tagline), vectorised from the original
  * artwork. `white` is the version for dark backgrounds.
  */
 interface Props {
   tone?: 'color' | 'white';
   class?: string;
 }
-const { tone = 'color', class: className = 'h-9 sm:h-10' } = Astro.props;
+const { tone = 'color', class: className = 'h-11 sm:h-12' } = Astro.props;
 const src = tone === 'white' ? '/images/brand/dryhouse-logo-white.svg' : '/images/brand/dryhouse-logo.svg';
 ---
 

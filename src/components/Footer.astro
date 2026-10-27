@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
 
     <div class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
-        <a href="/" class="inline-block" aria-label="Dryhouse, naar de startpagina"><Logo tone="white" class="h-11" /></a>
+        <a href="/" class="inline-block" aria-label="Dryhouse, naar de startpagina"><Logo tone="white" class="h-14" /></a>
         <address class="mt-6 space-y-2 text-sm not-italic">
           {site.address.street && <p>{site.address.street}<br />{site.address.postalCode} {site.address.city}</p>}
           {Object.values(countries).map((c) => <p><a href={`tel:${c.phone}`} class="hover:text-white">{c.phoneDisplay}</a> <span class="text-white/60">({c.name})</span></p>)}
