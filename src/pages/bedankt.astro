@@ -1,18 +1,5 @@
 ---
-import Base from '@/layouts/Base.astro';
-import Icon from '@/components/Icon.astro';
+import Bedankt from '@/views/Bedankt.astro';
 ---
 
-<Base title="Bedankt voor je aanvraag" description="We hebben je aanvraag goed ontvangen." noindex>
-  <section class="grid min-h-[80dvh] place-items-center bg-sand-100 px-5 pt-28 pb-20 grain">
-    <div class="max-w-xl text-center">
-      <span class="mx-auto grid size-16 place-items-center rounded-full bg-tide-500 text-white"><Icon name="check" class="size-8" /></span>
-      <h1 class="mt-8 text-[clamp(2.4rem,1.6rem+3.4vw,4rem)] leading-tight font-semibold">Bedankt, we hebben je aanvraag.</h1>
-      <p class="mt-5 text-lg text-ink/70">Een specialist neemt zo snel mogelijk contact met je op om je gratis vochtdiagnose in te plannen.</p>
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="/" class="btn-primary">Terug naar de startpagina</a>
-        <a href="/blog" class="btn-ghost">Lees ons advies</a>
-      </div>
-    </div>
-  </section>
-</Base>
+<Bedankt />

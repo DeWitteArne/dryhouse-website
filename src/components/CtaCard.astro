@@ -1,8 +1,8 @@
 ---
 import Icon from './Icon.astro';
 import PhoneLink from './PhoneLink.astro';
-import { site } from '@/data/site';
 import type { CountryCode } from '@/data/regions';
+import { langFromUrl, paths, ui } from '@/i18n';
 
 interface Props {
   title?: string;
@@ -10,17 +10,17 @@ interface Props {
   country?: CountryCode;
   class?: string;
 }
-const { title = 'Gratis vochtdiagnose', country, class: className = '' } = Astro.props;
+const lang = langFromUrl(Astro.url);
+const t = ui[lang].cta;
+const { title = t.title, country, class: className = '' } = Astro.props;
 ---
 
 <aside class:list={['relative overflow-hidden rounded-3xl bg-tide-800 p-7 text-white', className]}>
   <div aria-hidden="true" class="absolute -top-16 -right-16 size-48 rounded-full bg-tide-500/50 blur-2xl"></div>
   <p class="relative font-display text-2xl leading-tight font-semibold">{title}</p>
   <ul class="relative mt-5 space-y-2.5 text-[0.95rem] text-white/80">
-    <li class="flex gap-2.5"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-spark" />We meten en zoeken de oorzaak</li>
-    <li class="flex gap-2.5"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-spark" />Heldere offerte, vrijblijvend</li>
-    <li class="flex gap-2.5"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-spark" />Tot {site.guaranteeYears} jaar garantie</li>
+    {t.points.map((p) => <li class="flex gap-2.5"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-spark" />{p}</li>)}
   </ul>
-  <a href="/offerte-aanvragen" class="btn-light relative mt-7 w-full">Vraag je diagnose aan</a>
+  <a href={paths.offerte[lang]} class="btn-light relative mt-7 w-full">{t.button}</a>
   <PhoneLink country={country} class="relative mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-white/80 hover:text-white" />
 </aside>

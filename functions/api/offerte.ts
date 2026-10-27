@@ -22,21 +22,25 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
   const wantsJson = request.headers.get('Accept')?.includes('application/json');
-  const fail = (status: number, message: string) =>
-    wantsJson ? Response.json({ ok: false, message }, { status }) : Response.redirect(new URL('/offerte-aanvragen?fout=1', request.url).toString(), 303);
-
-  let form: FormData;
+  let form: FormData | undefined;
   try {
     form = await request.formData();
-  } catch {
-    return fail(400, 'Ongeldig formulier');
-  }
+  } catch {}
+  // French pages post taal=fr; without JavaScript the visitor is redirected to the page in their language.
+  const fr = form?.get('taal') === 'fr';
+  const page = (nl: string, frPath: string) => new URL(fr ? frPath : nl, request.url).toString();
+  const fail = (status: number, message: string) =>
+    wantsJson ? Response.json({ ok: false, message }, { status }) : Response.redirect(page('/offerte-aanvragen?fout=1', '/fr/demande-devis?fout=1'), 303);
+  const done = () => (wantsJson ? Response.json({ ok: true }) : Response.redirect(page('/bedankt', '/fr/merci'), 303));
+
+  if (!form) return fail(400, 'Ongeldig formulier');
 
   // Bots fill the hidden field; pretend it worked.
-  if (String(form.get('website') ?? '').trim()) return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
+  if (String(form.get('website') ?? '').trim()) return done();
 
   const value = (k: string) => String(form.get(k) ?? '').trim().slice(0, 4000);
-  if (value('bron') === 'chat') return chatMessage(value, env, fail);
+  const taal = fr ? 'Frans (antwoord in het Frans)' : 'Nederlands';
+  if (value('bron') === 'chat') return chatMessage(value, taal, env, fail);
 
   const missing = REQUIRED.filter((k) => !value(k));
   const problems = form.getAll('probleem').map(String);
@@ -61,6 +65,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     ['Telefoon', value('telefoon')],
     ['Adres', `${value('straat')}, ${value('postcode')} ${value('gemeente')} (${value('land') || 'België'})`],
     ['Omschrijving', value('omschrijving')],
+    ['Taal', taal],
   ];
   const html = `<h2>Nieuwe aanvraag voor een vochtdiagnose</h2>${table(rows)}`;
 
@@ -73,11 +78,11 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   });
   if (!sent) return fail(502, 'Verzenden mislukt');
 
-  return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
+  return done();
 };
 
 /** A message left in the website assistant: name, phone or e-mail, question, plus the conversation. */
-async function chatMessage(value: (k: string) => string, env: Env, fail: (status: number, message: string) => Response) {
+async function chatMessage(value: (k: string) => string, taal: string, env: Env, fail: (status: number, message: string) => Response) {
   if (CHAT_REQUIRED.some((k) => !value(k))) return fail(422, 'Vul alle velden in');
   if (!env.RESEND_API_KEY) return fail(503, 'E-mailverzending is nog niet ingesteld');
 
@@ -86,6 +91,7 @@ async function chatMessage(value: (k: string) => string, env: Env, fail: (status
     ['Naam', value('naam')],
     ['Contact', contact],
     ['Land', value('land')],
+    ['Taal', taal],
     ['Vraag', value('bericht')],
     ['Pagina', value('pagina')],
     ['Gesprek', value('gesprek')],

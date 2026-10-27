@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import Service from '@/views/Service.astro';
+import { serviceBySlug } from '@/data/services';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('services', (e) => e.id.startsWith('fr/'));
+  return entries.map((entry) => ({ params: { service: serviceBySlug(entry.id.slice(3))!.fr.slug }, props: { entry } }));
+}
+---
+
+<Service entry={Astro.props.entry} />

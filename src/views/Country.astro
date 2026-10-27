@@ -1,0 +1,116 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import CtaCard from '@/components/CtaCard.astro';
+import Icon from '@/components/Icon.astro';
+import { countries, localCountry, localRegion, regionsIn, type Country } from '@/data/regions';
+import { localService, services } from '@/data/services';
+import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+interface Props {
+  country: Country;
+}
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const country = localCountry(Astro.props.country, lang);
+const path = country.path;
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: t.footerArea, path: paths.werkgebied[lang] },
+  { name: country.name, path },
+];
+const provinces = regionsIn(country.code).map((r) => localRegion(r, lang));
+const otherCountry = localCountry(Object.values(countries).find((c) => c.code !== country.code)!, lang);
+const allServices = services.map((s) => localService(s, lang));
+const provinceList = provinces.slice(0, 4).map((r) => r.name).join(', ');
+const copy = {
+  nl: {
+    title: `Vochtbestrijding ${country.inName} | Gratis diagnose`,
+    description: `Dryhouse lost vochtproblemen op ${country.inName}: opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${provinceList} en verder. Gratis diagnose, 30 jaar garantie.`,
+    serviceName: `Vochtbestrijding ${country.name}`,
+    h1: `Vochtbestrijding ${country.inName}.`,
+    problems: `Vochtproblemen ${country.inName}`,
+    approach: 'We beginnen altijd met een gratis diagnose bij je thuis: we meten het vocht, zoeken de oorzaak en geven je een duidelijke offerte, met tot 30 jaar garantie op de behandeling.',
+    choose: 'Kies je provincie',
+    around: 'en omgeving',
+    services: `Onze diensten ${country.inName}`,
+    otherBefore: `Woon je ${otherCountry.inName}? Bekijk `,
+    otherLink: `vochtbestrijding ${otherCountry.inName}`,
+    cta: `Gratis diagnose ${country.inName}`,
+  },
+  fr: {
+    title: `Traitement de l’humidité ${country.inName} | Diagnostic gratuit`,
+    description: `Dryhouse traite les problèmes d’humidité partout ${country.inName} : humidité ascensionnelle, infiltrations, moisissures et caves humides. Diagnostic gratuit, 30 ans de garantie.`,
+    serviceName: `Traitement de l’humidité ${country.inName}`,
+    h1: `Traitement de l’humidité ${country.inName}.`,
+    problems: `Problèmes d’humidité ${country.inName}`,
+    approach: 'Nous commençons toujours par un diagnostic gratuit chez vous : nous mesurons l’humidité, cherchons la cause et vous remettons un devis clair, avec jusqu’à 30 ans de garantie sur le traitement.',
+    choose: 'Choisissez votre province',
+    around: 'et environs',
+    services: `Nos services ${country.inName}`,
+    otherBefore: `Vous habitez ${otherCountry.inName} ? Découvrez le `,
+    otherLink: `traitement de l’humidité ${otherCountry.inName}`,
+    cta: `Diagnostic gratuit ${country.inName}`,
+  },
+}[lang];
+---
+
+<Base
+  alternate={localCountry(Astro.props.country, other(lang)).path}
+  title={copy.title}
+  description={copy.description}
+  jsonLd={[serviceSchema({ name: copy.serviceName, description: country.intro, path, country: country.name }), breadcrumbSchema(crumbs)]}
+>
+  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow mt-8"><Icon name="pin" class="size-4" /> {country.name}</p>
+      <h1 class="mt-4 max-w-4xl text-display font-semibold">{copy.h1}</h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">{country.intro}</p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a href={paths.offerte[lang]} class="btn-primary">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
+        <a href={`tel:${country.phone}`} class="btn-ghost"><Icon name="phone" class="size-4" /> {country.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="container-x grid gap-14 lg:grid-cols-[1fr_22rem]">
+      <div>
+        <div class="prose-dh">
+          <h2>{copy.problems}</h2>
+          <p>{country.context}</p>
+          <p>{copy.approach}</p>
+        </div>
+
+        <h2 class="mt-16 text-[1.9rem] leading-tight">{copy.choose}</h2>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {provinces.map((r, i) => (
+            <li data-reveal style={`--reveal-i:${i % 2}`}>
+              <a href={r.path} class="card group flex h-full flex-col p-6 transition-shadow hover:shadow-xl">
+                <span class="flex items-center justify-between">
+                  <span class="font-display text-xl font-semibold tracking-tight">{r.name}</span>
+                  <Icon name="arrow" class="size-5 text-tide-500 transition-transform group-hover:translate-x-1" />
+                </span>
+                <span class="mt-2 text-sm text-ink/60">{r.cities.slice(0, 4).join(', ')} {copy.around}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <h2 class="mt-16 text-[1.9rem] leading-tight">{copy.services}</h2>
+        <ul class="mt-5 flex flex-wrap gap-2">
+          {allServices.map((s) => <li><a href={s.path} class="inline-flex rounded-full bg-sand-100 px-4 py-2 text-sm font-medium transition-colors hover:bg-tide-500 hover:text-white">{s.name}</a></li>)}
+        </ul>
+        <p class="mt-10 text-ink/65">
+          {copy.otherBefore}<a href={otherCountry.path} class="font-semibold text-tide-500 underline-offset-4 hover:underline">{copy.otherLink}</a>.
+        </p>
+      </div>
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <CtaCard title={copy.cta} country={country.code} />
+      </div>
+    </div>
+  </section>
+</Base>

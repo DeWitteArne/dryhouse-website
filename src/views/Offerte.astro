@@ -1,0 +1,208 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import { localService, services } from '@/data/services';
+import { site } from '@/data/site';
+import { breadcrumbSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const field = 'mt-2 block w-full rounded-xl border-0 bg-sand-50 px-4 py-3.5 text-ink ring-1 ring-ink/10 transition-shadow placeholder:text-ink/35 focus:bg-white focus:ring-2 focus:ring-tide-500 focus:outline-none';
+const label = 'block text-sm font-semibold';
+const copy = {
+  nl: {
+    crumb: 'Gratis diagnose',
+    title: 'Gratis vochtdiagnose en offerte aanvragen',
+    description: 'Vraag gratis en vrijblijvend een vochtdiagnose aan. Een specialist van Dryhouse meet het vocht, zoekt de oorzaak en bezorgt je een heldere offerte.',
+    h1: 'Gratis vochtdiagnose aanvragen',
+    intro: 'Vertel ons kort wat er aan de hand is. Een specialist neemt contact met je op om een diagnose bij je thuis in te plannen. Gratis en vrijblijvend.',
+    steps: ['Je vult het formulier in', 'We bellen je om een afspraak te maken', 'We meten ter plaatse en zoeken de oorzaak', 'Je krijgt een heldere offerte met garantie'],
+    callOrMail: 'Liever bellen of mailen?',
+    error: ['Er ging iets mis bij het versturen. Probeer het opnieuw, of bel ons op ', ' (België) of ', ' (Nederland).'],
+    what: 'Waarvoor wil je een diagnose?',
+    other: 'Iets anders',
+    firstName: 'Voornaam',
+    lastName: 'Familienaam',
+    email: 'E-mail',
+    phone: 'Telefoon',
+    street: 'Straat en nummer',
+    postcode: 'Postcode',
+    town: 'Gemeente',
+    country: 'Land',
+    describe: 'Omschrijf je probleem of stel je vraag',
+    placeholder: 'Bv. sinds de winter zie ik een witte rand onderaan de muur in de woonkamer…',
+    photos: 'Foto’s (optioneel, max. 3)',
+    photosHelp: 'Een foto helpt ons om je situatie al in te schatten.',
+    consent: ['Ik ga akkoord dat Dryhouse mijn gegevens gebruikt om mijn aanvraag te behandelen, zoals beschreven in de ', 'privacyverklaring', '.'],
+    submit: 'Verstuur aanvraag',
+    sending: 'Versturen…',
+    choose: 'Kies waarvoor je een diagnose wil.',
+  },
+  fr: {
+    crumb: 'Diagnostic gratuit',
+    title: 'Demander un diagnostic d’humidité et un devis gratuits',
+    description: 'Demandez un diagnostic d’humidité gratuit et sans engagement. Un spécialiste de Dryhouse mesure l’humidité, cherche la cause et vous remet un devis clair.',
+    h1: 'Demander un diagnostic gratuit',
+    intro: 'Décrivez-nous brièvement la situation. Un spécialiste vous contacte pour planifier un diagnostic chez vous. Gratuit et sans engagement.',
+    steps: ['Vous remplissez le formulaire', 'Nous vous appelons pour fixer un rendez-vous', 'Nous mesurons sur place et cherchons la cause', 'Vous recevez un devis clair avec garantie'],
+    callOrMail: 'Vous préférez appeler ou écrire ?',
+    error: ['Un problème est survenu lors de l’envoi. Réessayez, ou appelez-nous au ', ' (Belgique) ou au ', ' (Pays-Bas).'],
+    what: 'Pour quel problème souhaitez-vous un diagnostic ?',
+    other: 'Autre chose',
+    firstName: 'Prénom',
+    lastName: 'Nom',
+    email: 'E-mail',
+    phone: 'Téléphone',
+    street: 'Rue et numéro',
+    postcode: 'Code postal',
+    town: 'Commune',
+    country: 'Pays',
+    describe: 'Décrivez votre problème ou posez votre question',
+    placeholder: 'P. ex. depuis l’hiver, je vois une bande blanche en bas du mur du salon…',
+    photos: 'Photos (facultatif, max. 3)',
+    photosHelp: 'Une photo nous aide à évaluer déjà votre situation.',
+    consent: ['J’accepte que Dryhouse utilise mes données pour traiter ma demande, comme décrit dans la ', 'déclaration de confidentialité', '.'],
+    submit: 'Envoyer la demande',
+    sending: 'Envoi…',
+    choose: 'Choisissez pour quel problème vous souhaitez un diagnostic.',
+  },
+}[lang];
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: copy.crumb, path: paths.offerte[lang] },
+];
+// Values stay Dutch: the e-mail to Dryhouse is always in Dutch.
+const problems = [...services.map((s) => ({ value: s.slug, name: localService(s, lang).name })), { value: 'iets-anders', name: copy.other }];
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.offerte[other(lang)]} jsonLd={[breadcrumbSchema(crumbs)]}>
+  <section class="bg-sand-100 pt-28 pb-24 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.5fr]">
+        <div>
+          <h1 class="text-[clamp(2.4rem,1.6rem+3.4vw,4.5rem)] leading-[0.98] font-semibold">{copy.h1}</h1>
+          <p class="mt-6 text-lg leading-relaxed text-ink/70">{copy.intro}</p>
+          <ol class="mt-10 space-y-5">
+            {copy.steps.map((s, i) => (
+              <li class="flex items-center gap-4">
+                <span class="grid size-9 shrink-0 place-items-center rounded-full bg-white font-display font-semibold text-tide-500 ring-1 ring-ink/5">{i + 1}</span>
+                <span class="font-medium">{s}</span>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-12 rounded-2xl bg-white p-6 ring-1 ring-ink/5">
+            <p class="font-semibold">{copy.callOrMail}</p>
+            <p class="mt-3 flex items-center gap-2"><Icon name="phone" class="size-5 text-tide-500" /><a href={`tel:${site.phone}`} class="font-medium hover:underline">{site.phoneDisplay}</a><span class="text-sm text-ink/65">{t.countries.be}</span></p>
+            <p class="mt-2 flex items-center gap-2"><Icon name="phone" class="size-5 text-tide-500" /><a href={`tel:${site.phoneNl}`} class="font-medium hover:underline">{site.phoneNlDisplay}</a><span class="text-sm text-ink/65">{t.countries.nl}</span></p>
+            <p class="mt-2 flex items-center gap-2"><Icon name="mail" class="size-5 text-tide-500" /><a href={`mailto:${site.email}`} class="font-medium hover:underline">{site.email}</a></p>
+            <p class="mt-2 flex items-center gap-2 text-sm text-ink/60"><Icon name="clock" class="size-5 text-tide-500" />{t.officeHours}</p>
+          </div>
+        </div>
+
+        <form
+          id="offerte"
+          method="post"
+          action="/api/offerte"
+          enctype="multipart/form-data"
+          class="card space-y-6 p-6 sm:p-10"
+          data-thanks={paths.bedankt[lang]}
+          data-choose={copy.choose}
+          data-sending={copy.sending}
+          data-submit={copy.submit}
+        >
+          <input type="hidden" name="taal" value={lang} />
+          <div id="form-error" hidden class="rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200" role="alert">
+            {copy.error[0]}<a class="font-semibold underline" href={`tel:${site.phone}`}>{site.phoneDisplay}</a>{copy.error[1]}<a class="font-semibold underline" href={`tel:${site.phoneNl}`}>{site.phoneNlDisplay}</a>{copy.error[2]}
+          </div>
+          <fieldset>
+            <legend class={label}>{copy.what} <span class="text-tide-500">*</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {problems.map((s) => (
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="probleem" value={s.value} class="peer sr-only" />
+                  <span class="inline-flex rounded-full bg-sand-50 px-4 py-2.5 text-sm font-medium ring-1 ring-ink/10 transition-all peer-checked:bg-tide-500 peer-checked:text-white peer-checked:ring-tide-500 peer-focus-visible:ring-2 peer-focus-visible:ring-spark hover:ring-tide-500/40">{s.name}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class={label}>{copy.firstName} <span class="text-tide-500">*</span><input name="voornaam" required autocomplete="given-name" class={field} /></label>
+            <label class={label}>{copy.lastName} <span class="text-tide-500">*</span><input name="familienaam" required autocomplete="family-name" class={field} /></label>
+            <label class={label}>{copy.email} <span class="text-tide-500">*</span><input name="email" type="email" required autocomplete="email" class={field} /></label>
+            <label class={label}>{copy.phone} <span class="text-tide-500">*</span><input name="telefoon" type="tel" required autocomplete="tel" class={field} /></label>
+          </div>
+          <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
+            <label class={label}>{copy.street} <span class="text-tide-500">*</span><input name="straat" required autocomplete="street-address" class={field} /></label>
+            <label class={label}>{copy.postcode} <span class="text-tide-500">*</span><input name="postcode" required autocomplete="postal-code" class={field} /></label>
+          </div>
+          <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
+            <label class={label}>{copy.town} <span class="text-tide-500">*</span><input name="gemeente" required autocomplete="address-level2" class={field} /></label>
+            <label class={label}>{copy.country}
+              <select name="land" autocomplete="country-name" class={field}>
+                <option value="België">{t.countries.be}</option>
+                <option value="Nederland">{t.countries.nl}</option>
+              </select>
+            </label>
+          </div>
+          <label class={label}>{copy.describe} <span class="text-tide-500">*</span>
+            <textarea name="omschrijving" required rows="5" placeholder={copy.placeholder} class={field}></textarea>
+          </label>
+          <label class={label}>{copy.photos}
+            <span class="mt-1 block text-sm font-normal text-ink/65">{copy.photosHelp}</span>
+            <input name="fotos" type="file" accept="image/*" multiple class="mt-3 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-tide-50 file:px-4 file:py-2.5 file:font-semibold file:text-tide-600 hover:file:bg-tide-100" />
+          </label>
+          <!-- Honeypot: real visitors never see or fill this field. -->
+          <div aria-hidden="true" class="absolute -left-[9999px]"><label>Website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+          <label class="flex gap-3 text-sm text-ink/70">
+            <input type="checkbox" name="akkoord" required class="mt-0.5 size-5 shrink-0 rounded accent-tide-500" />
+            <span>{copy.consent[0]}<a href={paths.privacy[lang]} class="font-semibold text-tide-500 underline">{copy.consent[1]}</a>{copy.consent[2]}</span>
+          </label>
+          <button type="submit" class="btn-primary w-full sm:w-auto">{copy.submit} <Icon name="arrow" class="size-4" /></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { currentLand } from '@/lib/country';
+
+  const form = document.getElementById('offerte') as HTMLFormElement;
+  const error = document.getElementById('form-error')!;
+  const params = new URLSearchParams(location.search);
+  const text = form.dataset;
+
+  // Prefill the problem type when coming from the vochtcheck or a service page.
+  const pre = params.get('probleem');
+  if (pre) form.querySelector<HTMLInputElement>(`input[name="probleem"][value="${CSS.escape(pre)}"]`)?.click();
+  if (params.has('fout')) error.hidden = false;
+  if (currentLand() === 'nl') form.querySelector<HTMLSelectElement>('select[name="land"]')!.value = 'Nederland';
+
+  form.addEventListener('submit', async (e) => {
+    const checked = form.querySelectorAll('input[name="probleem"]:checked').length;
+    if (!checked) {
+      e.preventDefault();
+      form.querySelector<HTMLInputElement>('input[name="probleem"]')?.focus();
+      alert(text.choose);
+      return;
+    }
+    e.preventDefault();
+    const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    button.disabled = true;
+    button.textContent = text.sending ?? '';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      location.href = text.thanks ?? '/bedankt';
+    } catch {
+      error.hidden = false;
+      error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      button.disabled = false;
+      button.textContent = text.submit ?? '';
+    }
+  });
+</script>

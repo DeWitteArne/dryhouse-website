@@ -2,7 +2,7 @@ import { site } from '@/data/site';
 
 /**
  * Visitor's country (BE/NL): picks which phone number the switchable phone links
- * show. Stored choice first, then the page (Dutch region pages), then the browser language.
+ * show. Belgium unless the visitor chose the Netherlands (toggle or assistant).
  */
 export type Land = 'be' | 'nl';
 
@@ -17,9 +17,7 @@ export function currentLand(): Land {
   try {
     stored = localStorage.getItem(KEY);
   } catch {}
-  if (stored === 'be' || stored === 'nl') return stored;
-  if (location.pathname.startsWith('/vochtbestrijding/nederland')) return 'nl';
-  return navigator.languages?.some((l) => /^nl-nl$/i.test(l)) ? 'nl' : 'be';
+  return stored === 'nl' ? 'nl' : 'be';
 }
 
 export const phoneFor = (land: Land) => phones[land];

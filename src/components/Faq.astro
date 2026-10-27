@@ -1,9 +1,11 @@
 ---
+import { langFromUrl, ui } from '@/i18n';
+
 interface Props {
   items: { q: string; a: string }[];
   title?: string;
 }
-const { items, title = 'Veelgestelde vragen' } = Astro.props;
+const { items, title = ui[langFromUrl(Astro.url)].faqTitle } = Astro.props;
 ---
 
 <section class="py-24 sm:py-32">

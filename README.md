@@ -23,20 +23,25 @@ npm run check      # typecheck
 
 | Pad | Wat |
 | --- | --- |
+| `src/i18n/index.ts` | Talen: Nederlands (zonder prefix) en Frans (`/fr/...`). Vaste URL's per taal en gedeelde teksten (menu, footer, knoppen). |
+| `src/views/*.astro` | De pagina's zelf, één sjabloon voor beide talen. De routes in `src/pages` en `src/pages/fr` zijn enkel doorgeefluiken. Paginateksten staan bovenaan elk sjabloon in een `nl`- en een `fr`-blok. |
 | `src/data/site.ts` | Bedrijfsgegevens (adres, telefoon, BTW, sociale media). Eén bron voor header, footer, contact en structured data. |
 | `src/data/services.ts` | De diensten, menuvolgorde en korte omschrijving. Slugs = de oude Wix-URL's. |
-| `src/content/services/*.md` | Inhoud per dienstpagina: SEO-titel, symptomen, aanpak, FAQ en tekst. |
+| `src/content/services/*.md` | Inhoud per dienstpagina: SEO-titel, symptomen, aanpak, FAQ en tekst. Franse versie in `src/content/services/fr/` (zelfde bestandsnaam). |
 | `src/content/blog/*.md` | Blogartikels (`/post/<slug>`, zelfde URL's als op Wix). |
+| `src/data/regions.fr.ts` | Franse namen, URL's en teksten van landen en provincies. |
 | `src/data/regions.ts` | Werkgebied in België en Nederland: één pagina per land (`/vochtbestrijding/<land>`) en per provincie (`/vochtbestrijding/<land>/<provincie>`). |
 | `src/components/react/WallStory.tsx` | De scroll-animatie op de homepage (muur wordt droog). |
 | `src/components/react/Vochtcheck.tsx` | De online vochtcheck. |
-| `src/data/assistant.ts` | De chat-assistent rechtsonder (vervangt de Smartsupp-chat): antwoorden, knoppen en herkende trefwoorden. |
+| `src/data/assistant.ts` | De chat-assistent rechtsonder (vervangt de Smartsupp-chat): antwoorden, knoppen en herkende trefwoorden. Frans: `assistant.fr.ts`. |
 | `public/images/brand/` | Het Dryhouse-logo als SVG (kleur, wit, enkel het huisje). `npm run brand` maakt er favicon, OG-beeld en logo.png van. |
 | `functions/api/offerte.ts` | Pages Function die offerteaanvragen en berichten uit de chat-assistent per e-mail verstuurt. |
 | `public/_redirects` | 301-redirects van alle oude Wix- en WordPress-URL's. |
 | `public/_headers` | Security headers, caching, en `noindex` op `*.pages.dev`. |
 
 ## Content aanpassen
+
+- **Frans:** elke tekst bestaat in het Nederlands en het Frans. Pas je iets aan, doe het dan in beide talen. Franse typografie: een vaste spatie (U+00A0) vóór `? ! : ;` en gekrulde apostrofs (’). De blog is enkel Nederlandstalig.
 
 - **Nieuw blogartikel:** maak `src/content/blog/<slug>.md` met dezelfde frontmatter als de bestaande artikels.
   Zet afbeeldingen in `src/assets/blog/<slug>/`; Astro maakt er automatisch AVIF/WebP in de juiste formaten van.

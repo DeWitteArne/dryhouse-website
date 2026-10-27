@@ -1,4 +1,5 @@
 import { site } from '@/data/site';
+import type { Lang } from '@/i18n';
 
 /** schema.org builders. Every page references the same business node by @id. */
 const businessId = `${site.url}/#business`;
@@ -10,7 +11,7 @@ const SERVED = [
   { '@type': 'Country', name: 'Nederland' },
 ];
 
-export function businessSchema() {
+export function businessSchema(lang: Lang = 'nl') {
   const { address, geo } = site;
   return {
     '@context': 'https://schema.org',
@@ -25,7 +26,9 @@ export function businessSchema() {
     ...(site.phone && { telephone: site.phone }),
     ...(site.vat && { vatID: site.vat }),
     description:
-      'Dryhouse lost elk vochtprobleem op: opstijgend vocht, doorslaand vocht, condensatie en schimmel, kelderdichting en gevelwerken. Gratis diagnose en 30 jaar garantie, in België en Nederland.',
+      lang === 'fr'
+        ? 'Dryhouse résout tous les problèmes d’humidité : humidité ascensionnelle, infiltrations, condensation et moisissures, étanchéité de cave et rénovation de façade. Diagnostic gratuit et 30 ans de garantie, en Belgique et aux Pays-Bas.'
+        : 'Dryhouse lost elk vochtprobleem op: opstijgend vocht, doorslaand vocht, condensatie en schimmel, kelderdichting en gevelwerken. Gratis diagnose en 30 jaar garantie, in België en Nederland.',
     address: {
       '@type': 'PostalAddress',
       ...(address.street && { streetAddress: address.street }),
@@ -37,8 +40,8 @@ export function businessSchema() {
     geo: { '@type': 'GeoCoordinates', latitude: geo.lat, longitude: geo.lng },
     areaServed: SERVED,
     contactPoint: [
-      { '@type': 'ContactPoint', contactType: 'customer service', telephone: site.phone, areaServed: 'BE', availableLanguage: 'nl' },
-      { '@type': 'ContactPoint', contactType: 'customer service', telephone: site.phoneNl, areaServed: 'NL', availableLanguage: 'nl' },
+      { '@type': 'ContactPoint', contactType: 'customer service', telephone: site.phone, areaServed: 'BE', availableLanguage: ['nl', 'fr'] },
+      { '@type': 'ContactPoint', contactType: 'customer service', telephone: site.phoneNl, areaServed: 'NL', availableLanguage: ['nl', 'fr'] },
     ],
     ...(site.openingHours.length && {
       openingHoursSpecification: site.openingHours.map((h) => ({
@@ -60,7 +63,7 @@ export function websiteSchema() {
     '@id': websiteId,
     url: site.url,
     name: site.name,
-    inLanguage: 'nl',
+    inLanguage: ['nl', 'fr'],
     publisher: { '@id': businessId },
   };
 }

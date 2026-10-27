@@ -1,12 +1,15 @@
 ---
+import { langFromUrl, ui } from '@/i18n';
+
 interface Props {
   items: { name: string; path: string }[];
   tone?: 'dark' | 'light';
 }
 const { items, tone = 'dark' } = Astro.props;
+const label = ui[langFromUrl(Astro.url)].breadcrumb;
 ---
 
-<nav aria-label="Kruimelpad" class:list={['text-sm', tone === 'light' ? 'text-white/60' : 'text-ink/50']}>
+<nav aria-label={label} class:list={['text-sm', tone === 'light' ? 'text-white/60' : 'text-ink/50']}>
   <ol class="flex flex-wrap items-center gap-1.5">
     {items.map((item, i) => (
       <li class="flex items-center gap-1.5">

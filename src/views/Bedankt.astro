@@ -1,0 +1,39 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/Icon.astro';
+import { langFromUrl, other, paths } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const copy = {
+  nl: {
+    title: 'Bedankt voor je aanvraag',
+    description: 'We hebben je aanvraag goed ontvangen.',
+    h1: 'Bedankt, we hebben je aanvraag.',
+    text: 'Een specialist neemt zo snel mogelijk contact met je op om je gratis vochtdiagnose in te plannen.',
+    home: 'Terug naar de startpagina',
+    second: { label: 'Lees ons advies', href: paths.blog.nl },
+  },
+  fr: {
+    title: 'Merci pour votre demande',
+    description: 'Nous avons bien reçu votre demande.',
+    h1: 'Merci, nous avons bien reçu votre demande.',
+    text: 'Un spécialiste vous contactera dans les plus brefs délais pour planifier votre diagnostic d’humidité gratuit.',
+    home: 'Retour à la page d’accueil',
+    second: { label: 'Faire le test d’humidité', href: paths.vochtcheck.fr },
+  },
+}[lang];
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.bedankt[other(lang)]} noindex>
+  <section class="grid min-h-[80dvh] place-items-center bg-sand-100 px-5 pt-28 pb-20 grain">
+    <div class="max-w-xl text-center">
+      <span class="mx-auto grid size-16 place-items-center rounded-full bg-tide-500 text-white"><Icon name="check" class="size-8" /></span>
+      <h1 class="mt-8 text-[clamp(2.4rem,1.6rem+3.4vw,4rem)] leading-tight font-semibold">{copy.h1}</h1>
+      <p class="mt-5 text-lg text-ink/70">{copy.text}</p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={paths.home[lang]} class="btn-primary">{copy.home}</a>
+        <a href={copy.second.href} class="btn-ghost">{copy.second.label}</a>
+      </div>
+    </div>
+  </section>
+</Base>

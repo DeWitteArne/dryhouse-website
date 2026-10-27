@@ -1,5 +1,7 @@
 import type { ServiceSlug } from './services';
+import type { Lang } from '@/i18n';
 import { site } from './site';
+import { countriesFr, regionsFr } from './regions.fr';
 
 /**
  * Werkgebied: Belgium and the Netherlands, one landing page per country
@@ -320,6 +322,20 @@ export const regions: Region[] = [
   },
 ];
 
-export const regionPath = (r: Region) => `/vochtbestrijding/${countries[r.country].slug}/${r.slug}`;
-export const countryPath = (c: Country) => `/vochtbestrijding/${c.slug}`;
 export const regionsIn = (code: CountryCode) => regions.filter((r) => r.country === code);
+
+/** Country texts, slug and URL in the given language (French copy in regions.fr.ts); `code` is the ID. */
+export function localCountry(c: Country, lang: Lang = 'nl') {
+  const t = lang === 'fr' ? countriesFr[c.code] : c;
+  return { ...c, ...t, path: lang === 'fr' ? `/fr/traitement-humidite/${t.slug}` : `/vochtbestrijding/${c.slug}` };
+}
+
+/** Region texts and URL in the given language. `slug` stays the Dutch ID, `localSlug` is the URL segment. */
+export function localRegion(r: Region, lang: Lang = 'nl') {
+  if (lang === 'nl') return { ...r, localSlug: r.slug, path: `/vochtbestrijding/${countries[r.country].slug}/${r.slug}` };
+  const t = regionsFr[`${r.country}/${r.slug}`];
+  return { ...r, ...t, slug: r.slug, localSlug: t.slug, path: `/fr/traitement-humidite/${countriesFr[r.country].slug}/${t.slug}` };
+}
+
+export const countryPath = (c: Country, lang: Lang = 'nl') => localCountry(c, lang).path;
+export const regionPath = (r: Region, lang: Lang = 'nl') => localRegion(r, lang).path;

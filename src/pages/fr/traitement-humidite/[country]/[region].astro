@@ -1,0 +1,13 @@
+---
+import Region from '@/views/Region.astro';
+import { countries, localCountry, localRegion, regions } from '@/data/regions';
+
+export function getStaticPaths() {
+  return regions.map((region) => ({
+    params: { country: localCountry(countries[region.country], 'fr').slug, region: localRegion(region, 'fr').localSlug },
+    props: { region },
+  }));
+}
+---
+
+<Region region={Astro.props.region} />

@@ -1,0 +1,93 @@
+---
+import Base from '@/layouts/Base.astro';
+import WallStory from '@/components/react/WallStory';
+import Services from '@/components/home/Services.astro';
+import Process from '@/components/home/Process.astro';
+import VochtcheckTeaser from '@/components/home/VochtcheckTeaser.astro';
+import Regions from '@/components/home/Regions.astro';
+import Faq from '@/components/Faq.astro';
+import PostCard from '@/components/PostCard.astro';
+import Icon from '@/components/Icon.astro';
+import { homeFaq } from '@/data/faq';
+import { faqSchema } from '@/lib/schema';
+import { getPosts } from '@/lib/blog';
+import { langFromUrl, other, paths } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+// The blog is Dutch only, so the French homepage leaves the articles out.
+const posts = lang === 'nl' ? (await getPosts()).filter((p) => p.data.category === 'advies').slice(0, 3) : [];
+const faq = homeFaq[lang];
+const copy = {
+  nl: {
+    title: 'Vochtbestrijding met 30 jaar garantie | Dryhouse',
+    description: 'Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder? Dryhouse vindt de oorzaak en lost het op, met gratis diagnose en 30 jaar garantie. In België en Nederland.',
+    eyebrow: 'Vochtbestrijding in België en Nederland',
+    h1: ['Wij maken je huis ', 'droog', '. Gegarandeerd.'],
+    intro: ['Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder: we zoeken de oorzaak en lossen het definitief op. Met ', '30 jaar garantie', '.'],
+    primary: 'Vraag een gratis diagnose aan',
+    secondary: 'Doe de online vochtcheck',
+    usps: ['30 jaar garantie', 'Gratis diagnose ter plaatse', 'België en Nederland'],
+    adviceEyebrow: 'Advies',
+    adviceTitle: 'Meer weten over vocht in huis?',
+    allPosts: 'Alle artikels',
+  },
+  fr: {
+    title: 'Traitement de l’humidité avec 30 ans de garantie | Dryhouse',
+    description: 'Humidité ascensionnelle, infiltrations, moisissures ou cave humide ? Dryhouse trouve la cause et la traite, avec diagnostic gratuit et 30 ans de garantie. En Belgique et aux Pays-Bas.',
+    eyebrow: 'Traitement de l’humidité en Belgique et aux Pays-Bas',
+    h1: ['Nous rendons votre maison ', 'sèche', '. Garanti.'],
+    intro: ['Humidité ascensionnelle, infiltrations, moisissures ou cave humide : nous trouvons la cause et la traitons définitivement. Avec ', '30 ans de garantie', '.'],
+    primary: 'Demander un diagnostic gratuit',
+    secondary: 'Faire le test d’humidité en ligne',
+    usps: ['30 ans de garantie', 'Diagnostic gratuit sur place', 'Belgique et Pays-Bas'],
+    adviceEyebrow: '',
+    adviceTitle: '',
+    allPosts: '',
+  },
+}[lang];
+const [h1Before, h1Accent, h1After] = copy.h1;
+const [introBefore, introStrong, introAfter] = copy.intro;
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.home[other(lang)]} jsonLd={[faqSchema(faq)]}>
+  <WallStory client:idle lang={lang}>
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="mt-5 text-display font-semibold">
+      {h1Before}<span class="relative whitespace-nowrap text-tide-500">{h1Accent}<svg class="absolute -bottom-[0.06em] left-0 h-[0.14em] w-full" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 120-8 196-3" fill="none" stroke="#00c0ff" stroke-width="4" stroke-linecap="round" /></svg></span>{h1After}
+    </h1>
+    <p class="mt-7 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">
+      {introBefore}<strong class="font-semibold text-ink">{introStrong}</strong>{introAfter}
+    </p>
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a href={paths.offerte[lang]} class="btn-primary">{copy.primary} <Icon name="arrow" class="size-4" /></a>
+      <a href={paths.vochtcheck[lang]} class="btn-ghost">{copy.secondary}</a>
+    </div>
+    <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm font-medium text-ink/70">
+      {(['shield', 'search', 'pin'] as const).map((icon, i) => <li class="flex items-center gap-2"><Icon name={icon} class="size-5 text-tide-500" />{copy.usps[i]}</li>)}
+    </ul>
+  </WallStory>
+
+  <Services />
+  <Process />
+  <VochtcheckTeaser />
+  <Regions />
+
+  {posts.length > 0 && (
+    <section class="bg-white py-24 sm:py-32">
+      <div class="container-x">
+        <div class="flex items-end justify-between gap-6">
+          <div>
+            <p class="eyebrow" data-reveal>{copy.adviceEyebrow}</p>
+            <h2 class="mt-4 text-title" data-reveal>{copy.adviceTitle}</h2>
+          </div>
+          <a href={paths.blog[lang]} class="hidden items-center gap-2 font-semibold text-tide-500 sm:inline-flex">{copy.allPosts} <Icon name="arrow" class="size-4" /></a>
+        </div>
+        <div class="mt-12 grid gap-10 md:grid-cols-3">
+          {posts.map((post, i) => <PostCard post={post} index={i} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={faq} />
+</Base>

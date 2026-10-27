@@ -1,80 +1,10 @@
 ---
-import Base from '@/layouts/Base.astro';
-import Breadcrumbs from '@/components/Breadcrumbs.astro';
-import CtaCard from '@/components/CtaCard.astro';
-import Icon from '@/components/Icon.astro';
-import { countries, countryPath, regionPath, regionsIn, type Country } from '@/data/regions';
-import { services } from '@/data/services';
-import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
+import Country from '@/views/Country.astro';
+import { countries } from '@/data/regions';
 
 export function getStaticPaths() {
   return Object.values(countries).map((country) => ({ params: { country: country.slug }, props: { country } }));
 }
-
-const { country } = Astro.props as { country: Country };
-const path = countryPath(country);
-const crumbs = [
-  { name: 'Home', path: '/' },
-  { name: 'Werkgebied', path: '/werkgebied' },
-  { name: country.name, path },
-];
-const provinces = regionsIn(country.code);
-const other = Object.values(countries).find((c) => c.code !== country.code)!;
 ---
 
-<Base
-  title={`Vochtbestrijding ${country.inName} | Gratis diagnose`}
-  description={`Dryhouse lost vochtproblemen op ${country.inName}: opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${provinces.slice(0, 4).map((r) => r.name).join(', ')} en verder. Gratis diagnose, 30 jaar garantie.`}
-  jsonLd={[serviceSchema({ name: `Vochtbestrijding ${country.name}`, description: country.intro, path, country: country.name }), breadcrumbSchema(crumbs)]}
->
-  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
-    <div class="container-x">
-      <Breadcrumbs items={crumbs} />
-      <p class="eyebrow mt-8"><Icon name="pin" class="size-4" /> {country.name}</p>
-      <h1 class="mt-4 max-w-4xl text-display font-semibold">Vochtbestrijding {country.inName}.</h1>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">{country.intro}</p>
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a href="/offerte-aanvragen" class="btn-primary">Gratis diagnose aanvragen <Icon name="arrow" class="size-4" /></a>
-        <a href={`tel:${country.phone}`} class="btn-ghost"><Icon name="phone" class="size-4" /> {country.phoneDisplay}</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20">
-    <div class="container-x grid gap-14 lg:grid-cols-[1fr_22rem]">
-      <div>
-        <div class="prose-dh">
-          <h2>Vochtproblemen {country.inName}</h2>
-          <p>{country.context}</p>
-          <p>We beginnen altijd met een gratis diagnose bij je thuis: we meten het vocht, zoeken de oorzaak en geven je een duidelijke offerte, met tot 30 jaar garantie op de behandeling.</p>
-        </div>
-
-        <h2 class="mt-16 text-[1.9rem] leading-tight">Kies je provincie</h2>
-        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-          {provinces.map((r, i) => (
-            <li data-reveal style={`--reveal-i:${i % 2}`}>
-              <a href={regionPath(r)} class="card group flex h-full flex-col p-6 transition-shadow hover:shadow-xl">
-                <span class="flex items-center justify-between">
-                  <span class="font-display text-xl font-semibold tracking-tight">{r.name}</span>
-                  <Icon name="arrow" class="size-5 text-tide-500 transition-transform group-hover:translate-x-1" />
-                </span>
-                <span class="mt-2 text-sm text-ink/60">{r.cities.slice(0, 4).join(', ')} en omgeving</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <h2 class="mt-16 text-[1.9rem] leading-tight">Onze diensten {country.inName}</h2>
-        <ul class="mt-5 flex flex-wrap gap-2">
-          {services.map((s) => <li><a href={`/${s.slug}`} class="inline-flex rounded-full bg-sand-100 px-4 py-2 text-sm font-medium transition-colors hover:bg-tide-500 hover:text-white">{s.name}</a></li>)}
-        </ul>
-        <p class="mt-10 text-ink/65">
-          Woon je {other.inName}? Bekijk <a href={countryPath(other)} class="font-semibold text-tide-500 underline-offset-4 hover:underline">vochtbestrijding {other.inName}</a>.
-        </p>
-      </div>
-      <div class="lg:sticky lg:top-28 lg:self-start">
-        <CtaCard title={`Gratis diagnose ${country.inName}`} country={country.code} />
-      </div>
-    </div>
-  </section>
-</Base>
+<Country country={Astro.props.country} />

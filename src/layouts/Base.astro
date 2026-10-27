@@ -7,6 +7,7 @@ import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import Assistant from '@/components/react/Assistant';
 import { businessSchema, websiteSchema } from '@/lib/schema';
+import { langFromUrl, ui } from '@/i18n';
 
 export interface Props extends SeoProps {
   /** Header sits over a dark hero: start with light text. */
@@ -14,10 +15,11 @@ export interface Props extends SeoProps {
 }
 
 const { headerTone = 'dark', jsonLd = [], ...seo } = Astro.props;
+const lang = langFromUrl(Astro.url);
 ---
 
 <!doctype html>
-<html lang="nl">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,19 +29,19 @@ const { headerTone = 'dark', jsonLd = [], ...seo } = Astro.props;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href={bricolageWoff2} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistWoff2} as="font" type="font/woff2" crossorigin />
-    <Seo {...seo} jsonLd={[businessSchema(), websiteSchema(), ...jsonLd]} />
+    <Seo {...seo} jsonLd={[businessSchema(lang), websiteSchema(), ...jsonLd]} />
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body class="min-h-dvh overflow-x-clip">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2">
-      Naar de inhoud
+      {ui[lang].skip}
     </a>
-    <Header tone={headerTone} />
+    <Header tone={headerTone} alternate={seo.alternate} />
     <main id="inhoud">
       <slot />
     </main>
     <Footer />
-    <Assistant client:idle />
+    <Assistant client:idle lang={lang} />
     <script>
       import { initReveal } from '@/lib/reveal';
       import { initCountry } from '@/lib/country';

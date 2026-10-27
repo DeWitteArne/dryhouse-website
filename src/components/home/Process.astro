@@ -1,17 +1,36 @@
 ---
-const steps = [
-  { title: 'Gratis diagnose', body: 'We komen langs, meten het vocht in je muren en zoeken de echte oorzaak. Geen giswerk.' },
-  { title: 'Heldere offerte', body: 'Je krijgt een offerte met de behandeling, de prijs en de garantie. Zonder kleine lettertjes.' },
-  { title: 'Vakkundige uitvoering', body: 'Onze eigen ploegen voeren de werken uit, netjes en met respect voor je woning.' },
-  { title: 'Droog, met garantie', body: 'Na de behandeling droogt je muur uit. Op het resultaat krijg je tot 30 jaar garantie.' },
-];
+import { langFromUrl } from '@/i18n';
+
+const copy = {
+  nl: {
+    eyebrow: 'Zo werken we',
+    title: 'Van eerste meting tot droge muur, in vier stappen.',
+    steps: [
+      { title: 'Gratis diagnose', body: 'We komen langs, meten het vocht in je muren en zoeken de echte oorzaak. Geen giswerk.' },
+      { title: 'Heldere offerte', body: 'Je krijgt een offerte met de behandeling, de prijs en de garantie. Zonder kleine lettertjes.' },
+      { title: 'Vakkundige uitvoering', body: 'Onze eigen ploegen voeren de werken uit, netjes en met respect voor je woning.' },
+      { title: 'Droog, met garantie', body: 'Na de behandeling droogt je muur uit. Op het resultaat krijg je tot 30 jaar garantie.' },
+    ],
+  },
+  fr: {
+    eyebrow: 'Notre méthode',
+    title: 'De la première mesure au mur sec, en quatre étapes.',
+    steps: [
+      { title: 'Diagnostic gratuit', body: 'Nous passons chez vous, mesurons l’humidité dans vos murs et cherchons la vraie cause. Sans approximation.' },
+      { title: 'Devis clair', body: 'Vous recevez un devis avec le traitement, le prix et la garantie. Sans petits caractères.' },
+      { title: 'Exécution soignée', body: 'Nos propres équipes réalisent les travaux, proprement et dans le respect de votre habitation.' },
+      { title: 'Sec, avec garantie', body: 'Après le traitement, votre mur sèche. Le résultat est garanti jusqu’à 30 ans.' },
+    ],
+  },
+}[langFromUrl(Astro.url)];
+const { steps } = copy;
 ---
 
 <section class="relative overflow-hidden bg-tide-800 py-24 text-white sm:py-32">
   <div aria-hidden="true" class="pointer-events-none absolute -right-40 -bottom-40 size-[36rem] rounded-full bg-tide-500/40 blur-3xl"></div>
   <div class="container-x relative">
-    <p class="eyebrow !text-spark" data-reveal>Zo werken we</p>
-    <h2 class="mt-4 max-w-3xl text-title" data-reveal>Van eerste meting tot droge muur, in vier stappen.</h2>
+    <p class="eyebrow !text-spark" data-reveal>{copy.eyebrow}</p>
+    <h2 class="mt-4 max-w-3xl text-title" data-reveal>{copy.title}</h2>
 
     <ol class="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
       {steps.map((s, i) => (

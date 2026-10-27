@@ -2,10 +2,14 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { site } from '@/data/site';
-import { services } from '@/data/services';
-import { countries, countryPath, regionPath, regionsIn } from '@/data/regions';
+import { localService, services } from '@/data/services';
+import { countries, localCountry, localRegion, regionsIn } from '@/data/regions';
+import { langFromUrl, paths, ui } from '@/i18n';
 
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
 const year = new Date().getFullYear();
+const [claimBefore, claimAccent, claimAfter] = t.footerClaim;
 ---
 
 <footer class="relative overflow-hidden bg-tide-900 text-white/70">
@@ -13,46 +17,45 @@ const year = new Date().getFullYear();
   <div class="container-x relative">
     <div class="flex flex-col gap-8 border-b border-white/10 py-16 md:flex-row md:items-end md:justify-between">
       <p class="max-w-2xl font-display text-[clamp(2rem,1.2rem+3vw,3.5rem)] leading-[1.02] tracking-tight text-white">
-        Een droog huis, <span class="text-spark">gegarandeerd</span> voor {site.guaranteeYears} jaar.
+        {claimBefore}<span class="text-spark">{claimAccent}</span>{claimAfter}
       </p>
-      <a href="/offerte-aanvragen" class="btn-light shrink-0">Gratis diagnose aanvragen <Icon name="arrow" class="size-4" /></a>
+      <a href={paths.offerte[lang]} class="btn-light shrink-0">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
     </div>
 
     <div class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
-        <a href="/" class="inline-block" aria-label="Dryhouse, naar de startpagina"><Logo tone="white" class="h-14" /></a>
+        <a href={paths.home[lang]} class="inline-block" aria-label={t.toHome}><Logo tone="white" class="h-14" /></a>
         <address class="mt-6 space-y-2 text-sm not-italic">
           {site.address.street && <p>{site.address.street}<br />{site.address.postalCode} {site.address.city}</p>}
-          {Object.values(countries).map((c) => <p><a href={`tel:${c.phone}`} class="hover:text-white">{c.phoneDisplay}</a> <span class="text-white/60">({c.name})</span></p>)}
+          {Object.values(countries).map((c) => <p><a href={`tel:${c.phone}`} class="hover:text-white">{c.phoneDisplay}</a> <span class="text-white/60">({t.countries[c.code]})</span></p>)}
           <p><a href={`mailto:${site.email}`} class="hover:text-white">{site.email}</a></p>
-          {site.vat && <p>BTW {site.vat}</p>}
+          {site.vat && <p>{t.vat} {site.vat}</p>}
         </address>
       </div>
-      <nav aria-label="Diensten">
-        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Diensten</p>
+      <nav aria-label={t.services}>
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">{t.services}</p>
         <ul class="mt-5 space-y-2.5 text-sm">
-          {services.map((s) => <li><a href={`/${s.slug}`} class="hover:text-white">{s.name}</a></li>)}
+          {services.map((s) => localService(s, lang)).map((s) => <li><a href={s.path} class="hover:text-white">{s.name}</a></li>)}
         </ul>
       </nav>
-      <nav aria-label="Werkgebied">
-        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Werkgebied</p>
-        {Object.values(countries).map((c) => (
-          <div class="mt-5 text-sm">
-            <a href={countryPath(c)} class="font-semibold text-white/90 hover:text-white">Vochtbestrijding {c.name}</a>
-            <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1.5 text-[0.8rem]">
-              {regionsIn(c.code).map((r) => <li><a href={regionPath(r)} class="hover:text-white">{r.name}</a></li>)}
-            </ul>
-          </div>
-        ))}
+      <nav aria-label={t.footerArea}>
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">{t.footerArea}</p>
+        {Object.values(countries).map((country) => {
+          const c = localCountry(country, lang);
+          return (
+            <div class="mt-5 text-sm">
+              <a href={c.path} class="font-semibold text-white/90 hover:text-white">{t.treatmentIn} {c.inName}</a>
+              <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1.5 text-[0.8rem]">
+                {regionsIn(c.code).map((r) => localRegion(r, lang)).map((r) => <li><a href={r.path} class="hover:text-white">{r.name}</a></li>)}
+              </ul>
+            </div>
+          );
+        })}
       </nav>
-      <nav aria-label="Dryhouse">
-        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Dryhouse</p>
+      <nav aria-label={t.footerCompany}>
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">{t.footerCompany}</p>
         <ul class="mt-5 space-y-2.5 text-sm">
-          <li><a href="/vochtcheck" class="hover:text-white">Online vochtcheck</a></li>
-          <li><a href="/offerte-aanvragen" class="hover:text-white">Offerte aanvragen</a></li>
-          <li><a href="/blog" class="hover:text-white">Blog &amp; advies</a></li>
-          <li><a href="/contact" class="hover:text-white">Contact</a></li>
-          <li><a href="/privacy" class="hover:text-white">Privacy</a></li>
+          {t.footerLinks.map((l) => <li><a href={paths[l.key][lang]} class="hover:text-white">{l.label}</a></li>)}
         </ul>
         {Object.keys(site.social).length > 0 && (
           <ul class="mt-6 flex gap-3 text-sm">
@@ -62,8 +65,8 @@ const year = new Date().getFullYear();
       </nav>
     </div>
     <div class="flex flex-col gap-2 border-t border-white/10 py-6 text-xs sm:flex-row sm:justify-between">
-      <p>© {year} {site.legalName}. Alle rechten voorbehouden.</p>
-      <p>Vochtbestrijding in België en Nederland, vanuit {site.address.city}.</p>
+      <p>© {year} {site.legalName}. {t.rights}</p>
+      <p>{t.footerNote(site.address.city)}</p>
     </div>
   </div>
 </footer>

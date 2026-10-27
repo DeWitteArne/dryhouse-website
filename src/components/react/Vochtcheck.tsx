@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { localService, serviceBySlug } from '@/data/services';
+import { paths, type Lang } from '@/i18n';
 
 /**
  * Online moisture check: five questions, a weighted score per problem type,
@@ -82,6 +84,126 @@ const QUESTIONS: Question[] = [
   },
 ];
 
+/** French wording per question id: [title, help?] and one [label, hint?] per option, in the same order. */
+const QUESTIONS_FR: Record<string, { title: string; help?: string; options: [string, string?][] }> = {
+  waar: {
+    title: 'Où voyez-vous le problème d’humidité ?',
+    options: [
+      ['En bas du mur', 'jusqu’à environ un mètre de hauteur'],
+      ['Plus haut sur le mur ou au plafond'],
+      ['Dans la cave'],
+      ['Autour des fenêtres, dans les coins ou derrière les meubles'],
+      ['Dans la salle de bain'],
+      ['Dans du béton', 'garage, terrasse, fosse d’ascenseur'],
+    ],
+  },
+  wat: {
+    title: 'Que voyez-vous exactement ?',
+    help: 'Choisissez tout ce qui s’applique.',
+    options: [
+      ['Une auréole ou une bande blanche de salpêtre'],
+      ['Des taches de moisissure noires ou vertes'],
+      ['De la peinture qui cloque ou de l’enduit qui se détache'],
+      ['De l’eau qui s’infiltre'],
+      ['Des vitres embuées le matin'],
+      ['Des fissures ou de la rouille dans le béton'],
+    ],
+  },
+  wanneer: {
+    title: 'Quand est-ce le pire ?',
+    options: [['Après une averse'], ['En hiver, quand il fait froid'], ['En été'], ['Toute l’année'], ['Aucune idée']],
+  },
+  muur: {
+    title: 'De quel mur s’agit-il ?',
+    options: [
+      ['Un mur extérieur exposé aux intempéries', 'généralement ouest ou sud-ouest'],
+      ['Un mur intérieur ou un mur de refend'],
+      ['Un mur de cave'],
+      ['Plusieurs murs, ou je ne sais pas'],
+    ],
+  },
+  leeftijd: {
+    title: 'Quel est l’âge de votre habitation ?',
+    options: [['Construite avant 1950'], ['Entre 1950 et 1990'], ['Après 1990 ou rénovée récemment'], ['Je ne sais pas']],
+  },
+};
+
+const questionsFor = (lang: Lang): Question[] =>
+  lang === 'nl'
+    ? QUESTIONS
+    : QUESTIONS.map((q) => {
+        const fr = QUESTIONS_FR[q.id];
+        return { ...q, title: fr.title, help: fr.help, options: q.options.map((o, i) => ({ ...o, label: fr.options[i][0], hint: fr.options[i][1] })) };
+      });
+
+const RESULTS_FR: Record<Problem, { name: string; summary: string; tip: string }> = {
+  rising: {
+    name: 'Humidité ascensionnelle',
+    summary: 'L’humidité du sol remonte dans vos murs, faute de barrière anti-humidité (efficace). On la reconnaît à une auréole de salpêtre et aux dégâts en bas du mur.',
+    tip: 'Une peinture ou une feuille ne fait que cacher le problème. Une injection qui crée une barrière étanche s’attaque à la cause.',
+  },
+  penetrating: {
+    name: 'Humidité par infiltration',
+    summary: 'L’eau de pluie traverse votre façade de l’extérieur vers l’intérieur, par des briques poreuses ou des joints usés.',
+    tip: 'Regardez les joints à l’extérieur : des joints creux ou fissurés sont une cause typique.',
+  },
+  condensation: {
+    name: 'Condensation et moisissures',
+    summary: 'L’air de votre habitation contient trop d’humidité. Elle se dépose sur les surfaces froides et provoque des moisissures.',
+    tip: 'Aérez chaque jour brièvement mais énergiquement, et ne placez pas d’armoires contre des murs extérieurs froids. Si le problème revient, une ventilation sur mesure est nécessaire.',
+  },
+  basement: {
+    name: 'Cave humide',
+    summary: 'Votre cave laisse entrer de l’eau de l’extérieur (infiltration), souffre de condensation, ou les deux.',
+    tip: 'Votre cave est surtout humide en été ? N’aérez justement pas par temps chaud : l’air chaud fait entrer de l’humidité.',
+  },
+  concrete: {
+    name: 'Dégâts au béton',
+    summary: 'Les fissures dans le béton laissent passer l’eau. Si elle atteint les armatures, le béton peut se dégrader.',
+    tip: 'Plus vite vous faites injecter une fissure qui fuit, plus la réparation est simple et bon marché.',
+  },
+};
+
+const UI = {
+  nl: {
+    progress: 'Voortgang vochtcheck',
+    question: (n: number, total: number) => `Vraag ${n} van ${total}`,
+    previous: '← Vorige vraag',
+    next: 'Volgende',
+    unsureTitle: 'We kunnen het niet goed inschatten.',
+    unsureText: 'Geen probleem: een vochtdiagnose ter plaatse geeft zekerheid, en die is gratis.',
+    requestDiagnose: 'Gratis diagnose aanvragen',
+    likely: 'Waarschijnlijk gaat het om',
+    tip: 'Tip: ',
+    alsoPossible: 'Ook mogelijk: ',
+    together: '. Vochtproblemen komen vaak samen voor.',
+    check: 'Laat het gratis nakijken',
+    more: (name: string) => `Meer over ${name.toLowerCase()}`,
+    disclaimer: 'Dit is een eerste inschatting op basis van je antwoorden, geen diagnose. Alleen een meting ter plaatse geeft zekerheid.',
+    restart: 'Opnieuw beginnen',
+    match: 'match',
+  },
+  fr: {
+    progress: 'Progression du test d’humidité',
+    question: (n: number, total: number) => `Question ${n} sur ${total}`,
+    previous: '← Question précédente',
+    next: 'Suivant',
+    unsureTitle: 'Nous ne pouvons pas bien l’estimer.',
+    unsureText: 'Pas de souci : un diagnostic sur place vous donne une certitude, et il est gratuit.',
+    requestDiagnose: 'Demander un diagnostic gratuit',
+    likely: 'Il s’agit probablement de',
+    tip: 'Conseil : ',
+    alsoPossible: 'Également possible : ',
+    together: '. Les problèmes d’humidité vont souvent de pair.',
+    check: 'Faire vérifier gratuitement',
+    more: () => 'En savoir plus',
+    disclaimer: 'Ceci est une première estimation basée sur vos réponses, pas un diagnostic. Seule une mesure sur place donne une certitude.',
+    restart: 'Recommencer',
+    match: 'correspondance',
+  },
+};
+type UiText = (typeof UI)['nl'];
+
 const RESULTS: Record<Problem, { name: string; slug: string; summary: string; tip: string }> = {
   rising: {
     name: 'Opstijgend vocht',
@@ -115,7 +237,14 @@ const RESULTS: Record<Problem, { name: string; slug: string; summary: string; ti
   },
 };
 
-export default function Vochtcheck() {
+const resultFor = (problem: Problem, lang: Lang) => {
+  const r = RESULTS[problem];
+  return { ...r, ...(lang === 'fr' ? RESULTS_FR[problem] : {}), path: localService(serviceBySlug(r.slug)!, lang).path };
+};
+
+export default function Vochtcheck({ lang = 'nl' }: { lang?: Lang }) {
+  const QUESTIONS = useMemo(() => questionsFor(lang), [lang]);
+  const t = UI[lang];
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number[]>>({});
   const reduce = useReducedMotion();
@@ -134,7 +263,7 @@ export default function Vochtcheck() {
     return (Object.entries(totals) as [Problem, number][])
       .sort((a, b) => b[1] - a[1])
       .map(([problem, score]) => ({ problem, share: score / sum }));
-  }, [answers]);
+  }, [answers, QUESTIONS]);
 
   const choose = (i: number) => {
     if (q.multi) {
@@ -156,7 +285,7 @@ export default function Vochtcheck() {
 
   return (
     <div className="card overflow-hidden">
-      <div className="h-1.5 bg-sand-200" role="progressbar" aria-label="Voortgang vochtcheck" aria-valuemin={0} aria-valuemax={QUESTIONS.length} aria-valuenow={Math.min(step, QUESTIONS.length)}>
+      <div className="h-1.5 bg-sand-200" role="progressbar" aria-label={t.progress} aria-valuemin={0} aria-valuemax={QUESTIONS.length} aria-valuenow={Math.min(step, QUESTIONS.length)}>
         <motion.div className="h-full bg-gradient-to-r from-spark to-tide-500" style={{ width: '0%' }} initial={false} animate={{ width: `${(Math.min(step, QUESTIONS.length) / QUESTIONS.length) * 100}%` }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} />
       </div>
       <div className="relative min-h-[34rem] p-6 sm:p-10">
@@ -165,7 +294,7 @@ export default function Vochtcheck() {
             <motion.fieldset key={q.id} {...slide}>
               <legend className="contents">
                 <span className="text-sm font-semibold text-tide-500">
-                  Vraag {step + 1} van {QUESTIONS.length}
+                  {t.question(step + 1, QUESTIONS.length)}
                 </span>
                 <span className="mt-2 block font-display text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] leading-tight font-semibold tracking-tight">{q.title}</span>
               </legend>
@@ -198,18 +327,18 @@ export default function Vochtcheck() {
               </div>
               <div className="mt-8 flex items-center justify-between gap-4">
                 <button type="button" onClick={() => setStep((s) => Math.max(0, s - 1))} className={`text-sm font-semibold text-ink/60 hover:text-ink ${step === 0 ? 'invisible' : ''}`}>
-                  ← Vorige vraag
+                  {t.previous}
                 </button>
                 {q.multi && (
                   <button type="button" onClick={() => setStep((s) => s + 1)} disabled={selected.length === 0} className="btn-primary disabled:pointer-events-none disabled:opacity-40">
-                    Volgende
+                    {t.next}
                   </button>
                 )}
               </div>
             </motion.fieldset>
           ) : (
             <motion.div key="result" {...slide} aria-live="polite">
-              <Result ranking={ranking} onRestart={restart} />
+              <Result ranking={ranking} onRestart={restart} lang={lang} t={t} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -218,51 +347,56 @@ export default function Vochtcheck() {
   );
 }
 
-function Result({ ranking, onRestart }: { ranking: { problem: Problem; share: number }[]; onRestart: () => void }) {
+function Result({ ranking, onRestart, lang, t }: { ranking: { problem: Problem; share: number }[]; onRestart: () => void; lang: Lang; t: UiText }) {
   const [top, second] = ranking;
   if (!top || top.share === 0) {
     return (
       <div>
-        <p className="font-display text-3xl font-semibold">We kunnen het niet goed inschatten.</p>
-        <p className="mt-3 text-ink/70">Geen probleem: een vochtdiagnose ter plaatse geeft zekerheid, en die is gratis.</p>
-        <a href="/offerte-aanvragen" className="btn-primary mt-8">Gratis diagnose aanvragen</a>
+        <p className="font-display text-3xl font-semibold">{t.unsureTitle}</p>
+        <p className="mt-3 text-ink/70">{t.unsureText}</p>
+        <a href={paths.offerte[lang]} className="btn-primary mt-8">{t.requestDiagnose}</a>
       </div>
     );
   }
-  const r = RESULTS[top.problem];
+  const r = resultFor(top.problem, lang);
+  const alt = second ? resultFor(second.problem, lang) : undefined;
   const pct = Math.round(top.share * 100);
-  const showSecond = second && second.share > 0.2;
+  const alsoPossible = alt && second.share > 0.2 ? alt : undefined;
 
   return (
     <div className="grid gap-10 lg:grid-cols-[auto_1fr] lg:items-start">
-      <Gauge pct={pct} />
+      <Gauge pct={pct} label={t.match} />
       <div>
-        <p className="text-sm font-semibold text-tide-500">Waarschijnlijk gaat het om</p>
+        <p className="text-sm font-semibold text-tide-500">{t.likely}</p>
         <h2 className="mt-1 font-display text-[clamp(2rem,1.5rem+2vw,3rem)] leading-tight font-semibold tracking-tight">{r.name}</h2>
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-ink/75">{r.summary}</p>
         <p className="mt-5 max-w-xl rounded-2xl bg-sand-100 p-4 text-[0.95rem] leading-relaxed">
-          <strong className="font-semibold">Tip: </strong>
+          <strong className="font-semibold">{t.tip}</strong>
           {r.tip}
         </p>
-        {showSecond && (
+        {alsoPossible && (
           <p className="mt-4 text-sm text-ink/60">
-            Ook mogelijk: <a className="font-semibold text-tide-500 underline underline-offset-4" href={`/${RESULTS[second.problem].slug}`}>{RESULTS[second.problem].name.toLowerCase()}</a>. Vochtproblemen komen vaak samen voor.
+            {t.alsoPossible}
+            <a className="font-semibold text-tide-500 underline underline-offset-4" href={alsoPossible.path}>
+              {alsoPossible.name.toLowerCase()}
+            </a>
+            {t.together}
           </p>
         )}
         <div className="mt-8 flex flex-wrap gap-3">
-          <a href={`/offerte-aanvragen?probleem=${r.slug}`} className="btn-primary">Laat het gratis nakijken</a>
-          <a href={`/${r.slug}`} className="btn-ghost">Meer over {r.name.toLowerCase()}</a>
+          <a href={`${paths.offerte[lang]}?probleem=${r.slug}`} className="btn-primary">{t.check}</a>
+          <a href={r.path} className="btn-ghost">{t.more(r.name)}</a>
         </div>
         <p className="mt-6 text-xs text-ink/50">
-          Dit is een eerste inschatting op basis van je antwoorden, geen diagnose. Alleen een meting ter plaatse geeft zekerheid.{' '}
-          <button type="button" onClick={onRestart} className="font-semibold underline underline-offset-2">Opnieuw beginnen</button>
+          {t.disclaimer}{' '}
+          <button type="button" onClick={onRestart} className="font-semibold underline underline-offset-2">{t.restart}</button>
         </p>
       </div>
     </div>
   );
 }
 
-function Gauge({ pct }: { pct: number }) {
+function Gauge({ pct, label }: { pct: number; label: string }) {
   const reduce = useReducedMotion();
   const r = 70;
   const c = 2 * Math.PI * r;
@@ -293,7 +427,7 @@ function Gauge({ pct }: { pct: number }) {
       <div className="absolute inset-0 grid place-items-center text-center">
         <span>
           <span className="block font-display text-4xl font-semibold tabular-nums">{pct}%</span>
-          <span className="block text-xs font-medium text-ink/65">match</span>
+          <span className="block text-xs font-medium text-ink/65">{label}</span>
         </span>
       </div>
     </div>

@@ -24,7 +24,6 @@ export const site = {
   },
   geo: { lat: 51.1848369, lng: 4.1943667 },
   openingHours: [{ days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '17:30' }],
-  openingHoursDisplay: 'Kantoor: ma–vr 9u – 17u30',
   social: {
     facebook: 'https://www.facebook.com/dryhousebvba/',
     instagram: 'https://www.instagram.com/dryhouse_vochtbestrijding/',
@@ -35,11 +34,3 @@ export const site = {
   yearsExperience: 20,
   basementsSealed: 1000,
 } as const;
-
-export const nav = [
-  { label: 'Diensten', href: '/#diensten' },
-  { label: 'Vochtcheck', href: '/vochtcheck' },
-  { label: 'Werkgebied', href: '/werkgebied' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
-] as const;

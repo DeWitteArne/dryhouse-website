@@ -14,10 +14,8 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    sitemap({
-      filter: (page) => !page.includes('/bedankt'),
-      i18n: { defaultLocale: 'nl', locales: { nl: 'nl-BE' } },
-    }),
+    // Language alternates are in each page's <head> (hreflang): the French URLs have their own slugs.
+    sitemap({ filter: (page) => !page.includes('/bedankt') && !page.includes('/fr/merci') }),
   ],
   image: { layout: 'constrained', responsiveStyles: true },
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },

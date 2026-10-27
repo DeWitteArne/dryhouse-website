@@ -1,0 +1,95 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { countries } from '@/data/regions';
+import { breadcrumbSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: 'Contact', path: paths.contact[lang] },
+];
+const { address } = site;
+const copy = {
+  nl: {
+    description: `Contacteer Dryhouse: ${address.street}, ${address.postalCode} ${address.city}. Bel ${site.phoneDisplay} (België) of ${site.phoneNlDisplay} (Nederland), of mail ${site.email} voor een gratis vochtdiagnose.`,
+    h1: 'Laten we je huis droog maken.',
+    intro: 'Bel, mail of kom langs. Of vraag meteen een gratis diagnose aan.',
+    call: 'Bel ons',
+    mail: 'Mail ons',
+    mailNote: 'We antwoorden zo snel mogelijk.',
+    office: 'Ons kantoor',
+    banner: ['Gratis vochtdiagnose', 'We komen langs, meten en zoeken de oorzaak. Vrijblijvend.', 'Diagnose aanvragen'],
+    company: 'Bedrijf',
+    number: 'Ondernemingsnummer',
+    follow: 'Volg ons',
+  },
+  fr: {
+    description: `Contactez Dryhouse : ${address.street}, ${address.postalCode} ${address.city}. Appelez le ${site.phoneDisplay} (Belgique) ou le ${site.phoneNlDisplay} (Pays-Bas), ou écrivez à ${site.email} pour un diagnostic d’humidité gratuit.`,
+    h1: 'Asséchons ensemble votre maison.',
+    intro: 'Appelez-nous, écrivez-nous ou passez nous voir. Ou demandez directement un diagnostic gratuit.',
+    call: 'Appelez-nous',
+    mail: 'Écrivez-nous',
+    mailNote: 'Nous répondons dans les plus brefs délais.',
+    office: 'Notre bureau',
+    banner: ['Diagnostic gratuit', 'Nous passons chez vous, mesurons et cherchons la cause. Sans engagement.', 'Demander un diagnostic'],
+    company: 'Société',
+    number: 'Numéro d’entreprise',
+    follow: 'Suivez-nous',
+  },
+}[lang];
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`Dryhouse, ${address.street}, ${address.postalCode} ${address.city}`)}`;
+---
+
+<Base title="Contact" description={copy.description} alternate={paths.contact[other(lang)]} jsonLd={[breadcrumbSchema(crumbs)]}>
+  <section class="bg-sand-100 pt-28 pb-24 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <h1 class="mt-8 max-w-4xl text-display font-semibold">{copy.h1}</h1>
+      <p class="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">{copy.intro}</p>
+
+      <div class="mt-14 grid gap-4 md:grid-cols-3">
+        <div class="card p-7">
+          <Icon name="phone" class="size-7 text-tide-500" />
+          <p class="mt-6 text-sm font-semibold text-ink/50">{copy.call}</p>
+          {Object.values(countries).map((c) => (
+            <p class="mt-1">
+              <a href={`tel:${c.phone}`} class="font-display text-2xl font-semibold tracking-tight hover:text-tide-500">{c.phoneDisplay}</a>
+              <span class="ml-1 text-sm text-ink/65">{t.countries[c.code]}</span>
+            </p>
+          ))}
+        </div>
+        <a href={`mailto:${site.email}`} class="card group p-7 transition-shadow hover:shadow-xl">
+          <Icon name="mail" class="size-7 text-tide-500" />
+          <p class="mt-6 text-sm font-semibold text-ink/50">{copy.mail}</p>
+          <p class="mt-1 font-display text-2xl font-semibold tracking-tight">{site.email}</p>
+          <p class="mt-2 text-sm text-ink/60">{copy.mailNote}</p>
+        </a>
+        <a href={mapsUrl} target="_blank" rel="noopener" class="card group p-7 transition-shadow hover:shadow-xl">
+          <Icon name="pin" class="size-7 text-tide-500" />
+          <p class="mt-6 text-sm font-semibold text-ink/50">{copy.office}</p>
+          <p class="mt-1 font-display text-2xl font-semibold tracking-tight">{address.street}</p>
+          <p class="mt-2 text-sm text-ink/60">{address.postalCode} {address.city} · {t.officeHours}</p>
+        </a>
+      </div>
+
+      <div class="mt-4 flex flex-col items-start justify-between gap-6 rounded-3xl bg-tide-800 p-8 text-white sm:flex-row sm:items-center sm:p-10">
+        <div>
+          <p class="font-display text-3xl font-semibold tracking-tight">{copy.banner[0]}</p>
+          <p class="mt-2 text-white/70">{copy.banner[1]}</p>
+        </div>
+        <a href={paths.offerte[lang]} class="btn-light shrink-0">{copy.banner[2]} <Icon name="arrow" class="size-4" /></a>
+      </div>
+
+      <dl class="mt-12 grid gap-6 text-sm text-ink/60 sm:grid-cols-3">
+        <div><dt class="font-semibold text-ink">{copy.company}</dt><dd class="mt-1">{site.legalName}</dd></div>
+        <div><dt class="font-semibold text-ink">{copy.number}</dt><dd class="mt-1">{site.vat}</dd></div>
+        <div><dt class="font-semibold text-ink">{copy.follow}</dt><dd class="mt-1 flex gap-4">{Object.entries(site.social).map(([n, url]) => <a href={url} target="_blank" rel="noopener" class="capitalize hover:text-ink">{n}</a>)}</dd></div>
+      </dl>
+    </div>
+  </section>
+</Base>

@@ -1,35 +1,53 @@
 ---
-import { countries, countryPath, regionPath, regionsIn, regions } from '@/data/regions';
+import { countries, localCountry, localRegion, regionsIn, regions } from '@/data/regions';
+import { langFromUrl } from '@/i18n';
 
-const cities = regions.flatMap((r) => r.cities.slice(0, 3));
+const lang = langFromUrl(Astro.url);
+const cities = regions.flatMap((r) => localRegion(r, lang).cities.slice(0, 3));
+const copy = {
+  nl: {
+    eyebrow: 'Werkgebied',
+    title: 'Vanuit Sint-Niklaas, in België en Nederland.',
+    text: 'Van een rijwoning in Gent tot een herenhuis in Brussel, een dijkwoning in Zeeland of een grachtenpand in Amsterdam: elke streek heeft zijn eigen bouwstijl en zijn eigen vochtproblemen. Wij kennen ze.',
+  },
+  fr: {
+    eyebrow: 'Zone d’intervention',
+    title: 'Depuis Sint-Niklaas, en Belgique et aux Pays-Bas.',
+    text: 'D’une maison mitoyenne à Gand à une maison de maître à Bruxelles, d’une ferme en Hesbaye à une maison de canal à Amsterdam : chaque région a son style de construction et ses propres problèmes d’humidité. Nous les connaissons.',
+  },
+}[lang];
 ---
 
 <section class="overflow-hidden py-24 sm:py-32">
   <div class="container-x">
     <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-end">
       <div>
-        <p class="eyebrow" data-reveal>Werkgebied</p>
-        <h2 class="mt-4 text-title" data-reveal>Vanuit Sint-Niklaas, in België en Nederland.</h2>
+        <p class="eyebrow" data-reveal>{copy.eyebrow}</p>
+        <h2 class="mt-4 text-title" data-reveal>{copy.title}</h2>
       </div>
-      <p class="max-w-xl text-lg text-ink/65" data-reveal>
-        Van een rijwoning in Gent tot een herenhuis in Brussel, een dijkwoning in Zeeland of een grachtenpand in Amsterdam: elke streek heeft zijn eigen bouwstijl en zijn eigen vochtproblemen. Wij kennen ze.
-      </p>
+      <p class="max-w-xl text-lg text-ink/65" data-reveal>{copy.text}</p>
     </div>
     <div class="mt-12 grid gap-8">
-      {Object.values(countries).map((c) => (
-        <div class="grid gap-4 sm:grid-cols-[8rem_1fr] sm:items-baseline">
-          <a href={countryPath(c)} class="font-display text-xl font-semibold tracking-tight hover:text-tide-500" data-reveal>{c.name}</a>
-          <ul class="flex flex-wrap gap-2.5">
-            {regionsIn(c.code).map((r, i) => (
-              <li data-reveal style={`--reveal-i:${i % 6}`}>
-                <a href={regionPath(r)} class="inline-flex rounded-full bg-white px-5 py-3 font-medium ring-1 ring-ink/8 transition-all hover:bg-tide-500 hover:text-white hover:ring-tide-500">
-                  {r.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {Object.values(countries).map((country) => {
+        const c = localCountry(country, lang);
+        return (
+          <div class="grid gap-4 sm:grid-cols-[8rem_1fr] sm:items-baseline">
+            <a href={c.path} class="font-display text-xl font-semibold tracking-tight hover:text-tide-500" data-reveal>{c.name}</a>
+            <ul class="flex flex-wrap gap-2.5">
+              {regionsIn(c.code).map((r, i) => {
+                const region = localRegion(r, lang);
+                return (
+                  <li data-reveal style={`--reveal-i:${i % 6}`}>
+                    <a href={region.path} class="inline-flex rounded-full bg-white px-5 py-3 font-medium ring-1 ring-ink/8 transition-all hover:bg-tide-500 hover:text-white hover:ring-tide-500">
+                      {region.name}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   </div>
   <div class="mt-16 flex select-none [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]" aria-hidden="true">

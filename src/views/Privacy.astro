@@ -1,0 +1,78 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { site } from '@/data/site';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const { legalName, address, vat, email } = site;
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: lang === 'fr' ? 'Vie privée' : 'Privacy', path: paths.privacy[lang] },
+];
+const mail = `<a href="mailto:${email}">${email}</a>`;
+const copy = {
+  nl: {
+    title: 'Privacyverklaring',
+    description: 'Hoe Dryhouse omgaat met je persoonsgegevens.',
+    updated: 'Laatst bijgewerkt op 27 oktober 2026',
+    body: `
+      <p>${legalName}, ${address.street}, ${address.postalCode} ${address.city}, ondernemingsnummer ${vat} (hierna “Dryhouse”), is verantwoordelijk voor de verwerking van je persoonsgegevens via deze website. We gaan zorgvuldig met je gegevens om en volgen de Algemene Verordening Gegevensbescherming (AVG/GDPR).</p>
+      <h2>Welke gegevens we verwerken</h2>
+      <p>Wanneer je een diagnose of offerte aanvraagt, of een bericht achterlaat via de chat-assistent, verwerken we de gegevens die je zelf invult: je naam, e-mailadres, telefoonnummer, adres, je omschrijving van het probleem en eventuele foto’s die je meestuurt. Bij een chatbericht sturen we ook het gesprek met de assistent mee, zodat we je vraag in context zien.</p>
+      <p>De online vochtcheck werkt volledig in je browser. Je antwoorden worden niet bewaard of naar ons verstuurd.</p>
+      <h2>Waarom we die gegevens gebruiken</h2>
+      <ul>
+        <li>om contact met je op te nemen over je aanvraag en een diagnose in te plannen;</li>
+        <li>om je een offerte te bezorgen en, als je ons de opdracht geeft, de werken uit te voeren.</li>
+      </ul>
+      <p>De rechtsgrond is je vraag om een offerte (precontractuele maatregelen) en je toestemming. We gebruiken je gegevens niet voor reclame en verkopen ze nooit door.</p>
+      <h2>Met wie we gegevens delen</h2>
+      <p>Deze website wordt gehost door Cloudflare. Formulieren en chatberichten worden per e-mail naar ons verstuurd via een e-mailprovider. Die partijen verwerken de gegevens enkel in onze opdracht. Verder delen we je gegevens niet met derden, tenzij de wet ons daartoe verplicht.</p>
+      <h2>Hoe lang we gegevens bewaren</h2>
+      <p>We bewaren je gegevens zolang nodig is om je aanvraag te behandelen. Word je klant, dan bewaren we ze zolang als nodig voor de uitvoering, de garantie en onze wettelijke verplichtingen.</p>
+      <h2>Cookies</h2>
+      <p>Deze website gebruikt geen cookies om je te volgen of voor reclame. Je landkeuze (België of Nederland) en je gesprek met de chat-assistent worden enkel lokaal in je browser bewaard; het gesprek verdwijnt wanneer je het tabblad sluit.</p>
+      <h2>Je rechten</h2>
+      <p>Je hebt het recht om je gegevens in te kijken, te laten verbeteren of te laten wissen, en om je toestemming in te trekken. Stuur daarvoor een e-mail naar ${mail}. Ben je niet tevreden over hoe we met je gegevens omgaan, dan kan je een klacht indienen bij de Gegevensbeschermingsautoriteit (<a href="https://www.gegevensbeschermingsautoriteit.be" rel="noopener">www.gegevensbeschermingsautoriteit.be</a>) of, in Nederland, bij de Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl" rel="noopener">www.autoriteitpersoonsgegevens.nl</a>).</p>
+    `,
+  },
+  fr: {
+    title: 'Déclaration de confidentialité',
+    description: 'Comment Dryhouse traite vos données personnelles.',
+    updated: 'Dernière mise à jour le 27 octobre 2026',
+    body: `
+      <p>${legalName}, ${address.street}, ${address.postalCode} ${address.city}, numéro d’entreprise ${vat} (ci-après « Dryhouse »), est responsable du traitement de vos données personnelles via ce site. Nous traitons vos données avec soin et respectons le Règlement général sur la protection des données (RGPD).</p>
+      <h2>Quelles données nous traitons</h2>
+      <p>Lorsque vous demandez un diagnostic ou un devis, ou laissez un message via l’assistant de chat, nous traitons les données que vous complétez vous-même : votre nom, votre adresse e-mail, votre numéro de téléphone, votre adresse, la description de votre problème et les éventuelles photos jointes. Pour un message via le chat, nous joignons aussi la conversation avec l’assistant, afin de comprendre votre question dans son contexte.</p>
+      <p>Le test d’humidité en ligne fonctionne entièrement dans votre navigateur. Vos réponses ne sont ni enregistrées ni envoyées.</p>
+      <h2>Pourquoi nous utilisons ces données</h2>
+      <ul>
+        <li>pour vous contacter au sujet de votre demande et planifier un diagnostic ;</li>
+        <li>pour vous remettre un devis et, si vous nous confiez la mission, réaliser les travaux.</li>
+      </ul>
+      <p>La base juridique est votre demande de devis (mesures précontractuelles) et votre consentement. Nous n’utilisons pas vos données à des fins publicitaires et ne les vendons jamais.</p>
+      <h2>Avec qui nous partageons ces données</h2>
+      <p>Ce site est hébergé par Cloudflare. Les formulaires et messages du chat nous sont envoyés par e-mail via un fournisseur de messagerie. Ces parties traitent les données uniquement pour notre compte. Nous ne partageons pas vos données avec des tiers, sauf obligation légale.</p>
+      <h2>Combien de temps nous conservons ces données</h2>
+      <p>Nous conservons vos données le temps nécessaire au traitement de votre demande. Si vous devenez client, nous les conservons aussi longtemps que nécessaire pour l’exécution des travaux, la garantie et nos obligations légales.</p>
+      <h2>Cookies</h2>
+      <p>Ce site n’utilise pas de cookies de suivi ni de publicité. Votre choix de pays (Belgique ou Pays-Bas) et votre conversation avec l’assistant de chat sont uniquement conservés localement dans votre navigateur ; la conversation disparaît lorsque vous fermez l’onglet.</p>
+      <h2>Vos droits</h2>
+      <p>Vous avez le droit de consulter, de faire corriger ou de faire effacer vos données, et de retirer votre consentement. Envoyez-nous pour cela un e-mail à ${mail}. Si vous n’êtes pas satisfait de la manière dont nous traitons vos données, vous pouvez introduire une plainte auprès de l’Autorité de protection des données (<a href="https://www.autoriteprotectiondonnees.be" rel="noopener">www.autoriteprotectiondonnees.be</a>) ou, aux Pays-Bas, auprès de l’Autoriteit Persoonsgegevens (<a href="https://www.autoriteitpersoonsgegevens.nl" rel="noopener">www.autoriteitpersoonsgegevens.nl</a>).</p>
+    `,
+  },
+}[lang];
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.privacy[other(lang)]}>
+  <section class="pt-28 pb-24 sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <h1 class="mt-8 text-title font-semibold">{copy.title}</h1>
+      <p class="mt-3 text-sm text-ink/65">{copy.updated}</p>
+      <div class="prose-dh mt-10" set:html={copy.body} />
+    </div>
+  </section>
+</Base>

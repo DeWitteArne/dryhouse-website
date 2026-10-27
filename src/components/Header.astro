@@ -2,15 +2,25 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import PhoneLink from './PhoneLink.astro';
-import { nav } from '@/data/site';
-import { services } from '@/data/services';
+import { localService, services } from '@/data/services';
+import { langFromUrl, other, paths, ui } from '@/i18n';
 
 interface Props {
   tone?: 'light' | 'dark';
+  /** This page in the other language; falls back to that language's homepage. */
+  alternate?: string;
 }
-const { tone = 'dark' } = Astro.props;
+const { tone = 'dark', alternate } = Astro.props;
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
 const path = Astro.url.pathname;
-const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href);
+const home = paths.home[lang];
+const servicesAnchor = lang === 'fr' ? '/fr#diensten' : '/#diensten';
+const items = services.map((s) => localService(s, lang));
+const nav = t.nav.map((n) => ({ label: n.label, href: paths[n.key][lang] }));
+const isActive = (href: string) => path.startsWith(href);
+const switchTo = { lang: other(lang), href: alternate ?? paths.home[other(lang)] };
+const langLabel = { nl: 'Nederlands', fr: 'Français' };
 ---
 
 <header
@@ -19,23 +29,23 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
   class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,transform] duration-500 ease-(--ease-out-expo) data-[scrolled]:bg-sand-50/85 data-[scrolled]:shadow-[0_1px_0_rgb(12_24_34/0.06)] data-[scrolled]:backdrop-blur-xl data-[tone=light]:text-white data-[tone=light]:data-[scrolled]:text-ink data-[tone=dark]:text-ink data-[hidden]:-translate-y-full"
 >
   <div class="container-x flex h-[4.5rem] items-center justify-between gap-6">
-    <a href="/" aria-label="Dryhouse, naar de startpagina" class="relative z-10 shrink-0">
+    <a href={home} aria-label={t.toHome} class="relative z-10 shrink-0">
       <Logo class="h-11 group-data-[menu-open]/header:hidden sm:h-12" />
       <Logo tone="white" class="hidden h-11 group-data-[menu-open]/header:block sm:h-12" />
     </a>
 
-    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+    <nav aria-label={t.mainMenu} class="hidden lg:block">
       <ul class="flex items-center gap-1 text-[0.94rem] font-medium">
         <li class="group/dd relative">
-          <a href="/#diensten" class="flex items-center gap-1 rounded-full px-4 py-2 transition-colors hover:bg-current/8" aria-haspopup="true">
-            Diensten
+          <a href={servicesAnchor} class="flex items-center gap-1 rounded-full px-4 py-2 transition-colors hover:bg-current/8" aria-haspopup="true">
+            {t.services}
             <svg viewBox="0 0 12 12" class="size-3 transition-transform group-hover/dd:rotate-180" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
           </a>
           <div class="invisible absolute top-full left-1/2 w-[38rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-300 ease-(--ease-out-expo) group-focus-within/dd:visible group-focus-within/dd:translate-y-0 group-focus-within/dd:opacity-100 group-hover/dd:visible group-hover/dd:translate-y-0 group-hover/dd:opacity-100">
             <ul class="card grid grid-cols-2 gap-1 p-3 text-ink">
-              {services.map((s) => (
+              {items.map((s) => (
                 <li>
-                  <a href={`/${s.slug}`} class="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-sand-100">
+                  <a href={s.path} class="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-sand-100">
                     <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-tide-50 text-tide-500"><Icon name={s.icon} class="size-5" /></span>
                     <span>
                       <span class="block font-semibold">{s.name}</span>
@@ -47,9 +57,9 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
             </ul>
           </div>
         </li>
-        {nav.slice(1).map((item) => (
+        {nav.map((item) => (
           <li>
-            <a href={item.href} class:list={['rounded-full px-4 py-2 transition-colors hover:bg-current/8', isActive(item.href) && 'bg-current/8']} aria-current={isActive(item.href) ? 'page' : undefined}>
+            <a href={item.href} class:list={['rounded-full px-4 py-2 whitespace-nowrap transition-colors hover:bg-current/8', isActive(item.href) && 'bg-current/8']} aria-current={isActive(item.href) ? 'page' : undefined}>
               {item.label}
             </a>
           </li>
@@ -58,18 +68,21 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
     </nav>
 
     <div class="flex items-center gap-2">
-      <div class="hidden items-center gap-1 xl:flex">
-        <div role="group" aria-label="Kies je land" class="flex rounded-full bg-current/6 p-0.5 text-xs font-semibold">
+      <div class:list={['hidden items-center gap-1', lang === 'fr' ? '2xl:flex' : 'xl:flex']}>
+        <div role="group" aria-label={t.chooseCountry} class="flex rounded-full bg-current/6 p-0.5 text-xs font-semibold">
           {(['be', 'nl'] as const).map((land) => (
-            <button type="button" data-set-land={land} aria-pressed={land === 'be' ? 'true' : 'false'} title={land === 'be' ? 'België' : 'Nederland'} class="rounded-full px-2.5 py-1 uppercase opacity-60 transition aria-pressed:bg-white aria-pressed:text-ink aria-pressed:opacity-100 aria-pressed:shadow-sm">
+            <button type="button" data-set-land={land} aria-pressed={land === 'be' ? 'true' : 'false'} title={t.countries[land]} class="rounded-full px-2.5 py-1 uppercase opacity-60 transition aria-pressed:bg-white aria-pressed:text-ink aria-pressed:opacity-100 aria-pressed:shadow-sm">
               {land}
             </button>
           ))}
         </div>
         <PhoneLink class="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold" />
       </div>
-      <a href="/offerte-aanvragen" class="btn-primary hidden !py-2.5 sm:inline-flex">Gratis diagnose</a>
-      <button id="menu-toggle" type="button" class="relative z-10 grid size-11 place-items-center rounded-full lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu openen">
+      <a href={switchTo.href} hreflang={switchTo.lang} lang={switchTo.lang} title={langLabel[switchTo.lang]} class="relative z-10 grid h-9 min-w-9 place-items-center rounded-full px-2 text-xs font-bold tracking-wide uppercase ring-1 ring-current/20 transition-colors hover:bg-current/8">
+        {switchTo.lang}
+      </a>
+      <a href={paths.offerte[lang]} class="btn-primary hidden !py-2.5 whitespace-nowrap sm:inline-flex">{t.diagnose}</a>
+      <button id="menu-toggle" type="button" data-label-open={t.menuOpen} data-label-close={t.menuClose} class="relative z-10 grid size-11 place-items-center rounded-full lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label={t.menuOpen}>
         <span class="relative block h-3 w-6">
           <span class="absolute inset-x-0 top-0 h-0.5 rounded bg-current transition-transform duration-300 [[aria-expanded=true]_&]:translate-y-[5px] [[aria-expanded=true]_&]:rotate-45"></span>
           <span class="absolute inset-x-0 bottom-0 h-0.5 rounded bg-current transition-transform duration-300 [[aria-expanded=true]_&]:-translate-y-[5px] [[aria-expanded=true]_&]:-rotate-45"></span>
@@ -79,19 +92,19 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
   </div>
 
   <div id="mobile-menu" hidden class="fixed inset-0 overflow-y-auto bg-tide-800 px-5 pt-24 pb-10 text-white lg:hidden">
-    <p class="eyebrow !text-spark">Diensten</p>
+    <p class="eyebrow !text-spark">{t.services}</p>
     <ul class="mt-4 grid gap-1">
-      {services.map((s) => (
-        <li><a href={`/${s.slug}`} class="flex items-center gap-3 py-2 font-display text-2xl tracking-tight"><Icon name={s.icon} class="size-5 text-spark" />{s.name}</a></li>
+      {items.map((s) => (
+        <li><a href={s.path} class="flex items-center gap-3 py-2 font-display text-2xl tracking-tight"><Icon name={s.icon} class="size-5 text-spark" />{s.name}</a></li>
       ))}
     </ul>
     <ul class="mt-8 grid gap-1 border-t border-white/10 pt-6">
-      {nav.slice(1).map((item) => <li><a href={item.href} class="block py-2 font-display text-2xl tracking-tight">{item.label}</a></li>)}
+      {nav.map((item) => <li><a href={item.href} class="block py-2 font-display text-2xl tracking-tight">{item.label}</a></li>)}
     </ul>
-    <a href="/offerte-aanvragen" class="btn-light mt-8 w-full">Gratis diagnose aanvragen</a>
+    <a href={paths.offerte[lang]} class="btn-light mt-8 w-full">{t.requestDiagnose}</a>
     <ul class="mt-6 grid gap-3 text-sm">
-      <li><PhoneLink country="be" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">België</span></li>
-      <li><PhoneLink country="nl" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">Nederland</span></li>
+      <li><PhoneLink country="be" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">{t.countries.be}</span></li>
+      <li><PhoneLink country="nl" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">{t.countries.nl}</span></li>
     </ul>
   </div>
 </header>
@@ -115,7 +128,7 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') !== 'true';
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+    toggle.setAttribute('aria-label', (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '');
     menu.hidden = !open;
     header.style.color = open ? '#fff' : '';
     header.toggleAttribute('data-menu-open', open);

@@ -1,0 +1,182 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import CtaCard from '@/components/CtaCard.astro';
+import Faq from '@/components/Faq.astro';
+import Icon from '@/components/Icon.astro';
+import { localService, serviceBySlug } from '@/data/services';
+import { countries, localCountry, localRegion, regionsIn } from '@/data/regions';
+import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'services'>;
+}
+
+const { entry } = Astro.props;
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const slug = entry.id.replace(/^fr\//, '');
+const base = serviceBySlug(slug)!;
+const meta = localService(base, lang);
+const { Content } = await render(entry);
+const d = entry.data;
+const path = meta.path;
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: meta.name, path },
+];
+const related = d.related.map(serviceBySlug).filter((s) => s !== undefined).map((s) => localService(s, lang));
+const lower = meta.name.toLowerCase();
+const copy = {
+  nl: {
+    eyebrow: 'Dienst',
+    badge: ['Gratis diagnose', 'ter plaatse, vrijblijvend'],
+    signsEyebrow: 'Herken je dit?',
+    signsTitle: `De signalen van ${lower}`,
+    stepsEyebrow: 'Onze aanpak',
+    stepsTitle: `Zo pakken we ${lower} aan`,
+    faqTitle: `Vragen over ${lower}`,
+    related: 'Gerelateerde diensten',
+    areaTitle: `${meta.name} in België en Nederland`,
+    areaText: `We behandelen ${lower} in elke provincie. Bekijk wat we in jouw regio doen:`,
+  },
+  fr: {
+    eyebrow: 'Service',
+    badge: ['Diagnostic gratuit', 'sur place, sans engagement'],
+    signsEyebrow: 'Cela vous dit quelque chose ?',
+    signsTitle: 'Les signes à reconnaître',
+    stepsEyebrow: 'Notre méthode',
+    stepsTitle: 'Notre approche, étape par étape',
+    faqTitle: 'Vos questions',
+    related: 'Services liés',
+    areaTitle: `${meta.name} en Belgique et aux Pays-Bas`,
+    areaText: 'Nous intervenons dans chaque province. Découvrez ce que nous faisons dans votre région :',
+  },
+}[lang];
+---
+
+<Base
+  alternate={localService(base, other(lang)).path}
+  title={d.seoTitle}
+  description={d.description}
+  image={d.image?.src}
+  imageAlt={d.imageAlt}
+  jsonLd={[serviceSchema({ name: meta.name, description: d.description, path }), breadcrumbSchema(crumbs), ...(d.faq.length ? [faqSchema(d.faq)] : [])]}
+>
+  <section class="relative overflow-hidden bg-sand-100 pt-28 pb-16 grain sm:pt-32 lg:pb-24">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <p class="eyebrow mt-8"><Icon name={meta.icon} class="size-4" /> {copy.eyebrow}</p>
+        <h1 class="mt-4 text-[clamp(2.5rem,1.6rem+3.8vw,4.75rem)] leading-[0.98] font-semibold">{d.h1}</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">{d.intro}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={`${paths.offerte[lang]}?probleem=${slug}`} class="btn-primary">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
+          <a href={paths.vochtcheck[lang]} class="btn-ghost">{t.doVochtcheck}</a>
+        </div>
+      </div>
+      {d.image && (
+        <div class="relative">
+          <div class="hero-reveal overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)]">
+            <Image src={d.image} alt={d.imageAlt ?? ''} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 45vw, 100vw" loading="eager" fetchpriority="high" class="aspect-[4/3] w-full object-cover" />
+          </div>
+          <div class="absolute -bottom-6 left-6 flex items-center gap-3 rounded-2xl bg-white px-5 py-4 shadow-xl ring-1 ring-ink/5 sm:left-10">
+            <Icon name="shield" class="size-8 text-tide-500" />
+            <p class="text-sm leading-tight"><span class="block font-display text-lg font-semibold">{copy.badge[0]}</span><span class="text-ink/60">{copy.badge[1]}</span></p>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {d.symptoms.length > 0 && (
+    <section class="py-20 sm:py-24">
+      <div class="container-x">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:items-start">
+          <div>
+            <p class="eyebrow" data-reveal>{copy.signsEyebrow}</p>
+            <h2 class="mt-4 text-[clamp(1.9rem,1.4rem+2vw,3rem)] leading-tight" data-reveal>{copy.signsTitle}</h2>
+          </div>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {d.symptoms.map((s, i) => (
+              <li class="card flex gap-3 p-5" data-reveal style={`--reveal-i:${i}`}>
+                <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-tide-50 text-tide-500"><Icon name="check" class="size-4" /></span>
+                <span class="leading-snug">{s}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="pb-20 sm:pb-28">
+    <div class="container-x grid gap-14 lg:grid-cols-[1fr_22rem]">
+      <article class="prose-dh">
+        <Content />
+      </article>
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <CtaCard />
+      </div>
+    </div>
+  </section>
+
+  {d.steps.length > 0 && (
+    <section class="bg-tide-800 py-24 text-white sm:py-28">
+      <div class="container-x">
+        <p class="eyebrow !text-spark" data-reveal>{copy.stepsEyebrow}</p>
+        <h2 class="mt-4 max-w-3xl text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] leading-tight" data-reveal>{copy.stepsTitle}</h2>
+        <ol class="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {d.steps.map((s, i) => (
+            <li data-reveal style={`--reveal-i:${i}`} class="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+              <span class="font-display text-4xl font-semibold text-spark">0{i + 1}</span>
+              <h3 class="mt-4 text-xl font-semibold">{s.title}</h3>
+              <p class="mt-2 leading-relaxed text-white/70">{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  {d.faq.length > 0 && <Faq items={d.faq} title={copy.faqTitle} />}
+
+  <section class="border-t border-ink/10 py-20">
+    <div class="container-x grid gap-12 lg:grid-cols-2">
+      {related.length > 0 && (
+        <div>
+          <h2 class="text-2xl font-semibold">{copy.related}</h2>
+          <ul class="mt-6 grid gap-3">
+            {related.map((s) => (
+              <li>
+                <a href={s.path} class="group flex items-center gap-4 rounded-2xl bg-white p-4 ring-1 ring-ink/5 transition-shadow hover:shadow-lg">
+                  <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-tide-50 text-tide-500"><Icon name={s.icon} class="size-5" /></span>
+                  <span class="flex-1"><span class="block font-semibold">{s.name}</span><span class="text-sm text-ink/60">{s.short}</span></span>
+                  <Icon name="arrow" class="size-4 text-tide-500 transition-transform group-hover:translate-x-1" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div>
+        <h2 class="text-2xl font-semibold">{copy.areaTitle}</h2>
+        <p class="mt-3 text-ink/65">{copy.areaText}</p>
+        {Object.values(countries).map((country) => localCountry(country, lang)).map((c) => (
+          <div class="mt-6">
+            <a href={c.path} class="text-sm font-semibold text-tide-500 hover:underline">{c.name}</a>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {regionsIn(c.code).map((r) => localRegion(r, lang)).map((r) => (
+                <li><a href={r.path} class="inline-flex rounded-full bg-sand-100 px-4 py-2 text-sm font-medium transition-colors hover:bg-tide-500 hover:text-white">{r.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

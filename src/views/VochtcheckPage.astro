@@ -1,0 +1,84 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Faq from '@/components/Faq.astro';
+import Vochtcheck from '@/components/react/Vochtcheck';
+import { localService, services } from '@/data/services';
+import { breadcrumbSchema, faqSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const types = services.filter((s) => s.group === 'vocht').map((s) => localService(s, lang));
+const copy = {
+  nl: {
+    crumb: 'Vochtcheck',
+    title: 'Online vochtcheck: welk vochtprobleem heb ik?',
+    description: 'Vochtvlekken, schimmel of een zoutrand? Beantwoord 5 vragen en ontdek in één minuut welk vochtprobleem je waarschijnlijk hebt en wat eraan te doen is.',
+    eyebrow: 'Gratis & anoniem',
+    h1: 'Welk vocht­probleem heb je?',
+    intro: 'Vijf korte vragen, één minuut. Je krijgt meteen een inschatting van het probleem en wat je eraan kan doen.',
+    typesTitle: 'De vier meest voorkomende vochtproblemen',
+    readMore: 'Lees meer →',
+    faqTitle: 'Over de vochtcheck',
+    faq: [
+      { q: 'Hoe betrouwbaar is de online vochtcheck?', a: 'De vochtcheck geeft een eerste inschatting op basis van de signalen die je ziet. Vochtproblemen komen vaak samen voor en lijken op elkaar, dus alleen een meting ter plaatse geeft zekerheid. Die diagnose is bij Dryhouse gratis.' },
+      { q: 'Worden mijn antwoorden bewaard?', a: 'Nee. De vochtcheck werkt volledig in je browser. We slaan je antwoorden niet op en vragen geen persoonsgegevens.' },
+      { q: 'Wat is het verschil tussen opstijgend vocht en condensatie?', a: 'Opstijgend vocht komt uit de grond en zit onderaan de muur, het hele jaar door, vaak met een witte zoutrand. Condensatie komt uit de lucht in huis en zie je aan beslagen ramen en schimmel in koude hoeken, vooral in de winter.' },
+    ],
+  },
+  fr: {
+    crumb: 'Test d’humidité',
+    title: 'Test d’humidité en ligne : quel problème d’humidité avez-vous ?',
+    description: 'Taches d’humidité, moisissures ou salpêtre ? Répondez à 5 questions et découvrez en une minute quel problème d’humidité vous avez probablement et comment le traiter.',
+    eyebrow: 'Gratuit et anonyme',
+    h1: 'Quel problème d’humidité avez-vous ?',
+    intro: 'Cinq questions courtes, une minute. Vous obtenez immédiatement une estimation du problème et des solutions possibles.',
+    typesTitle: 'Les quatre problèmes d’humidité les plus fréquents',
+    readMore: 'En savoir plus →',
+    faqTitle: 'À propos du test',
+    faq: [
+      { q: 'Le test d’humidité en ligne est-il fiable ?', a: 'Le test donne une première estimation basée sur les signes que vous observez. Les problèmes d’humidité se ressemblent et vont souvent de pair : seule une mesure sur place donne une certitude. Chez Dryhouse, ce diagnostic est gratuit.' },
+      { q: 'Mes réponses sont-elles enregistrées ?', a: 'Non. Le test fonctionne entièrement dans votre navigateur. Nous n’enregistrons pas vos réponses et ne demandons aucune donnée personnelle.' },
+      { q: 'Quelle est la différence entre l’humidité ascensionnelle et la condensation ?', a: 'L’humidité ascensionnelle vient du sol et se situe en bas du mur, toute l’année, souvent avec une auréole blanche de salpêtre. La condensation vient de l’air intérieur et se reconnaît aux vitres embuées et aux moisissures dans les coins froids, surtout en hiver.' },
+    ],
+  },
+}[lang];
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: copy.crumb, path: paths.vochtcheck[lang] },
+];
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.vochtcheck[other(lang)]} jsonLd={[breadcrumbSchema(crumbs), faqSchema(copy.faq)]}>
+  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.7fr] lg:items-start">
+        <div class="lg:sticky lg:top-28">
+          <p class="eyebrow">{copy.eyebrow}</p>
+          <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.75rem)] leading-[1] font-semibold">{copy.h1}</h1>
+          <p class="mt-6 text-lg leading-relaxed text-ink/70">{copy.intro}</p>
+        </div>
+        <Vochtcheck client:load lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24">
+    <div class="container-x">
+      <h2 class="max-w-3xl text-title">{copy.typesTitle}</h2>
+      <div class="mt-12 grid gap-4 md:grid-cols-2">
+        {types.map((s) => (
+          <a href={s.path} class="card group p-7 transition-shadow hover:shadow-xl" data-reveal>
+            <h3 class="text-2xl font-semibold">{s.name}</h3>
+            <p class="mt-2 text-ink/65">{s.short}</p>
+            <span class="mt-4 inline-block font-semibold text-tide-500">{copy.readMore}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={copy.faq} title={copy.faqTitle} />
+</Base>

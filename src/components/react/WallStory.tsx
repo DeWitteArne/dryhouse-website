@@ -20,19 +20,45 @@ import {
  * Reduced motion: the finished, dry state, no movement.
  */
 
-const STEPS = [
-  { title: 'Vocht trekt op uit de grond', body: 'Grondwater kruipt via de poriën van baksteen en voegen omhoog. Zoutkringen, bladderende verf en een muffe geur volgen.' },
-  { title: 'We injecteren een vochtscherm', body: 'Net boven de vloer boren we een rij gaatjes en injecteren een waterafstotende crème die een ondoordringbare barrière vormt.' },
-  { title: 'Je muur droogt uit', body: 'Boven de barrière kan geen nieuw vocht meer omhoog. De muur droogt, en daarna werken we hem strak af.' },
-  { title: '30 jaar garantie', body: 'We staan achter ons werk: op de behandeling tegen opstijgend vocht krijg je 30 jaar garantie.' },
-];
+const TEXT = {
+  nl: {
+    steps: [
+      { title: 'Vocht trekt op uit de grond', body: 'Grondwater kruipt via de poriën van baksteen en voegen omhoog. Zoutkringen, bladderende verf en een muffe geur volgen.' },
+      { title: 'We injecteren een vochtscherm', body: 'Net boven de vloer boren we een rij gaatjes en injecteren een waterafstotende crème die een ondoordringbare barrière vormt.' },
+      { title: 'Je muur droogt uit', body: 'Boven de barrière kan geen nieuw vocht meer omhoog. De muur droogt, en daarna werken we hem strak af.' },
+      { title: '30 jaar garantie', body: 'We staan achter ons werk: op de behandeling tegen opstijgend vocht krijg je 30 jaar garantie.' },
+    ],
+    section: 'Zo maakt Dryhouse je muur droog',
+    scene: 'Doorsnede van een binnenmuur waarin opstijgend vocht wordt behandeld met een injectie',
+    meter: 'Vochtmeting muur',
+    status: ['Kritiek', 'Droogt op', 'Droog'],
+    seal: ['jaar', 'garantie'],
+    scroll: 'Scroll en zie hoe we je muur droog maken',
+  },
+  fr: {
+    steps: [
+      { title: 'L’humidité remonte du sol', body: 'L’eau du sol monte par les pores des briques et des joints. Auréoles de salpêtre, peinture qui cloque et odeur de moisi suivent.' },
+      { title: 'Nous injectons une barrière', body: 'Juste au-dessus du sol, nous forons une rangée de trous et injectons une crème hydrofuge qui forme une barrière étanche.' },
+      { title: 'Votre mur sèche', body: 'Au-dessus de la barrière, l’humidité ne peut plus remonter. Le mur sèche, puis nous le refaisons proprement.' },
+      { title: '30 ans de garantie', body: 'Nous assumons notre travail : le traitement contre l’humidité ascensionnelle est garanti 30 ans.' },
+    ],
+    section: 'Comment Dryhouse assèche votre mur',
+    scene: 'Coupe d’un mur intérieur traité contre l’humidité ascensionnelle par injection',
+    meter: 'Mesure d’humidité du mur',
+    status: ['Critique', 'Sèche', 'Sec'],
+    seal: ['ans de', 'garantie'],
+    scroll: 'Faites défiler pour voir comment nous asséchons votre mur',
+  },
+};
+type Text = (typeof TEXT)['nl'];
 
 const FLOOR = 440;
 const WET_TOP = 190;
 const BARRIER_Y = 405;
 const HOLES = [28, 85, 142, 199, 256, 313, 370];
 
-export default function WallStory({ children }: { children: ReactNode }) {
+export default function WallStory({ children, lang = 'nl' }: { children: ReactNode; lang?: 'nl' | 'fr' }) {
+  const t = TEXT[lang];
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [pinned, setPinned] = useState(true);
@@ -60,18 +86,19 @@ export default function WallStory({ children }: { children: ReactNode }) {
   const progress = reduce ? finished : pinned ? scrollSmooth : loop;
 
   return (
-    <section ref={sectionRef} className="relative bg-sand-100 grain lg:h-[260vh]" aria-label="Zo maakt Dryhouse je muur droog">
+    <section ref={sectionRef} className="relative bg-sand-100 grain lg:h-[260vh]" aria-label={t.section}>
       <div className="lg:sticky lg:top-0 lg:flex lg:h-dvh lg:items-center lg:pt-16">
         <div className="container-x grid items-center gap-10 pt-28 pb-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-0">
           <div>{children}</div>
-          <Scene progress={progress} pinned={pinned && !reduce} />
+          <Scene progress={progress} pinned={pinned && !reduce} t={t} />
         </div>
       </div>
     </section>
   );
 }
 
-function Scene({ progress, pinned }: { progress: MotionValue<number>; pinned: boolean }) {
+function Scene({ progress, pinned, t }: { progress: MotionValue<number>; pinned: boolean; t: Text }) {
+  const STEPS = t.steps;
   // The wall starts wet (also in the server-rendered HTML), so the problem is visible before any JS runs.
   const rise = useMotionValue(1);
 
@@ -104,12 +131,12 @@ function Scene({ progress, pinned }: { progress: MotionValue<number>; pinned: bo
     setStep(v < 0.14 ? 0 : v < 0.48 ? 1 : v < 0.82 ? 2 : 3);
   }, [moisture, progress]);
 
-  const status = reading > 10 ? { label: 'Kritiek', cls: 'bg-amber-100 text-amber-800' } : reading > 4 ? { label: 'Droogt op', cls: 'bg-tide-50 text-tide-600' } : { label: 'Droog', cls: 'bg-emerald-50 text-emerald-700' };
+  const status = reading > 10 ? { label: t.status[0], cls: 'bg-amber-100 text-amber-800' } : reading > 4 ? { label: t.status[1], cls: 'bg-tide-50 text-tide-600' } : { label: t.status[2], cls: 'bg-emerald-50 text-emerald-700' };
 
   return (
     <div className="relative mx-auto w-full max-w-[34rem]">
       <div className="relative aspect-[4/5] max-h-[calc(100dvh-16rem)] w-full overflow-hidden rounded-[2rem] bg-sand-200 shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)] ring-1 ring-ink/5">
-        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 size-full" role="img" aria-label="Doorsnede van een binnenmuur waarin opstijgend vocht wordt behandeld met een injectie">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 size-full" role="img" aria-label={t.scene}>
           <defs>
             <pattern id="bricks" width="56" height="26" patternUnits="userSpaceOnUse">
               <rect width="56" height="26" fill="#b4643f" />
@@ -195,7 +222,7 @@ function Scene({ progress, pinned }: { progress: MotionValue<number>; pinned: bo
 
         {/* Moisture meter */}
         <div className="absolute top-4 left-4 rounded-2xl bg-white/90 p-3.5 pr-5 shadow-lg ring-1 ring-ink/5 backdrop-blur sm:top-5 sm:left-5">
-          <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-ink/50 uppercase">Vochtmeting muur</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-ink/50 uppercase">{t.meter}</p>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="font-display text-3xl font-semibold tabular-nums tracking-tight text-ink" aria-live="off">
               {reading.toLocaleString('nl-BE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
@@ -215,7 +242,7 @@ function Scene({ progress, pinned }: { progress: MotionValue<number>; pinned: bo
         >
           <span>
             <span className="block font-display text-4xl leading-none font-bold">30</span>
-            <span className="block text-[0.65rem] font-semibold tracking-[0.14em] uppercase">jaar<br />garantie</span>
+            <span className="block text-[0.65rem] font-semibold tracking-[0.14em] uppercase">{t.seal[0]}<br />{t.seal[1]}</span>
           </span>
         </motion.div>
       </div>
@@ -244,7 +271,7 @@ function Scene({ progress, pinned }: { progress: MotionValue<number>; pinned: bo
           <span className="relative block h-6 w-4 rounded-full border border-current">
             <span className="absolute top-1 left-1/2 h-1.5 w-0.5 -translate-x-1/2 animate-bounce rounded bg-current" />
           </span>
-          Scroll en zie hoe we je muur droog maken
+          {t.scroll}
         </p>
       )}
       {/* Steps as text for screen readers and search engines */}

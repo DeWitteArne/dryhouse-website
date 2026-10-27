@@ -1,6 +1,10 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { services } from '@/data/services';
+import { localService, services } from '@/data/services';
+import { paths } from '@/i18n';
+
+// One 404 page for both languages (Cloudflare serves it for every unknown URL).
+const nl = services.map((s) => localService(s, 'nl'));
 ---
 
 <Base title="Pagina niet gevonden" description="Deze pagina bestaat niet (meer)." noindex>
@@ -10,9 +14,12 @@ import { services } from '@/data/services';
       <h1 class="-mt-6 text-title font-semibold">Deze pagina is opgedroogd.</h1>
       <p class="mt-5 max-w-xl text-lg text-ink/70">De pagina die je zoekt bestaat niet (meer). Misschien vind je hier wat je nodig hebt:</p>
       <ul class="mt-8 flex flex-wrap gap-2">
-        {services.map((s) => <li><a href={`/${s.slug}`} class="inline-flex rounded-full bg-white px-4 py-2 font-medium ring-1 ring-ink/8 hover:bg-tide-500 hover:text-white">{s.name}</a></li>)}
+        {nl.map((s) => <li><a href={s.path} class="inline-flex rounded-full bg-white px-4 py-2 font-medium ring-1 ring-ink/8 hover:bg-tide-500 hover:text-white">{s.name}</a></li>)}
       </ul>
-      <a href="/" class="btn-primary mt-10">Naar de startpagina</a>
+      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a href={paths.home.nl} class="btn-primary">Naar de startpagina</a>
+        <p lang="fr" class="text-ink/70">Page introuvable. <a href={paths.home.fr} class="font-semibold text-tide-500 underline underline-offset-4">Vers la page d’accueil en français</a></p>
+      </div>
     </div>
   </section>
 </Base>

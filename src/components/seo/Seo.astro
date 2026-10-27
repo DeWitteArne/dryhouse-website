@@ -1,5 +1,6 @@
 ---
 import { site } from '@/data/site';
+import { langFromUrl } from '@/i18n';
 
 export interface Props {
   title: string;
@@ -11,6 +12,8 @@ export interface Props {
   modifiedTime?: Date;
   noindex?: boolean;
   jsonLd?: Record<string, unknown>[];
+  /** The same page in the other language (path), if it exists. */
+  alternate?: string;
 }
 
 const {
@@ -23,7 +26,9 @@ const {
   modifiedTime,
   noindex = false,
   jsonLd = [],
+  alternate,
 } = Astro.props;
+const lang = langFromUrl(Astro.url);
 
 // Preview/POC hosts (*.pages.dev) get `X-Robots-Tag: noindex` from public/_headers,
 // so the live domain is indexable by default and nothing needs flipping at launch.
@@ -39,14 +44,22 @@ const fullTitle = title.includes('Dryhouse') ? title : `${title} | Dryhouse`;
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large, max-snippet:-1' : 'noindex, nofollow'} />
-<link rel="alternate" hreflang="nl-BE" href={canonical} />
-<link rel="alternate" hreflang="nl-NL" href={canonical} />
-<link rel="alternate" hreflang="x-default" href={canonical} />
+{
+  // Dutch serves Belgium and the Netherlands; French is for every French speaker.
+  [
+    ['nl-BE', lang === 'nl' ? canonical : alternate],
+    ['nl-NL', lang === 'nl' ? canonical : alternate],
+    ['fr', lang === 'fr' ? canonical : alternate],
+    ['x-default', lang === 'nl' ? canonical : alternate],
+  ]
+    .filter(([, href]) => href)
+    .map(([hreflang, href]) => <link rel="alternate" hreflang={hreflang} href={new URL(href!, site.url).href} />)
+}
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta property="og:type" content={type} />
-<meta property="og:locale" content="nl_BE" />
-<meta property="og:locale:alternate" content="nl_NL" />
+<meta property="og:locale" content={lang === 'fr' ? 'fr_BE' : 'nl_BE'} />
+{(lang === 'fr' ? ['nl_BE', 'nl_NL'] : alternate ? ['nl_NL', 'fr_BE'] : ['nl_NL']).map((l) => <meta property="og:locale:alternate" content={l} />)}
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
