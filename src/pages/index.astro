@@ -1,0 +1,65 @@
+---
+import Base from '@/layouts/Base.astro';
+import WallStory from '@/components/react/WallStory';
+import Services from '@/components/home/Services.astro';
+import Process from '@/components/home/Process.astro';
+import VochtcheckTeaser from '@/components/home/VochtcheckTeaser.astro';
+import Regions from '@/components/home/Regions.astro';
+import Faq from '@/components/Faq.astro';
+import PostCard from '@/components/PostCard.astro';
+import Icon from '@/components/Icon.astro';
+import { homeFaq } from '@/data/faq';
+import { faqSchema } from '@/lib/schema';
+import { getPosts } from '@/lib/blog';
+
+const posts = (await getPosts()).filter((p) => p.data.category === 'advies').slice(0, 3);
+---
+
+<Base
+  title="Vochtbestrijding met 30 jaar garantie | Dryhouse"
+  description="Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder? Dryhouse vindt de oorzaak en lost het op, met gratis diagnose en 30 jaar garantie. In heel België."
+  jsonLd={[faqSchema(homeFaq)]}
+>
+  <WallStory client:idle>
+    <p class="eyebrow">Vochtbestrijding in heel België</p>
+    <h1 class="mt-5 text-display font-semibold">
+      Wij maken je huis <span class="relative whitespace-nowrap text-tide-500">droog<svg class="absolute -bottom-[0.06em] left-0 h-[0.14em] w-full" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 120-8 196-3" fill="none" stroke="#00c0ff" stroke-width="4" stroke-linecap="round" /></svg></span>. Gegarandeerd.
+    </h1>
+    <p class="mt-7 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">
+      Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder: we zoeken de oorzaak en lossen het definitief op. Met <strong class="font-semibold text-ink">30 jaar garantie</strong>.
+    </p>
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a href="/offerte-aanvragen" class="btn-primary">Vraag een gratis diagnose aan <Icon name="arrow" class="size-4" /></a>
+      <a href="/vochtcheck" class="btn-ghost">Doe de online vochtcheck</a>
+    </div>
+    <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm font-medium text-ink/70">
+      <li class="flex items-center gap-2"><Icon name="shield" class="size-5 text-tide-500" />30 jaar garantie</li>
+      <li class="flex items-center gap-2"><Icon name="search" class="size-5 text-tide-500" />Gratis diagnose ter plaatse</li>
+      <li class="flex items-center gap-2"><Icon name="pin" class="size-5 text-tide-500" />Heel België</li>
+    </ul>
+  </WallStory>
+
+  <Services />
+  <Process />
+  <VochtcheckTeaser />
+  <Regions />
+
+  {posts.length > 0 && (
+    <section class="bg-white py-24 sm:py-32">
+      <div class="container-x">
+        <div class="flex items-end justify-between gap-6">
+          <div>
+            <p class="eyebrow" data-reveal>Advies</p>
+            <h2 class="mt-4 text-title" data-reveal>Meer weten over vocht in huis?</h2>
+          </div>
+          <a href="/blog" class="hidden items-center gap-2 font-semibold text-tide-500 sm:inline-flex">Alle artikels <Icon name="arrow" class="size-4" /></a>
+        </div>
+        <div class="mt-12 grid gap-10 md:grid-cols-3">
+          {posts.map((post, i) => <PostCard post={post} index={i} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={homeFaq} />
+</Base>

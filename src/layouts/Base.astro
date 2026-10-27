@@ -1,0 +1,46 @@
+---
+import '@/styles/global.css';
+import geistWoff2 from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import bricolageWoff2 from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import Seo, { type Props as SeoProps } from '@/components/seo/Seo.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { businessSchema, websiteSchema } from '@/lib/schema';
+
+export interface Props extends SeoProps {
+  /** Header sits over a dark hero: start with light text. */
+  headerTone?: 'light' | 'dark';
+}
+
+const { headerTone = 'dark', jsonLd = [], ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a5086" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={bricolageWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistWoff2} as="font" type="font/woff2" crossorigin />
+    <Seo {...seo} jsonLd={[businessSchema(), websiteSchema(), ...jsonLd]} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body class="min-h-dvh overflow-x-clip">
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2">
+      Naar de inhoud
+    </a>
+    <Header tone={headerTone} />
+    <main id="inhoud">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initReveal } from '@/lib/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

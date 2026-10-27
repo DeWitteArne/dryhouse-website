@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import PostCard from '@/components/PostCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import { getPosts, postUrl, formatDate } from '@/lib/blog';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const all = await getPosts();
+const posts = all.filter((p) => p.data.category === 'advies');
+const jobs = all.filter((p) => p.data.category === 'vacature');
+const [featured, ...rest] = posts;
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog' },
+];
+---
+
+<Base
+  title="Blog: advies over vocht in huis"
+  description="Praktisch advies over opstijgend vocht, schimmel, condensatie, natte kelders en premies. Door de vochtspecialisten van Dryhouse."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <section class="bg-sand-100 pt-28 pb-16 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <h1 class="mt-8 max-w-4xl text-display font-semibold">Alles over een droog en gezond huis.</h1>
+      <p class="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">Herkennen, voorkomen en oplossen: praktisch advies van onze vochtspecialisten.</p>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="pt-16">
+      <div class="container-x">
+        <article class="group relative grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+          <div class="aspect-[16/10] overflow-hidden rounded-[2rem] bg-sand-200">
+            {featured.data.heroImage && <Image src={featured.data.heroImage} alt={featured.data.heroAlt ?? ''} widths={[600, 900, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" class="size-full object-cover transition-transform duration-700 ease-(--ease-out-expo) group-hover:scale-105" />}
+          </div>
+          <div>
+            <p class="eyebrow">Nieuwste artikel</p>
+            <h2 class="mt-4 text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-tight font-semibold">
+              <a href={postUrl(featured)} class="after:absolute after:inset-0">{featured.data.title}</a>
+            </h2>
+            <p class="mt-4 text-lg text-ink/65">{featured.data.description}</p>
+            <p class="mt-6 inline-flex items-center gap-2 font-semibold text-tide-500">Lees het artikel <Icon name="arrow" class="size-4 transition-transform group-hover:translate-x-1" /></p>
+            <time datetime={featured.data.pubDate.toISOString()} class="mt-6 block text-sm text-ink/50">{formatDate(featured.data.pubDate)}</time>
+          </div>
+        </article>
+      </div>
+    </section>
+  )}
+
+  <section class="py-20 sm:py-24">
+    <div class="container-x grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+      {rest.map((post, i) => <PostCard post={post} index={i} />)}
+    </div>
+  </section>
+
+  {jobs.length > 0 && (
+    <section class="border-t border-ink/10 py-20">
+      <div class="container-x">
+        <h2 class="text-3xl font-semibold">Vacatures</h2>
+        <p class="mt-3 text-ink/65">Wil je mee een droog huis bouwen? Bekijk onze openstaande jobs.</p>
+        <ul class="mt-8 grid gap-3 md:grid-cols-2">
+          {jobs.map((job) => (
+            <li>
+              <a href={postUrl(job)} class="group flex items-center justify-between gap-4 rounded-2xl bg-white p-5 ring-1 ring-ink/5 transition-shadow hover:shadow-lg">
+                <span class="font-semibold">{job.data.title}</span>
+                <Icon name="arrow" class="size-4 text-tide-500 transition-transform group-hover:translate-x-1" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</Base>

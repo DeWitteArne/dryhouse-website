@@ -1,0 +1,18 @@
+---
+interface Props {
+  items: { name: string; path: string }[];
+  tone?: 'dark' | 'light';
+}
+const { items, tone = 'dark' } = Astro.props;
+---
+
+<nav aria-label="Kruimelpad" class:list={['text-sm', tone === 'light' ? 'text-white/60' : 'text-ink/50']}>
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-1.5">
+        {i > 0 && <span aria-hidden="true">/</span>}
+        {i < items.length - 1 ? <a href={item.path} class="hover:underline">{item.name}</a> : <span aria-current="page" class={tone === 'light' ? 'text-white' : 'text-ink'}>{item.name}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

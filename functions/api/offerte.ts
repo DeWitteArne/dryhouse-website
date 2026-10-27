@@ -1,0 +1,91 @@
+/**
+ * Cloudflare Pages Function: POST /api/offerte
+ * Validates the quote request and emails it to Dryhouse through Resend.
+ *
+ * Env (Cloudflare dashboard → Settings → Variables and Secrets):
+ *   RESEND_API_KEY  secret
+ *   OFFERTE_TO      recipient, default info@dryhouse.be
+ *   OFFERTE_FROM    verified sender, e.g. "Dryhouse website <website@dryhouse.be>"
+ */
+interface Env {
+  RESEND_API_KEY?: string;
+  OFFERTE_TO?: string;
+  OFFERTE_FROM?: string;
+}
+
+const MAX_FILES = 3;
+const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
+const REQUIRED = ['voornaam', 'familienaam', 'email', 'telefoon', 'straat', 'postcode', 'gemeente', 'omschrijving'] as const;
+
+export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
+  const wantsJson = request.headers.get('Accept')?.includes('application/json');
+  const fail = (status: number, message: string) =>
+    wantsJson ? Response.json({ ok: false, message }, { status }) : Response.redirect(new URL('/offerte-aanvragen?fout=1', request.url).toString(), 303);
+
+  let form: FormData;
+  try {
+    form = await request.formData();
+  } catch {
+    return fail(400, 'Ongeldig formulier');
+  }
+
+  // Bots fill the hidden field; pretend it worked.
+  if (String(form.get('website') ?? '').trim()) return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
+
+  const value = (k: string) => String(form.get(k) ?? '').trim().slice(0, 4000);
+  const missing = REQUIRED.filter((k) => !value(k));
+  const problems = form.getAll('probleem').map(String);
+  if (missing.length || !problems.length || !form.get('akkoord')) return fail(422, 'Vul alle verplichte velden in');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value('email'))) return fail(422, 'Ongeldig e-mailadres');
+
+  if (!env.RESEND_API_KEY) return fail(503, 'E-mailverzending is nog niet ingesteld');
+
+  const files = form.getAll('fotos').filter((f): f is File => f instanceof File && f.size > 0 && f.type.startsWith('image/')).slice(0, MAX_FILES);
+  let total = 0;
+  const attachments = [];
+  for (const file of files) {
+    total += file.size;
+    if (total > MAX_TOTAL_BYTES) break;
+    attachments.push({ filename: file.name, content: toBase64(await file.arrayBuffer()) });
+  }
+
+  const rows: [string, string][] = [
+    ['Probleem', problems.join(', ')],
+    ['Naam', `${value('voornaam')} ${value('familienaam')}`],
+    ['E-mail', value('email')],
+    ['Telefoon', value('telefoon')],
+    ['Adres', `${value('straat')}, ${value('postcode')} ${value('gemeente')} (${value('land') || 'België'})`],
+    ['Omschrijving', value('omschrijving')],
+  ];
+  const html = `<h2>Nieuwe aanvraag voor een vochtdiagnose</h2><table cellpadding="6">${rows
+    .map(([k, v]) => `<tr><td valign="top"><b>${k}</b></td><td>${escape(v).replace(/\n/g, '<br>')}</td></tr>`)
+    .join('')}</table>`;
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: env.OFFERTE_FROM ?? 'Dryhouse website <website@dryhouse.be>',
+      to: [env.OFFERTE_TO ?? 'info@dryhouse.be'],
+      reply_to: value('email'),
+      subject: `Diagnose-aanvraag: ${value('voornaam')} ${value('familienaam')}, ${value('gemeente')}`,
+      html,
+      text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
+      attachments,
+    }),
+  });
+  if (!res.ok) return fail(502, 'Verzenden mislukt');
+
+  return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
+};
+
+function escape(s: string) {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+}
+
+function toBase64(buf: ArrayBuffer) {
+  let binary = '';
+  const bytes = new Uint8Array(buf);
+  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(binary);
+}

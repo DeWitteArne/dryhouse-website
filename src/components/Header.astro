@@ -1,0 +1,113 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, site } from '@/data/site';
+import { services } from '@/data/services';
+
+interface Props {
+  tone?: 'light' | 'dark';
+}
+const { tone = 'dark' } = Astro.props;
+const path = Astro.url.pathname;
+const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href);
+---
+
+<header
+  id="site-header"
+  data-tone={tone}
+  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,transform] duration-500 ease-(--ease-out-expo) data-[scrolled]:bg-sand-50/85 data-[scrolled]:shadow-[0_1px_0_rgb(12_24_34/0.06)] data-[scrolled]:backdrop-blur-xl data-[tone=light]:text-white data-[tone=light]:data-[scrolled]:text-ink data-[tone=dark]:text-ink data-[hidden]:-translate-y-full"
+>
+  <div class="container-x flex h-[4.5rem] items-center justify-between gap-6">
+    <a href="/" aria-label="Dryhouse, naar de startpagina" class="relative z-10">
+      <Logo />
+    </a>
+
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-1 text-[0.94rem] font-medium">
+        <li class="group/dd relative">
+          <a href="/#diensten" class="flex items-center gap-1 rounded-full px-4 py-2 transition-colors hover:bg-current/8" aria-haspopup="true">
+            Diensten
+            <svg viewBox="0 0 12 12" class="size-3 transition-transform group-hover/dd:rotate-180" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+          </a>
+          <div class="invisible absolute top-full left-1/2 w-[38rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-300 ease-(--ease-out-expo) group-focus-within/dd:visible group-focus-within/dd:translate-y-0 group-focus-within/dd:opacity-100 group-hover/dd:visible group-hover/dd:translate-y-0 group-hover/dd:opacity-100">
+            <ul class="card grid grid-cols-2 gap-1 p-3 text-ink">
+              {services.map((s) => (
+                <li>
+                  <a href={`/${s.slug}`} class="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-sand-100">
+                    <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-tide-50 text-tide-500"><Icon name={s.icon} class="size-5" /></span>
+                    <span>
+                      <span class="block font-semibold">{s.name}</span>
+                      <span class="line-clamp-2 block text-sm font-normal text-ink/60">{s.short}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </li>
+        {nav.slice(1).map((item) => (
+          <li>
+            <a href={item.href} class:list={['rounded-full px-4 py-2 transition-colors hover:bg-current/8', isActive(item.href) && 'bg-current/8']} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      {site.phone && (
+        <a href={`tel:${site.phone}`} class="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold xl:flex">
+          <Icon name="phone" class="size-4" />{site.phoneDisplay}
+        </a>
+      )}
+      <a href="/offerte-aanvragen" class="btn-primary hidden !py-2.5 sm:inline-flex">Gratis diagnose</a>
+      <button id="menu-toggle" type="button" class="relative z-10 grid size-11 place-items-center rounded-full lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu openen">
+        <span class="relative block h-3 w-6">
+          <span class="absolute inset-x-0 top-0 h-0.5 rounded bg-current transition-transform duration-300 [[aria-expanded=true]_&]:translate-y-[5px] [[aria-expanded=true]_&]:rotate-45"></span>
+          <span class="absolute inset-x-0 bottom-0 h-0.5 rounded bg-current transition-transform duration-300 [[aria-expanded=true]_&]:-translate-y-[5px] [[aria-expanded=true]_&]:-rotate-45"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" hidden class="fixed inset-0 overflow-y-auto bg-tide-800 px-5 pt-24 pb-10 text-white lg:hidden">
+    <p class="eyebrow !text-spark">Diensten</p>
+    <ul class="mt-4 grid gap-1">
+      {services.map((s) => (
+        <li><a href={`/${s.slug}`} class="flex items-center gap-3 py-2 font-display text-2xl tracking-tight"><Icon name={s.icon} class="size-5 text-spark" />{s.name}</a></li>
+      ))}
+    </ul>
+    <ul class="mt-8 grid gap-1 border-t border-white/10 pt-6">
+      {nav.slice(1).map((item) => <li><a href={item.href} class="block py-2 font-display text-2xl tracking-tight">{item.label}</a></li>)}
+    </ul>
+    <a href="/offerte-aanvragen" class="btn-light mt-8 w-full">Gratis diagnose aanvragen</a>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.toggleAttribute('data-scrolled', y > 24);
+    // Hide on scroll down, show on scroll up: more room for the content.
+    header.toggleAttribute('data-hidden', y > 400 && y > lastY && menu.hidden === true);
+    lastY = y;
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+    menu.hidden = !open;
+    header.style.color = open ? '#fff' : '';
+    header.style.setProperty('--logo-accent', open ? 'var(--color-spark)' : '');
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+</script>

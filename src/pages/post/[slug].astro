@@ -1,0 +1,79 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import CtaCard from '@/components/CtaCard.astro';
+import PostCard from '@/components/PostCard.astro';
+import { getPosts, postUrl, formatDate, readingTime } from '@/lib/blog';
+import { articleSchema, breadcrumbSchema } from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+const path = postUrl(post);
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog' },
+  { name: d.title, path },
+];
+const more = posts.filter((p) => p.id !== post.id && p.data.category === d.category).slice(0, 3);
+---
+
+<Base
+  title={d.title}
+  description={d.description}
+  type="article"
+  image={d.heroImage?.src}
+  imageAlt={d.heroAlt}
+  publishedTime={d.pubDate}
+  modifiedTime={d.updatedDate}
+  jsonLd={[articleSchema({ title: d.title, description: d.description, path, image: d.heroImage?.src, published: d.pubDate, modified: d.updatedDate }), breadcrumbSchema(crumbs)]}
+>
+  <article>
+    <header class="bg-sand-100 pt-28 pb-14 grain sm:pt-32">
+      <div class="container-x max-w-4xl">
+        <Breadcrumbs items={crumbs} />
+        <h1 class="mt-8 text-[clamp(2.25rem,1.5rem+3vw,4rem)] leading-[1.02] font-semibold">{d.title}</h1>
+        <p class="mt-6 flex flex-wrap gap-x-4 text-sm text-ink/55">
+          <time datetime={d.pubDate.toISOString()}>{formatDate(d.pubDate)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime(post.body)} min lezen</span>
+        </p>
+      </div>
+    </header>
+
+    {d.heroImage && (
+      <div class="container-x -mb-4 max-w-5xl pt-10">
+        <div class="hero-reveal overflow-hidden rounded-[2rem]">
+          <Image src={d.heroImage} alt={d.heroAlt ?? ''} widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 64rem, 100vw" loading="eager" fetchpriority="high" class="aspect-[16/9] w-full object-cover" />
+        </div>
+      </div>
+    )}
+
+    <div class="container-x grid gap-14 py-16 lg:grid-cols-[1fr_20rem] lg:py-20">
+      <div class="prose-dh mx-auto w-full lg:mx-0">
+        <Content />
+      </div>
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <CtaCard title="Twijfel je over je situatie?" />
+      </div>
+    </div>
+  </article>
+
+  {more.length > 0 && (
+    <section class="border-t border-ink/10 py-20">
+      <div class="container-x">
+        <h2 class="text-3xl font-semibold">Lees ook</h2>
+        <div class="mt-10 grid gap-10 md:grid-cols-3">
+          {more.map((p, i) => <PostCard post={p} index={i} />)}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

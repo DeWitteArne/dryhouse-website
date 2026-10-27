@@ -1,0 +1,29 @@
+---
+const steps = [
+  { title: 'Gratis diagnose', body: 'We komen langs, meten het vocht in je muren en zoeken de echte oorzaak. Geen giswerk.' },
+  { title: 'Heldere offerte', body: 'Je krijgt een offerte met de behandeling, de prijs en de garantie. Zonder kleine lettertjes.' },
+  { title: 'Vakkundige uitvoering', body: 'Onze eigen ploegen voeren de werken uit, netjes en met respect voor je woning.' },
+  { title: 'Droog, met garantie', body: 'Na de behandeling droogt je muur uit. Op het resultaat krijg je tot 30 jaar garantie.' },
+];
+---
+
+<section class="relative overflow-hidden bg-tide-800 py-24 text-white sm:py-32">
+  <div aria-hidden="true" class="pointer-events-none absolute -right-40 -bottom-40 size-[36rem] rounded-full bg-tide-500/40 blur-3xl"></div>
+  <div class="container-x relative">
+    <p class="eyebrow !text-spark" data-reveal>Zo werken we</p>
+    <h2 class="mt-4 max-w-3xl text-title" data-reveal>Van eerste meting tot droge muur, in vier stappen.</h2>
+
+    <ol class="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      {steps.map((s, i) => (
+        <li class="relative" data-reveal style={`--reveal-i:${i}`}>
+          <div class="flex items-center gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-full border border-white/20 font-display text-lg font-semibold text-spark">{i + 1}</span>
+            {i < steps.length - 1 && <span aria-hidden="true" class="hidden h-px flex-1 bg-gradient-to-r from-white/30 to-transparent lg:block"></span>}
+          </div>
+          <h3 class="mt-6 text-2xl font-semibold">{s.title}</h3>
+          <p class="mt-3 leading-relaxed text-white/70">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

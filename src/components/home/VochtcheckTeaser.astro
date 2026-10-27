@@ -1,0 +1,32 @@
+---
+import Icon from '../Icon.astro';
+
+const symptoms = ['Zoutrand onderaan de muur', 'Bladderende verf', 'Muffe geur', 'Beslagen ramen', 'Zwarte schimmelvlekken', 'Natte kelder', 'Vochtvlekken na regen'];
+---
+
+<section class="py-24 sm:py-32">
+  <div class="container-x">
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-sand-100 px-6 py-14 ring-1 ring-ink/5 grain sm:px-12 lg:px-16 lg:py-20">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow" data-reveal>Online vochtcheck</p>
+          <h2 class="mt-4 text-title" data-reveal>Wat is er aan de hand met je muur?</h2>
+          <p class="mt-6 max-w-lg text-lg text-ink/70" data-reveal>
+            Beantwoord vijf korte vragen en ontdek in één minuut welk vochtprobleem je waarschijnlijk hebt, en wat eraan te doen is.
+          </p>
+          <a href="/vochtcheck" class="btn-primary mt-8" data-reveal>Start de vochtcheck <Icon name="arrow" class="size-4" /></a>
+        </div>
+        <div class="relative" aria-hidden="true">
+          <p class="mb-4 text-sm font-semibold text-ink/50">Herken je dit?</p>
+          <ul class="flex flex-wrap gap-2.5">
+            {symptoms.map((s, i) => (
+              <li data-reveal style={`--reveal-i:${i}`} class="rounded-full bg-white px-4 py-2.5 text-[0.95rem] font-medium shadow-sm ring-1 ring-ink/5">
+                {s}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

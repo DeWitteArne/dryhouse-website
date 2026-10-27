@@ -1,0 +1,58 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Faq from '@/components/Faq.astro';
+import Vochtcheck from '@/components/react/Vochtcheck';
+import { services } from '@/data/services';
+import { breadcrumbSchema, faqSchema } from '@/lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Vochtcheck', path: '/vochtcheck' },
+];
+const types = services.filter((s) => s.group === 'vocht');
+const faq = [
+  { q: 'Hoe betrouwbaar is de online vochtcheck?', a: 'De vochtcheck geeft een eerste inschatting op basis van de signalen die je ziet. Vochtproblemen komen vaak samen voor en lijken op elkaar, dus alleen een meting ter plaatse geeft zekerheid. Die diagnose is bij Dryhouse gratis.' },
+  { q: 'Worden mijn antwoorden bewaard?', a: 'Nee. De vochtcheck werkt volledig in je browser. We slaan je antwoorden niet op en vragen geen persoonsgegevens.' },
+  { q: 'Wat is het verschil tussen opstijgend vocht en condensatie?', a: 'Opstijgend vocht komt uit de grond en zit onderaan de muur, het hele jaar door, vaak met een witte zoutrand. Condensatie komt uit de lucht in huis en zie je aan beslagen ramen en schimmel in koude hoeken, vooral in de winter.' },
+];
+---
+
+<Base
+  title="Online vochtcheck: welk vochtprobleem heb ik?"
+  description="Vochtvlekken, schimmel of een zoutrand? Beantwoord 5 vragen en ontdek in één minuut welk vochtprobleem je waarschijnlijk hebt en wat eraan te doen is."
+  jsonLd={[breadcrumbSchema(crumbs), faqSchema(faq)]}
+>
+  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.7fr] lg:items-start">
+        <div class="lg:sticky lg:top-28">
+          <p class="eyebrow">Gratis &amp; anoniem</p>
+          <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.75rem)] leading-[1] font-semibold">Welk vocht&shy;probleem heb je?</h1>
+          <p class="mt-6 text-lg leading-relaxed text-ink/70">
+            Vijf korte vragen, één minuut. Je krijgt meteen een inschatting van het probleem en wat je eraan kan doen.
+          </p>
+        </div>
+        <Vochtcheck client:load />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24">
+    <div class="container-x">
+      <h2 class="max-w-3xl text-title">De vier meest voorkomende vochtproblemen</h2>
+      <div class="mt-12 grid gap-4 md:grid-cols-2">
+        {types.map((s) => (
+          <a href={`/${s.slug}`} class="card group p-7 transition-shadow hover:shadow-xl" data-reveal>
+            <h3 class="text-2xl font-semibold">{s.name}</h3>
+            <p class="mt-2 text-ink/65">{s.short}</p>
+            <span class="mt-4 inline-block font-semibold text-tide-500">Lees meer →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} title="Over de vochtcheck" />
+</Base>

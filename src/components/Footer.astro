@@ -1,0 +1,64 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+import { services } from '@/data/services';
+import { regions } from '@/data/regions';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-tide-900 text-white/70">
+  <div aria-hidden="true" class="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-tide-500/30 blur-3xl"></div>
+  <div class="container-x relative">
+    <div class="flex flex-col gap-8 border-b border-white/10 py-16 md:flex-row md:items-end md:justify-between">
+      <p class="max-w-2xl font-display text-[clamp(2rem,1.2rem+3vw,3.5rem)] leading-[1.02] tracking-tight text-white">
+        Een droog huis, <span class="text-spark">gegarandeerd</span> voor {site.guaranteeYears} jaar.
+      </p>
+      <a href="/offerte-aanvragen" class="btn-light shrink-0">Gratis diagnose aanvragen <Icon name="arrow" class="size-4" /></a>
+    </div>
+
+    <div class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div>
+        <a href="/" class="text-white [--logo-accent:var(--color-spark)]" aria-label="Dryhouse"><Logo /></a>
+        <address class="mt-6 space-y-2 text-sm not-italic">
+          {site.address.street && <p>{site.address.street}<br />{site.address.postalCode} {site.address.city}</p>}
+          {site.phone && <p><a href={`tel:${site.phone}`} class="hover:text-white">{site.phoneDisplay}</a></p>}
+          <p><a href={`mailto:${site.email}`} class="hover:text-white">{site.email}</a></p>
+          {site.vat && <p>BTW {site.vat}</p>}
+        </address>
+      </div>
+      <nav aria-label="Diensten">
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Diensten</p>
+        <ul class="mt-5 space-y-2.5 text-sm">
+          {services.map((s) => <li><a href={`/${s.slug}`} class="hover:text-white">{s.name}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Werkgebied">
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Werkgebied</p>
+        <ul class="mt-5 space-y-2.5 text-sm">
+          {regions.map((r) => <li><a href={`/vochtbestrijding/${r.slug}`} class="hover:text-white">Vochtbestrijding {r.name}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Dryhouse">
+        <p class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Dryhouse</p>
+        <ul class="mt-5 space-y-2.5 text-sm">
+          <li><a href="/vochtcheck" class="hover:text-white">Online vochtcheck</a></li>
+          <li><a href="/offerte-aanvragen" class="hover:text-white">Offerte aanvragen</a></li>
+          <li><a href="/blog" class="hover:text-white">Blog &amp; advies</a></li>
+          <li><a href="/contact" class="hover:text-white">Contact</a></li>
+          <li><a href="/privacy" class="hover:text-white">Privacy</a></li>
+        </ul>
+        {Object.keys(site.social).length > 0 && (
+          <ul class="mt-6 flex gap-3 text-sm">
+            {Object.entries(site.social).map(([name, url]) => <li><a href={url} rel="noopener" target="_blank" class="capitalize hover:text-white">{name}</a></li>)}
+          </ul>
+        )}
+      </nav>
+    </div>
+    <div class="flex flex-col gap-2 border-t border-white/10 py-6 text-xs sm:flex-row sm:justify-between">
+      <p>© {year} {site.legalName}. Alle rechten voorbehouden.</p>
+      <p>Vochtbestrijding in heel België, vanuit {site.address.city}.</p>
+    </div>
+  </div>
+</footer>

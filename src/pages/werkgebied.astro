@@ -1,0 +1,42 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import { regions } from '@/data/regions';
+import { site } from '@/data/site';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Werkgebied', path: '/werkgebied' },
+];
+---
+
+<Base
+  title="Werkgebied: vochtbestrijding in heel België"
+  description="Dryhouse behandelt vochtproblemen in heel België: van Oost- en West-Vlaanderen tot Antwerpen, Limburg, Brabant, Brussel en Wallonië. Gratis diagnose."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <h1 class="mt-8 max-w-4xl text-display font-semibold">Vochtbestrijding in heel België.</h1>
+      <p class="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">
+        Onze thuisbasis ligt in {site.address.city}, maar onze ploegen rijden het hele land rond. Kies je provincie en ontdek welke vochtproblemen we daar het vaakst zien.
+      </p>
+    </div>
+  </section>
+  <section class="py-20">
+    <div class="container-x grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {regions.map((r, i) => (
+        <a href={`/vochtbestrijding/${r.slug}`} class="card group flex flex-col p-7 transition-shadow hover:shadow-xl" data-reveal style={`--reveal-i:${i % 3}`}>
+          <span class="flex items-center justify-between">
+            <span class="font-display text-2xl font-semibold tracking-tight">{r.name}</span>
+            <Icon name="arrow" class="size-5 text-tide-500 transition-transform group-hover:translate-x-1" />
+          </span>
+          <span class="mt-3 text-[0.95rem] text-ink/60">{r.cities.slice(0, 5).join(', ')} en omgeving</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

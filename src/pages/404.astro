@@ -1,0 +1,18 @@
+---
+import Base from '@/layouts/Base.astro';
+import { services } from '@/data/services';
+---
+
+<Base title="Pagina niet gevonden" description="Deze pagina bestaat niet (meer)." noindex>
+  <section class="bg-sand-100 px-5 pt-36 pb-24 grain">
+    <div class="container-x">
+      <p class="font-display text-[clamp(6rem,4rem+10vw,14rem)] leading-none font-bold tracking-tighter text-tide-500/15">404</p>
+      <h1 class="-mt-6 text-title font-semibold">Deze pagina is opgedroogd.</h1>
+      <p class="mt-5 max-w-xl text-lg text-ink/70">De pagina die je zoekt bestaat niet (meer). Misschien vind je hier wat je nodig hebt:</p>
+      <ul class="mt-8 flex flex-wrap gap-2">
+        {services.map((s) => <li><a href={`/${s.slug}`} class="inline-flex rounded-full bg-white px-4 py-2 font-medium ring-1 ring-ink/8 hover:bg-tide-500 hover:text-white">{s.name}</a></li>)}
+      </ul>
+      <a href="/" class="btn-primary mt-10">Naar de startpagina</a>
+    </div>
+  </section>
+</Base>

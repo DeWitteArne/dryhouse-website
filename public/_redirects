@@ -1,0 +1,38 @@
+# Old Wix and WordPress URLs → new pages (301, so rankings and backlinks carry over).
+/home                                   /                         301
+/fullscreen-page                        /                         301
+/popup-blb7o                            /                         301
+/offerte                                /offerte-aanvragen        301
+/nieuws                                 /blog                     301
+/garantie                               /                         301
+/ontmossen                              /gevelwerken              301
+
+/onze-diensten                          /                         301
+/onze-diensten/                         /                         301
+/onze-diensten/opstijgend-vocht         /opstijgend-vocht         301
+/onze-diensten/opstijgend-vocht/*       /opstijgend-vocht         301
+/onze-diensten/doorslaand-vocht         /doorslaand-vocht         301
+/onze-diensten/doorslaand-vocht/*       /doorslaand-vocht         301
+/onze-diensten/kelderdichting           /kelderdichtingen         301
+/onze-diensten/kelderdichting/*         /kelderdichtingen         301
+/onze-diensten/condensatie-en-schimmels /condensatie-schimmels    301
+/onze-diensten/condensatie-en-schimmels/* /condensatie-schimmels  301
+/onze-diensten/gevelrenovatie           /gevelwerken              301
+/onze-diensten/gevelrenovatie/*         /gevelwerken              301
+/onze-diensten/ontmossen                /gevelwerken              301
+/onze-diensten/ontmossen/*              /gevelwerken              301
+/onze-diensten/*                        /                         301
+
+/blog/categories/*                      /blog                     301
+/blog/page/*                            /blog                     301
+/blog-feed.xml                          /rss.xml                  301
+/sitemap.xml                            /sitemap-index.xml        301
+/pages-sitemap.xml                      /sitemap-index.xml        301
+/blog-posts-sitemap.xml                 /sitemap-index.xml        301
+/blog-categories-sitemap.xml            /sitemap-index.xml        301
+
+# Wix post slugs with accents → accent-free slugs.
+/post/5-hardnekkige-mythes-over-vocht-in-huis-en-wat-w%C3%A9l-werkt   /post/5-hardnekkige-mythes-over-vocht-in-huis-en-wat-wel-werkt   301
+/post/5-hardnekkige-mythes-over-vocht-in-huis-en-wat-wél-werkt        /post/5-hardnekkige-mythes-over-vocht-in-huis-en-wat-wel-werkt   301
+/post/maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-h%C3%A9t-moment-is-voor-gevelonderhoud   /post/maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-het-moment-is-voor-gevelonderhoud   301
+/post/maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-hét-moment-is-voor-gevelonderhoud        /post/maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-het-moment-is-voor-gevelonderhoud   301

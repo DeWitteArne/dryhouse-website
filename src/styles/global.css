@@ -1,0 +1,255 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque/opsz.css';
+@import '@fontsource-variable/geist/wght.css';
+
+/*
+ * Dryhouse design tokens.
+ * Blue = water (the brand blues from the current site), sand/stone = a dry, healthy wall.
+ * The whole site plays on that contrast: wet → dry.
+ */
+@theme {
+  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand blues */
+  --color-tide-50: #eef7fc;
+  --color-tide-100: #d6ecf8;
+  --color-tide-200: #a9d6ef;
+  --color-tide-300: #6cb7e0;
+  --color-tide-400: #2f92c9;
+  --color-tide-500: #0a5086; /* Dryhouse blue */
+  --color-tide-600: #08436f;
+  --color-tide-700: #073658;
+  --color-tide-800: #052842;
+  --color-tide-900: #031a2c;
+  --color-indigo-brand: #25318d;
+  --color-spark: #00c0ff; /* accent, use sparingly: "water" highlights */
+
+  /* Dry neutrals */
+  --color-sand-50: #fbf9f5;
+  --color-sand-100: #f5f0e8;
+  --color-sand-200: #ebe3d6;
+  --color-sand-300: #d9cbb5;
+  --color-sand-400: #bfa98a;
+  --color-sand-500: #9c8566;
+  --color-ink: #0c1822;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --text-display: clamp(2.75rem, 1.6rem + 5.2vw, 6.25rem);
+  --text-display--line-height: 0.95;
+  --text-title: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  --text-title--line-height: 1.02;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-sand-50 font-sans text-ink antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-balance;
+    font-variation-settings: 'opsz' 96;
+    letter-spacing: -0.035em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-spark);
+    color: var(--color-tide-900);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-spark);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* Native cross-document page transitions: no JS, progressive enhancement. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: 220ms var(--ease-out-expo) both vt-out;
+}
+::view-transition-new(root) {
+  animation: 420ms var(--ease-out-expo) both vt-in;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+}
+@utility eyebrow {
+  @apply inline-flex items-center gap-2 font-sans text-xs font-semibold tracking-[0.18em] text-tide-500 uppercase;
+  &::before {
+    content: '';
+    @apply h-px w-6 bg-current;
+  }
+}
+@utility btn {
+  @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3.5 text-[0.95rem] font-semibold transition-[transform,background-color,color,box-shadow] duration-300 ease-(--ease-out-expo) active:scale-[0.97];
+}
+@utility btn-primary {
+  @apply btn bg-tide-500 text-white shadow-[0_10px_30px_-12px_rgb(10_80_134/0.7)] hover:bg-tide-600 hover:shadow-[0_18px_40px_-14px_rgb(10_80_134/0.8)];
+}
+@utility btn-ghost {
+  @apply btn bg-white/70 text-tide-700 ring-1 ring-tide-500/15 backdrop-blur hover:bg-white hover:ring-tide-500/30;
+}
+@utility btn-light {
+  @apply btn bg-white text-tide-700 hover:bg-sand-100;
+}
+@utility card {
+  @apply rounded-3xl bg-white shadow-[0_1px_0_rgb(12_24_34/0.04),0_20px_40px_-28px_rgb(12_24_34/0.25)] ring-1 ring-ink/5;
+}
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .48 0 0 0 0 .38 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer components {
+  /* Long-form text (blog posts, service pages, privacy) */
+  .prose-dh {
+    @apply max-w-[68ch] text-[1.075rem] leading-[1.75] text-ink/85;
+  }
+  .prose-dh > * + * {
+    @apply mt-5;
+  }
+  .prose-dh h2 {
+    @apply mt-14 text-[1.9rem] leading-tight text-ink;
+  }
+  .prose-dh h3 {
+    @apply mt-10 text-[1.4rem] leading-snug text-ink;
+  }
+  .prose-dh a {
+    @apply font-medium text-tide-500 underline decoration-tide-500/30 underline-offset-4 transition-colors hover:decoration-tide-500;
+  }
+  .prose-dh ul {
+    @apply list-none space-y-2 pl-0;
+  }
+  .prose-dh ul > li {
+    @apply relative pl-7;
+  }
+  .prose-dh ul > li::before {
+    content: '';
+    @apply absolute top-[0.7em] left-1 size-2 rounded-full bg-spark;
+  }
+  .prose-dh ol {
+    @apply list-decimal space-y-2 pl-6 marker:font-semibold marker:text-tide-500;
+  }
+  .prose-dh strong {
+    @apply font-semibold text-ink;
+  }
+  .prose-dh img {
+    @apply my-10 w-full rounded-2xl;
+  }
+  .prose-dh blockquote {
+    @apply border-l-2 border-spark pl-5 font-display text-xl text-ink italic;
+  }
+}
+
+/* Scroll reveal: elements with [data-reveal] fade up once they enter the viewport. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s var(--ease-out-expo),
+      transform 0.9s var(--ease-out-expo);
+    transition-delay: calc(var(--reveal-i, 0) * 80ms);
+  }
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes capillary {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-190px);
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Smoothly open <details> (FAQ) where supported. */
+details::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition:
+    block-size 0.45s var(--ease-out-expo),
+    content-visibility 0.45s allow-discrete;
+}
+details[open]::details-content {
+  block-size: auto;
+}
+:root {
+  interpolate-size: allow-keywords;
+}
+
+/* Hero image settles in on load. Only a transform, so it never delays the LCP paint. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-reveal img {
+    animation: hero-zoom 2.2s var(--ease-out-expo) both;
+  }
+}
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.15);
+  }
+}

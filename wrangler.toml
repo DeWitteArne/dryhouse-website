@@ -1,0 +1,6 @@
+# Cloudflare Pages-config. Bij deploy via de Git-koppeling in het dashboard is dit
+# bestand de bron voor de instellingen; secrets (RESEND_API_KEY) zet je in het dashboard
+# of met `npx wrangler pages secret put RESEND_API_KEY --project-name dryhouse-website`.
+name = "dryhouse-website"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-09-01"

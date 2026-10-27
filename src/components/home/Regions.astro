@@ -1,0 +1,35 @@
+---
+import { regions } from '@/data/regions';
+
+const cities = regions.flatMap((r) => r.cities.slice(0, 4));
+---
+
+<section class="overflow-hidden py-24 sm:py-32">
+  <div class="container-x">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-end">
+      <div>
+        <p class="eyebrow" data-reveal>Werkgebied</p>
+        <h2 class="mt-4 text-title" data-reveal>Vanuit Sint-Niklaas, in heel België.</h2>
+      </div>
+      <p class="max-w-xl text-lg text-ink/65" data-reveal>
+        Van een rijwoning in Gent tot een herenhuis in Brussel of een hoeve in Haspengouw: elke streek heeft zijn eigen bouwstijl en zijn eigen vochtproblemen. Wij kennen ze.
+      </p>
+    </div>
+    <ul class="mt-12 flex flex-wrap gap-2.5">
+      {regions.map((r, i) => (
+        <li data-reveal style={`--reveal-i:${i % 6}`}>
+          <a href={`/vochtbestrijding/${r.slug}`} class="inline-flex rounded-full bg-white px-5 py-3 font-medium ring-1 ring-ink/8 transition-all hover:bg-tide-500 hover:text-white hover:ring-tide-500">
+            {r.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="mt-16 flex select-none [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]" aria-hidden="true">
+    {[0, 1].map(() => (
+      <ul class="flex shrink-0 animate-[marquee_60s_linear_infinite] items-center gap-10 pr-10 font-display text-[clamp(2.5rem,1.5rem+4vw,5rem)] font-semibold tracking-tight whitespace-nowrap text-transparent [-webkit-text-stroke:1px_rgb(12_24_34/0.22)]">
+        {cities.map((c) => <li>{c}</li>)}
+      </ul>
+    ))}
+  </div>
+</section>

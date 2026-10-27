@@ -1,0 +1,51 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { site } from '@/data/site';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Privacy', path: '/privacy' },
+];
+const updated = '27 oktober 2026';
+---
+
+<Base title="Privacyverklaring" description="Hoe Dryhouse omgaat met je persoonsgegevens.">
+  <section class="pt-28 pb-24 sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <h1 class="mt-8 text-title font-semibold">Privacyverklaring</h1>
+      <p class="mt-3 text-sm text-ink/50">Laatst bijgewerkt op {updated}</p>
+      <div class="prose-dh mt-10">
+        <p>
+          {site.legalName}, {site.address.street}, {site.address.postalCode} {site.address.city}, ondernemingsnummer {site.vat} (hierna “Dryhouse”), is verantwoordelijk voor de verwerking van je persoonsgegevens via deze website. We gaan zorgvuldig met je gegevens om en volgen de Algemene Verordening Gegevensbescherming (AVG/GDPR).
+        </p>
+        <h2>Welke gegevens we verwerken</h2>
+        <p>
+          Wanneer je een diagnose of offerte aanvraagt, verwerken we de gegevens die je zelf invult: je naam, e-mailadres, telefoonnummer, adres, je omschrijving van het probleem en eventuele foto's die je meestuurt.
+        </p>
+        <p>De online vochtcheck werkt volledig in je browser. Je antwoorden worden niet bewaard of naar ons verstuurd.</p>
+        <h2>Waarom we die gegevens gebruiken</h2>
+        <ul>
+          <li>om contact met je op te nemen over je aanvraag en een diagnose in te plannen;</li>
+          <li>om je een offerte te bezorgen en, als je ons de opdracht geeft, de werken uit te voeren.</li>
+        </ul>
+        <p>De rechtsgrond is je vraag om een offerte (precontractuele maatregelen) en je toestemming. We gebruiken je gegevens niet voor reclame en verkopen ze nooit door.</p>
+        <h2>Met wie we gegevens delen</h2>
+        <p>
+          Deze website wordt gehost door Cloudflare. Formulieren worden per e-mail naar ons verstuurd via een e-mailprovider. Die partijen verwerken de gegevens enkel in onze opdracht. Verder delen we je gegevens niet met derden, tenzij de wet ons daartoe verplicht.
+        </p>
+        <h2>Hoe lang we gegevens bewaren</h2>
+        <p>
+          We bewaren je gegevens zolang nodig is om je aanvraag te behandelen. Word je klant, dan bewaren we ze zolang als nodig voor de uitvoering, de garantie en onze wettelijke verplichtingen.
+        </p>
+        <h2>Cookies</h2>
+        <p>Deze website gebruikt geen cookies om je te volgen of voor reclame.</p>
+        <h2>Je rechten</h2>
+        <p>
+          Je hebt het recht om je gegevens in te kijken, te laten verbeteren of te laten wissen, en om je toestemming in te trekken. Stuur daarvoor een e-mail naar <a href={`mailto:${site.email}`}>{site.email}</a>. Ben je niet tevreden over hoe we met je gegevens omgaan, dan kan je een klacht indienen bij de Gegevensbeschermingsautoriteit (<a href="https://www.gegevensbeschermingsautoriteit.be" rel="noopener">www.gegevensbeschermingsautoriteit.be</a>).
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
