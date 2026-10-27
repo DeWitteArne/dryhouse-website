@@ -3,7 +3,7 @@ import * as nl from '@/data/assistant';
 import * as fr from '@/data/assistant.fr';
 import { landFromPostcode, type Option } from '@/data/assistant';
 import { paths, type Lang } from '@/i18n';
-import { currentLand, phoneFor, setLand, type Land } from '@/lib/country';
+import { currentLand, phoneFor, type Land } from '@/lib/country';
 import { site } from '@/data/site';
 
 /**
@@ -198,7 +198,7 @@ export default function Assistant({ lang = 'nl' }: { lang?: Lang }) {
         return setForm(true);
       }
       const chosen = option.action === 'land-nl' ? 'nl' : 'be';
-      setLand(chosen);
+      setLandState(chosen);
       return play(`regio-${chosen}`);
     }
   };
@@ -215,7 +215,7 @@ export default function Assistant({ lang = 'nl' }: { lang?: Lang }) {
     const aboutPlace = node === 'regio' || match === 'regio' || /postcode|woon|wonen/i.test(text) || /^\s*\d{4}/.test(text);
     const chosen = fromPostcode && (fromPostcode === 'nl' || aboutPlace) ? fromPostcode : match === 'regio-nl' ? 'nl' : match === 'regio-be' ? 'be' : null;
     if (chosen) {
-      setLand(chosen);
+      setLandState(chosen);
       return play(`regio-${chosen}`);
     }
     play(match ?? 'onbekendeVraag');

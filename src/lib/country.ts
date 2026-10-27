@@ -2,7 +2,8 @@ import { site } from '@/data/site';
 
 /**
  * Visitor's country (BE/NL): picks which phone number the switchable phone links
- * show. Belgium unless the visitor chose the Netherlands (toggle or assistant).
+ * show. Every visit starts on Belgium; a choice made with the toggle only lasts for
+ * the current visit (sessionStorage).
  */
 export type Land = 'be' | 'nl';
 
@@ -15,7 +16,9 @@ const phones: Record<Land, { tel: string; display: string }> = {
 export function currentLand(): Land {
   let stored: string | null = null;
   try {
-    stored = localStorage.getItem(KEY);
+    // Earlier versions remembered the choice for good; forget that.
+    localStorage.removeItem(KEY);
+    stored = sessionStorage.getItem(KEY);
   } catch {}
   return stored === 'nl' ? 'nl' : 'be';
 }
@@ -36,7 +39,7 @@ function apply(land: Land) {
 
 export function setLand(land: Land) {
   try {
-    localStorage.setItem(KEY, land);
+    sessionStorage.setItem(KEY, land);
   } catch {}
   apply(land);
   window.dispatchEvent(new CustomEvent('dh:land', { detail: land }));
