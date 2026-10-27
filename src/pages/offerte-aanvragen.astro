@@ -38,7 +38,8 @@ const label = 'block text-sm font-semibold';
           </ol>
           <div class="mt-12 rounded-2xl bg-white p-6 ring-1 ring-ink/5">
             <p class="font-semibold">Liever bellen of mailen?</p>
-            <p class="mt-3 flex items-center gap-2"><Icon name="phone" class="size-5 text-tide-500" /><a href={`tel:${site.phone}`} class="font-medium hover:underline">{site.phoneDisplay}</a></p>
+            <p class="mt-3 flex items-center gap-2"><Icon name="phone" class="size-5 text-tide-500" /><a href={`tel:${site.phone}`} class="font-medium hover:underline">{site.phoneDisplay}</a><span class="text-sm text-ink/65">België</span></p>
+            <p class="mt-2 flex items-center gap-2"><Icon name="phone" class="size-5 text-tide-500" /><a href={`tel:${site.phoneNl}`} class="font-medium hover:underline">{site.phoneNlDisplay}</a><span class="text-sm text-ink/65">Nederland</span></p>
             <p class="mt-2 flex items-center gap-2"><Icon name="mail" class="size-5 text-tide-500" /><a href={`mailto:${site.email}`} class="font-medium hover:underline">{site.email}</a></p>
             <p class="mt-2 flex items-center gap-2 text-sm text-ink/60"><Icon name="clock" class="size-5 text-tide-500" />{site.openingHoursDisplay}</p>
           </div>
@@ -46,7 +47,7 @@ const label = 'block text-sm font-semibold';
 
         <form id="offerte" method="post" action="/api/offerte" enctype="multipart/form-data" class="card space-y-6 p-6 sm:p-10">
           <div id="form-error" hidden class="rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200" role="alert">
-            Er ging iets mis bij het versturen. Probeer het opnieuw, of bel ons op <a class="font-semibold underline" href={`tel:${site.phone}`}>{site.phoneDisplay}</a>.
+            Er ging iets mis bij het versturen. Probeer het opnieuw, of bel ons op <a class="font-semibold underline" href={`tel:${site.phone}`}>{site.phoneDisplay}</a> (België) of <a class="font-semibold underline" href={`tel:${site.phoneNl}`}>{site.phoneNlDisplay}</a> (Nederland).
           </div>
           <fieldset>
             <legend class={label}>Waarvoor wil je een diagnose? <span class="text-tide-500">*</span></legend>
@@ -68,7 +69,7 @@ const label = 'block text-sm font-semibold';
           </div>
           <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
             <label class={label}>Straat en nummer <span class="text-tide-500">*</span><input name="straat" required autocomplete="street-address" class={field} /></label>
-            <label class={label}>Postcode <span class="text-tide-500">*</span><input name="postcode" required autocomplete="postal-code" inputmode="numeric" class={field} /></label>
+            <label class={label}>Postcode <span class="text-tide-500">*</span><input name="postcode" required autocomplete="postal-code" class={field} /></label>
           </div>
           <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
             <label class={label}>Gemeente <span class="text-tide-500">*</span><input name="gemeente" required autocomplete="address-level2" class={field} /></label>
@@ -83,7 +84,7 @@ const label = 'block text-sm font-semibold';
             <textarea name="omschrijving" required rows="5" placeholder="Bv. sinds de winter zie ik een witte rand onderaan de muur in de woonkamer…" class={field}></textarea>
           </label>
           <label class={label}>Foto's (optioneel, max. 3)
-            <span class="mt-1 block text-sm font-normal text-ink/55">Een foto helpt ons om je situatie al in te schatten.</span>
+            <span class="mt-1 block text-sm font-normal text-ink/65">Een foto helpt ons om je situatie al in te schatten.</span>
             <input name="fotos" type="file" accept="image/*" multiple class="mt-3 block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-tide-50 file:px-4 file:py-2.5 file:font-semibold file:text-tide-600 hover:file:bg-tide-100" />
           </label>
           <!-- Honeypot: real visitors never see or fill this field. -->
@@ -100,6 +101,8 @@ const label = 'block text-sm font-semibold';
 </Base>
 
 <script>
+  import { currentLand } from '@/lib/country';
+
   const form = document.getElementById('offerte') as HTMLFormElement;
   const error = document.getElementById('form-error')!;
   const params = new URLSearchParams(location.search);
@@ -108,6 +111,7 @@ const label = 'block text-sm font-semibold';
   const pre = params.get('probleem');
   if (pre) form.querySelector<HTMLInputElement>(`input[name="probleem"][value="${CSS.escape(pre)}"]`)?.click();
   if (params.has('fout')) error.hidden = false;
+  if (currentLand() === 'nl') form.querySelector<HTMLSelectElement>('select[name="land"]')!.value = 'Nederland';
 
   form.addEventListener('submit', async (e) => {
     const checked = form.querySelectorAll('input[name="probleem"]:checked').length;

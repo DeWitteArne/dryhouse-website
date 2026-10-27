@@ -1,6 +1,7 @@
 /**
  * Cloudflare Pages Function: POST /api/offerte
- * Validates the quote request and emails it to Dryhouse through Resend.
+ * Validates the quote request (or a message left in the website assistant, bron=chat)
+ * and emails it to Dryhouse through Resend.
  *
  * Env (Cloudflare dashboard → Settings → Variables and Secrets):
  *   RESEND_API_KEY  secret
@@ -16,6 +17,8 @@ interface Env {
 const MAX_FILES = 3;
 const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
 const REQUIRED = ['voornaam', 'familienaam', 'email', 'telefoon', 'straat', 'postcode', 'gemeente', 'omschrijving'] as const;
+const CHAT_REQUIRED = ['naam', 'contact', 'bericht'] as const;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
   const wantsJson = request.headers.get('Accept')?.includes('application/json');
@@ -33,10 +36,12 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (String(form.get('website') ?? '').trim()) return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
 
   const value = (k: string) => String(form.get(k) ?? '').trim().slice(0, 4000);
+  if (value('bron') === 'chat') return chatMessage(value, env, fail);
+
   const missing = REQUIRED.filter((k) => !value(k));
   const problems = form.getAll('probleem').map(String);
   if (missing.length || !problems.length || !form.get('akkoord')) return fail(422, 'Vul alle verplichte velden in');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value('email'))) return fail(422, 'Ongeldig e-mailadres');
+  if (!EMAIL.test(value('email'))) return fail(422, 'Ongeldig e-mailadres');
 
   if (!env.RESEND_API_KEY) return fail(503, 'E-mailverzending is nog niet ingesteld');
 
@@ -57,27 +62,60 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     ['Adres', `${value('straat')}, ${value('postcode')} ${value('gemeente')} (${value('land') || 'België'})`],
     ['Omschrijving', value('omschrijving')],
   ];
-  const html = `<h2>Nieuwe aanvraag voor een vochtdiagnose</h2><table cellpadding="6">${rows
-    .map(([k, v]) => `<tr><td valign="top"><b>${k}</b></td><td>${escape(v).replace(/\n/g, '<br>')}</td></tr>`)
-    .join('')}</table>`;
+  const html = `<h2>Nieuwe aanvraag voor een vochtdiagnose</h2>${table(rows)}`;
 
+  const sent = await sendMail(env, {
+    reply_to: value('email'),
+    subject: `Diagnose-aanvraag: ${value('voornaam')} ${value('familienaam')}, ${value('gemeente')}`,
+    html,
+    text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
+    attachments,
+  });
+  if (!sent) return fail(502, 'Verzenden mislukt');
+
+  return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
+};
+
+/** A message left in the website assistant: name, phone or e-mail, question, plus the conversation. */
+async function chatMessage(value: (k: string) => string, env: Env, fail: (status: number, message: string) => Response) {
+  if (CHAT_REQUIRED.some((k) => !value(k))) return fail(422, 'Vul alle velden in');
+  if (!env.RESEND_API_KEY) return fail(503, 'E-mailverzending is nog niet ingesteld');
+
+  const contact = value('contact');
+  const rows: [string, string][] = [
+    ['Naam', value('naam')],
+    ['Contact', contact],
+    ['Land', value('land')],
+    ['Vraag', value('bericht')],
+    ['Pagina', value('pagina')],
+    ['Gesprek', value('gesprek')],
+  ];
+  const html = `<h2>Nieuw bericht via de website-assistent</h2>${table(rows)}`;
+  const sent = await sendMail(env, {
+    ...(EMAIL.test(contact) && { reply_to: contact }),
+    subject: `Bericht via de website: ${value('naam')}`,
+    html,
+    text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
+  });
+  return sent ? Response.json({ ok: true }) : fail(502, 'Verzenden mislukt');
+}
+
+async function sendMail(env: Env, mail: Record<string, unknown>) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: env.OFFERTE_FROM ?? 'Dryhouse website <website@dryhouse.be>',
       to: [env.OFFERTE_TO ?? 'info@dryhouse.be'],
-      reply_to: value('email'),
-      subject: `Diagnose-aanvraag: ${value('voornaam')} ${value('familienaam')}, ${value('gemeente')}`,
-      html,
-      text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
-      attachments,
+      ...mail,
     }),
   });
-  if (!res.ok) return fail(502, 'Verzenden mislukt');
+  return res.ok;
+}
 
-  return wantsJson ? Response.json({ ok: true }) : Response.redirect(new URL('/bedankt', request.url).toString(), 303);
-};
+function table(rows: [string, string][]) {
+  return `<table cellpadding="6">${rows.map(([k, v]) => `<tr><td valign="top"><b>${k}</b></td><td>${escape(v).replace(/\n/g, '<br>')}</td></tr>`).join('')}</table>`;
+}
 
 function escape(s: string) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);

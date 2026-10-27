@@ -40,7 +40,7 @@ const more = posts.filter((p) => p.id !== post.id && p.data.category === d.categ
       <div class="container-x max-w-4xl">
         <Breadcrumbs items={crumbs} />
         <h1 class="mt-8 text-[clamp(2.25rem,1.5rem+3vw,4rem)] leading-[1.02] font-semibold">{d.title}</h1>
-        <p class="mt-6 flex flex-wrap gap-x-4 text-sm text-ink/55">
+        <p class="mt-6 flex flex-wrap gap-x-4 text-sm text-ink/65">
           <time datetime={d.pubDate.toISOString()}>{formatDate(d.pubDate)}</time>
           <span aria-hidden="true">·</span>
           <span>{readingTime(post.body)} min lezen</span>

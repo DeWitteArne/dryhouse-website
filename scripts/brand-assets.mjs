@@ -1,14 +1,13 @@
 // Generates the static brand images: social share image, touch icon, logo for structured data.
 // Run with `node scripts/brand-assets.mjs` after changing the mark or the tagline.
 import sharp from 'sharp';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 
-const mark = (size, stroke = '#fff') => `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="${size}" height="${size}">
-    <path d="M4 14.5 16 4l12 10.5V27a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V14.5Z" fill="none" stroke="${stroke}" stroke-width="2.2" stroke-linejoin="round"/>
-    <path d="M8 19.5h16" stroke="#00c0ff" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M16 21.8c1.5 1.8 2.2 3 2.2 3.8a2.2 2.2 0 0 1-4.4 0c0-.8.7-2 2.2-3.8Z" fill="#00c0ff"/>
-  </svg>`;
+// The logo files are vectorised from the original Dryhouse artwork (public/images/brand).
+const svgInner = async (file) => (await readFile(`public/images/brand/${file}`, 'utf8')).replace(/^.*?<\/title>/s, '').replace(/<\/svg>\s*$/, '');
+const markPaths = await svgInner('dryhouse-mark.svg'); // viewBox 0 0 103 108
+const logoWhite = await svgInner('dryhouse-logo-white.svg'); // viewBox 0 0 445 108
+const logoColor = await svgInner('dryhouse-logo.svg');
 
 const font = (await readFile('node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2')).toString('base64');
 
@@ -21,20 +20,28 @@ const og = `
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#glow)"/>
-  <g transform="translate(80 72)">${mark(64).replace('<svg', '<svg x="0" y="0"')}</g>
-  <text x="160" y="118" fill="#fff" font-size="44" font-weight="700" letter-spacing="-1.5"><tspan fill="#00c0ff">dry</tspan>house</text>
+  <g transform="translate(80 64) scale(0.6)">${logoWhite}</g>
   <text x="80" y="330" fill="#fff" font-size="92" font-weight="700" letter-spacing="-4">Wij maken je huis</text>
   <text x="80" y="430" fill="#fff" font-size="92" font-weight="700" letter-spacing="-4"><tspan fill="#00c0ff">droog</tspan>. Gegarandeerd.</text>
-  <text x="80" y="540" fill="#ffffffb3" font-size="32" letter-spacing="-0.5">Vochtbestrijding met 30 jaar garantie · Gratis diagnose · Heel België</text>
+  <text x="80" y="540" fill="#ffffffb3" font-size="32" letter-spacing="-0.5">Vochtbestrijding met 30 jaar garantie · Gratis diagnose · België en Nederland</text>
 </svg>`;
 
 await sharp(Buffer.from(og)).jpeg({ quality: 86, mozjpeg: true }).toFile('public/og/default.jpg');
 
-const icon = (size) => `
-<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#0a5086"/>
-  <g transform="translate(5 5) scale(0.6875)">${mark(32)}</g>
+// Mark on a white tile: reads on light and dark browser chrome alike.
+const icon = (size, radius = 0) => `
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="${radius}" fill="#fff"/>
+  <g transform="translate(14.5 12) scale(0.96)">${markPaths}</g>
 </svg>`;
+await writeFile('public/favicon.svg', icon(32, 26).trim().replace(/\n\s*/g, ''));
 await sharp(Buffer.from(icon(180))).png().toFile('public/apple-touch-icon.png');
-await sharp(Buffer.from(icon(512))).png().toFile('public/images/brand/logo.png');
+
+// Logo for structured data (Google: at least 112px, on a plain background).
+const logo = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 500 150">
+  <rect width="500" height="150" fill="#fff"/>
+  <g transform="translate(27.5 21)">${logoColor}</g>
+</svg>`;
+await sharp(Buffer.from(logo)).png().toFile('public/images/brand/logo.png');
 console.log('brand assets written');

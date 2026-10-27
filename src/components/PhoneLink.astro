@@ -1,0 +1,20 @@
+---
+/**
+ * Phone link. Without `country` it follows the visitor's country choice (BE/NL,
+ * see lib/country.ts); the static HTML shows the Belgian number.
+ */
+import Icon from './Icon.astro';
+import { countries, type CountryCode } from '@/data/regions';
+
+interface Props {
+  country?: CountryCode;
+  icon?: boolean;
+  class?: string;
+}
+const { country, icon = true, class: className } = Astro.props;
+const c = countries[country ?? 'be'];
+---
+
+<a href={`tel:${c.phone}`} class={className} data-phone={country ? undefined : ''}>
+  {icon && <Icon name="phone" class="size-4 shrink-0" />}<span data-phone-text>{c.phoneDisplay}</span>
+</a>

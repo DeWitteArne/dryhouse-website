@@ -1,19 +1,14 @@
 ---
 /**
- * Dryhouse wordmark. The mark is a house with a moisture barrier: the drop stays
- * below the line. Inherits the text colour.
+ * The Dryhouse logo (house + drop, "DRY HOUSE"), vectorised from the original
+ * artwork. `white` is the version for dark backgrounds.
  */
 interface Props {
+  tone?: 'color' | 'white';
   class?: string;
 }
-const { class: className = '' } = Astro.props;
+const { tone = 'color', class: className = 'h-9 sm:h-10' } = Astro.props;
+const src = tone === 'white' ? '/images/brand/dryhouse-logo-white.svg' : '/images/brand/dryhouse-logo.svg';
 ---
 
-<span class:list={['inline-flex items-center gap-2.5', className]}>
-  <svg viewBox="0 0 32 32" class="size-8 shrink-0" aria-hidden="true">
-    <path d="M4 14.5 16 4l12 10.5V27a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V14.5Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
-    <path d="M8 19.5h16" stroke="var(--color-spark)" stroke-width="2.2" stroke-linecap="round" />
-    <path d="M16 21.8c1.5 1.8 2.2 3 2.2 3.8a2.2 2.2 0 0 1-4.4 0c0-.8.7-2 2.2-3.8Z" fill="var(--color-spark)" />
-  </svg>
-  <span class="font-display text-[1.35rem] leading-none font-bold tracking-[-0.04em]"><span class="text-(--logo-accent,var(--color-tide-500))">dry</span>house</span>
-</span>
+<img src={src} alt="Dryhouse" width="445" height="108" class:list={['w-auto', className]} decoding="async" />

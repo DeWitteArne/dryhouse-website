@@ -40,11 +40,13 @@ const fullTitle = title.includes('Dryhouse') ? title : `${title} | Dryhouse`;
 <link rel="canonical" href={canonical} />
 <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large, max-snippet:-1' : 'noindex, nofollow'} />
 <link rel="alternate" hreflang="nl-BE" href={canonical} />
+<link rel="alternate" hreflang="nl-NL" href={canonical} />
 <link rel="alternate" hreflang="x-default" href={canonical} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta property="og:type" content={type} />
 <meta property="og:locale" content="nl_BE" />
+<meta property="og:locale:alternate" content="nl_NL" />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />

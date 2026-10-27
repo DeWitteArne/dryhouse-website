@@ -27,10 +27,12 @@ npm run check      # typecheck
 | `src/data/services.ts` | De diensten, menuvolgorde en korte omschrijving. Slugs = de oude Wix-URL's. |
 | `src/content/services/*.md` | Inhoud per dienstpagina: SEO-titel, symptomen, aanpak, FAQ en tekst. |
 | `src/content/blog/*.md` | Blogartikels (`/post/<slug>`, zelfde URL's als op Wix). |
-| `src/data/regions.ts` | Werkgebied: één pagina per provincie op `/vochtbestrijding/<provincie>`. |
+| `src/data/regions.ts` | Werkgebied in België en Nederland: één pagina per land (`/vochtbestrijding/<land>`) en per provincie (`/vochtbestrijding/<land>/<provincie>`). |
 | `src/components/react/WallStory.tsx` | De scroll-animatie op de homepage (muur wordt droog). |
 | `src/components/react/Vochtcheck.tsx` | De online vochtcheck. |
-| `functions/api/offerte.ts` | Pages Function die offerteaanvragen per e-mail verstuurt. |
+| `src/data/assistant.ts` | De chat-assistent rechtsonder (vervangt de Smartsupp-chat): antwoorden, knoppen en herkende trefwoorden. |
+| `public/images/brand/` | Het Dryhouse-logo als SVG (kleur, wit, enkel het huisje). `npm run brand` maakt er favicon, OG-beeld en logo.png van. |
+| `functions/api/offerte.ts` | Pages Function die offerteaanvragen en berichten uit de chat-assistent per e-mail verstuurt. |
 | `public/_redirects` | 301-redirects van alle oude Wix- en WordPress-URL's. |
 | `public/_headers` | Security headers, caching, en `noindex` op `*.pages.dev`. |
 

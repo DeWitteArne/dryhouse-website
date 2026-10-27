@@ -1,6 +1,6 @@
 ---
 seoTitle: Kelderdichting, je natte kelder waterdicht
-description: Water of vocht in je kelder? Dryhouse maakte al meer dan 1.000 kelders waterdicht. Kelderdichting met garantie, gratis diagnose, in heel België.
+description: Water of vocht in je kelder? Dryhouse maakte al meer dan 1.000 kelders waterdicht. Kelderdichting met garantie, gratis diagnose, in België en Nederland.
 h1: Kelderdichting voor een droge kelder
 intro: Water in de kelder tast je woning en je gezondheid aan. We zoeken de oorzaak, infiltratie of condensatie, en maken je kelder duurzaam waterdicht. Dryhouse maakte al meer dan 1.000 kelders droog.
 image: ../../assets/site/kelderdichtingen/kelderbekuiping-in-uitvoering.jpg

@@ -5,6 +5,7 @@ import bricolageWoff2 from '@fontsource-variable/bricolage-grotesque/files/brico
 import Seo, { type Props as SeoProps } from '@/components/seo/Seo.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import Assistant from '@/components/react/Assistant';
 import { businessSchema, websiteSchema } from '@/lib/schema';
 
 export interface Props extends SeoProps {
@@ -16,7 +17,7 @@ const { headerTone = 'dark', jsonLd = [], ...seo } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="nl-BE">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,9 +39,12 @@ const { headerTone = 'dark', jsonLd = [], ...seo } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <Assistant client:idle />
     <script>
       import { initReveal } from '@/lib/reveal';
+      import { initCountry } from '@/lib/country';
       initReveal();
+      initCountry();
     </script>
   </body>
 </html>

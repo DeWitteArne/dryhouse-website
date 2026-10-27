@@ -1,13 +1,57 @@
 import type { ServiceSlug } from './services';
+import { site } from './site';
 
 /**
- * Werkgebied: one landing page per province (/vochtbestrijding/<slug>).
+ * Werkgebied: Belgium and the Netherlands, one landing page per country
+ * (/vochtbestrijding/<country>) and per province (/vochtbestrijding/<country>/<province>).
  * Every page needs its own, genuinely local text: near-identical "city pages" get
  * treated as doorway pages by Google and hurt the whole site.
  */
-export interface Region {
+export type CountryCode = 'be' | 'nl';
+
+export interface Country {
+  code: CountryCode;
   slug: string;
   name: string;
+  /** "in België" */
+  inName: string;
+  phone: string;
+  phoneDisplay: string;
+  intro: string;
+  context: string;
+}
+
+export const countries: Record<CountryCode, Country> = {
+  be: {
+    code: 'be',
+    slug: 'belgie',
+    name: 'België',
+    inName: 'in België',
+    phone: site.phone,
+    phoneDisplay: site.phoneDisplay,
+    intro: 'Vanuit Sint-Niklaas behandelen we vochtproblemen in heel België: van de kust tot de Ardennen, in Vlaanderen, Brussel en Wallonië.',
+    context:
+      'Een groot deel van de Belgische woningen is gebouwd voor 1970, vaak zonder vochtkering in de muren en met kelders die tegen of onder het grondwater liggen. In de polders en rivierdalen staat het grondwater hoog, aan de kust slaat de regen tegen de gevels en in gerenoveerde woningen zorgt een te dicht huis zonder ventilatie voor condensatie. Elke streek heeft zo zijn eigen vochtprobleem.',
+  },
+  nl: {
+    code: 'nl',
+    slug: 'nederland',
+    name: 'Nederland',
+    inName: 'in Nederland',
+    phone: site.phoneNl,
+    phoneDisplay: site.phoneNlDisplay,
+    intro: 'Dryhouse werkt ook in Nederland. Zeeland en Brabant liggen om de hoek van onze thuisbasis, en we behandelen vochtproblemen tot in het noorden van het land.',
+    context:
+      'Een groot deel van Nederland ligt onder de zeespiegel, op klei- en veengrond waar het grondwater hoog staat. Veel woningen hebben een kruipruimte in plaats van een kelder: blijft die vochtig, dan trekt het vocht in de vloer en de onderkant van de muren. In de oudere stadskernen zien we souterrains en kelders onder het grondwaterpeil, en in goed geïsoleerde woningen zonder voldoende ventilatie condensatie en schimmel.',
+  },
+};
+
+export interface Region {
+  country: CountryCode;
+  slug: string;
+  name: string;
+  /** Used in titles where the name alone is ambiguous (Limburg exists in both countries). */
+  fullName?: string;
   /** "in Oost-Vlaanderen" / "in Brussel" */
   inName: string;
   cities: string[];
@@ -18,6 +62,7 @@ export interface Region {
 
 export const regions: Region[] = [
   {
+    country: 'be',
     slug: 'oost-vlaanderen',
     name: 'Oost-Vlaanderen',
     inName: 'in Oost-Vlaanderen',
@@ -29,6 +74,7 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'kelderdichtingen', 'condensatie-schimmels'],
   },
   {
+    country: 'be',
     slug: 'antwerpen',
     name: 'Antwerpen',
     inName: 'in de provincie Antwerpen',
@@ -39,6 +85,7 @@ export const regions: Region[] = [
     common: ['kelderdichtingen', 'opstijgend-vocht', 'condensatie-schimmels'],
   },
   {
+    country: 'be',
     slug: 'west-vlaanderen',
     name: 'West-Vlaanderen',
     inName: 'in West-Vlaanderen',
@@ -49,6 +96,7 @@ export const regions: Region[] = [
     common: ['doorslaand-vocht', 'gevelwerken', 'opstijgend-vocht'],
   },
   {
+    country: 'be',
     slug: 'vlaams-brabant',
     name: 'Vlaams-Brabant',
     inName: 'in Vlaams-Brabant',
@@ -59,9 +107,11 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'condensatie-schimmels', 'kelderdichtingen'],
   },
   {
+    country: 'be',
     slug: 'limburg',
     name: 'Limburg',
-    inName: 'in Limburg',
+    fullName: 'Belgisch-Limburg',
+    inName: 'in Belgisch-Limburg',
     cities: ['Hasselt', 'Genk', 'Sint-Truiden', 'Tongeren', 'Lommel', 'Beringen', 'Maasmechelen', 'Bilzen', 'Maaseik', 'Houthalen-Helchteren'],
     intro: 'Ook in Limburg, van Haspengouw tot de Maasvallei, staan we klaar met een gratis vochtdiagnose.',
     context:
@@ -69,6 +119,7 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'kelderdichtingen', 'condensatie-schimmels'],
   },
   {
+    country: 'be',
     slug: 'brussel',
     name: 'Brussel',
     inName: 'in Brussel',
@@ -79,6 +130,7 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'kelderdichtingen', 'liftputten'],
   },
   {
+    country: 'be',
     slug: 'waals-brabant',
     name: 'Waals-Brabant',
     inName: 'in Waals-Brabant',
@@ -89,6 +141,7 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'kelderdichtingen', 'betoninjectie'],
   },
   {
+    country: 'be',
     slug: 'henegouwen',
     name: 'Henegouwen',
     inName: 'in Henegouwen',
@@ -99,6 +152,7 @@ export const regions: Region[] = [
     common: ['opstijgend-vocht', 'kelderdichtingen', 'betonrot'],
   },
   {
+    country: 'be',
     slug: 'namen',
     name: 'Namen',
     inName: 'in de provincie Namen',
@@ -109,6 +163,7 @@ export const regions: Region[] = [
     common: ['kelderdichtingen', 'opstijgend-vocht', 'doorslaand-vocht'],
   },
   {
+    country: 'be',
     slug: 'luik',
     name: 'Luik',
     inName: 'in de provincie Luik',
@@ -119,6 +174,7 @@ export const regions: Region[] = [
     common: ['kelderdichtingen', 'condensatie-schimmels', 'doorslaand-vocht'],
   },
   {
+    country: 'be',
     slug: 'luxemburg',
     name: 'Luxemburg',
     inName: 'in de provincie Luxemburg',
@@ -128,6 +184,142 @@ export const regions: Region[] = [
       'De provincie Luxemburg heeft het koudste en natste klimaat van het land. Veel woningen zijn opgetrokken in leisteen of andere natuursteen, met dikke muren zonder spouw. Doorslaand vocht en condensatie zijn er de grootste uitdaging, zeker in tweede verblijven die lange tijd niet verwarmd worden.',
     common: ['doorslaand-vocht', 'condensatie-schimmels', 'opstijgend-vocht'],
   },
+  // Nederland, roughly ordered by distance from Sint-Niklaas.
+  {
+    country: 'nl',
+    slug: 'zeeland',
+    name: 'Zeeland',
+    inName: 'in Zeeland',
+    cities: ['Middelburg', 'Vlissingen', 'Goes', 'Terneuzen', 'Hulst', 'Zierikzee', 'Sluis', 'Oostburg', 'Axel', 'Yerseke'],
+    intro: 'Zeeuws-Vlaanderen ligt op een half uur van onze thuisbasis: van Hulst en Terneuzen tot Walcheren en Schouwen-Duiveland staan we snel bij je.',
+    context:
+      'Zeeland ligt grotendeels onder de zeespiegel, op zware zeeklei met een hoog en vaak brak grondwater. Dat zout trekt mee de muur in: in oude dijkwoningen en boerderijen zien we hoge zoutranden en afbladderend pleisterwerk. Aan de kust jaagt de zeewind de regen dwars door verweerde voegen, zodat doorslaand vocht er net zo vaak voorkomt als opstijgend vocht.',
+    common: ['opstijgend-vocht', 'doorslaand-vocht', 'gevelwerken'],
+  },
+  {
+    country: 'nl',
+    slug: 'noord-brabant',
+    name: 'Noord-Brabant',
+    inName: 'in Noord-Brabant',
+    cities: ['Breda', 'Eindhoven', 'Tilburg', "'s-Hertogenbosch", 'Bergen op Zoom', 'Roosendaal', 'Helmond', 'Oss', 'Oosterhout', 'Waalwijk'],
+    intro: 'Van Bergen op Zoom en Breda tot Eindhoven en Den Bosch: in Brabant behandelen we vochtproblemen in elk type woning.',
+    context:
+      'West-Brabant ligt op dezelfde kleigrond als het Waasland, met dezelfde klachten: opstijgend vocht in oudere rijwoningen en vochtige kruipruimtes. In de jaren-dertigwijken van Breda, Tilburg en Eindhoven zien we vaak een kruipruimte zonder bodemafsluiting, waardoor vocht onder de vloer blijft hangen. Op de zandgronden in het oosten van de provincie ligt het probleem eerder bij condensatie en schimmel.',
+    common: ['opstijgend-vocht', 'condensatie-schimmels', 'kelderdichtingen'],
+  },
+  {
+    country: 'nl',
+    slug: 'limburg',
+    name: 'Limburg',
+    fullName: 'Nederlands-Limburg',
+    inName: 'in Nederlands-Limburg',
+    cities: ['Maastricht', 'Venlo', 'Heerlen', 'Sittard-Geleen', 'Roermond', 'Weert', 'Kerkrade', 'Venray', 'Valkenburg'],
+    intro: 'Van Maastricht tot Venlo: ook in Nederlands-Limburg pakken we vochtige muren en kelders aan.',
+    context:
+      'In Zuid-Limburg staan veel huizen in mergel, een zachte kalksteen die water opzuigt als een spons. Tegen de hellingen van het Heuvelland drukt regenwater tegen achtergevels en kelders. In de Maasvallei van Midden- en Noord-Limburg staat het grondwater na natte periodes hoog, met vochtige kelders en opstijgend vocht in oudere woningen als gevolg.',
+    common: ['opstijgend-vocht', 'kelderdichtingen', 'doorslaand-vocht'],
+  },
+  {
+    country: 'nl',
+    slug: 'zuid-holland',
+    name: 'Zuid-Holland',
+    inName: 'in Zuid-Holland',
+    cities: ['Rotterdam', 'Den Haag', 'Leiden', 'Dordrecht', 'Delft', 'Gouda', 'Zoetermeer', 'Schiedam', 'Gorinchem', 'Spijkenisse'],
+    intro: 'In Rotterdam, Den Haag, Leiden en de Drechtsteden maken we kelders, souterrains en muren opnieuw droog.',
+    context:
+      'Zuid-Holland ligt diep onder de zeespiegel, op veen- en kleigrond. De herenhuizen in Den Haag, Leiden en Delft hebben vaak een souterrain dat onder het grondwaterpeil ligt, en in de vooroorlogse wijken van Rotterdam blijven kruipruimtes nat. In naoorlogse portiekflats en galerijflats zien we daarnaast condensatie en betonrot aan balkons en galerijen.',
+    common: ['kelderdichtingen', 'condensatie-schimmels', 'betonrot'],
+  },
+  {
+    country: 'nl',
+    slug: 'utrecht',
+    name: 'Utrecht',
+    inName: 'in de provincie Utrecht',
+    cities: ['Utrecht', 'Amersfoort', 'Veenendaal', 'Zeist', 'Nieuwegein', 'Houten', 'Woerden', 'IJsselstein', 'De Bilt'],
+    intro: 'Van de Utrechtse binnenstad tot Amersfoort en de Heuvelrug: we zoeken de oorzaak en lossen het vochtprobleem op.',
+    context:
+      'De oude binnensteden van Utrecht en Amersfoort hebben veel gemetselde kelders, sommige eeuwen oud, die tegen of onder het grondwater liggen. In het westen van de provincie, rond Woerden en in de Vechtstreek, staan woningen op natte veengrond met opstijgend vocht als gevolg. Op de zandgrond van de Heuvelrug zien we vooral condensatie in oudere villa’s en jaren-zeventigwoningen.',
+    common: ['kelderdichtingen', 'opstijgend-vocht', 'condensatie-schimmels'],
+  },
+  {
+    country: 'nl',
+    slug: 'gelderland',
+    name: 'Gelderland',
+    inName: 'in Gelderland',
+    cities: ['Arnhem', 'Nijmegen', 'Apeldoorn', 'Ede', 'Doetinchem', 'Zutphen', 'Harderwijk', 'Tiel', 'Zaltbommel', 'Culemborg'],
+    intro: 'In het rivierengebied, op de Veluwe en in de Achterhoek: ook in Gelderland kan je bij ons terecht.',
+    context:
+      'In de Betuwe en langs Rijn, Waal en IJssel staan veel dijkwoningen en boerderijen waar kwelwater en een hoog grondwater voor opstijgend vocht en natte kelders zorgen. In Nijmegen, Arnhem en Zutphen hebben de oude stadspanden vaak kelders zonder waterdichting. Op de droge zandgrond van de Veluwe zien we eerder condensatie en schimmel in slecht geventileerde woningen.',
+    common: ['opstijgend-vocht', 'kelderdichtingen', 'condensatie-schimmels'],
+  },
+  {
+    country: 'nl',
+    slug: 'noord-holland',
+    name: 'Noord-Holland',
+    inName: 'in Noord-Holland',
+    cities: ['Amsterdam', 'Haarlem', 'Alkmaar', 'Zaandam', 'Hilversum', 'Hoorn', 'Purmerend', 'Amstelveen', 'Den Helder', 'Enkhuizen'],
+    intro: 'Van Amsterdamse grachtenpanden tot huizen achter de duinen: we behandelen vochtproblemen in heel Noord-Holland.',
+    context:
+      'Amsterdam en Haarlem staan op palen in slappe veengrond. Souterrains en kelders liggen er vaak onder het grondwaterpeil en de muren erboven trekken vocht op. Achter de duinen en in West-Friesland slaat de wind de regen tegen de gevels, zodat doorslaand vocht en verweerd voegwerk veel voorkomen. In de Zaanstreek en het Gooi zien we daarnaast veel oudere woningen met vochtige kruipruimtes.',
+    common: ['kelderdichtingen', 'opstijgend-vocht', 'doorslaand-vocht'],
+  },
+  {
+    country: 'nl',
+    slug: 'flevoland',
+    name: 'Flevoland',
+    inName: 'in Flevoland',
+    cities: ['Almere', 'Lelystad', 'Dronten', 'Emmeloord', 'Zeewolde', 'Urk'],
+    intro: 'Flevoland is jong, maar ook daar zien we vochtproblemen. Alleen zijn het andere dan in oude binnensteden.',
+    context:
+      'De meeste woningen in Flevoland zijn na 1970 gebouwd, op drooggelegde zeebodem, en hebben een vochtkering. Opstijgend vocht is hier dus zeldzaam. Wat we wel zien: condensatie en schimmel in goed geïsoleerde woningen met te weinig ventilatie, vochtige kruipruimtes door het hoge grondwater, en betonrot aan balkons en galerijen van appartementsgebouwen uit de jaren zeventig en tachtig.',
+    common: ['condensatie-schimmels', 'betonrot', 'liftputten'],
+  },
+  {
+    country: 'nl',
+    slug: 'overijssel',
+    name: 'Overijssel',
+    inName: 'in Overijssel',
+    cities: ['Zwolle', 'Enschede', 'Deventer', 'Hengelo', 'Almelo', 'Kampen', 'Oldenzaal', 'Hardenberg', 'Rijssen'],
+    intro: 'In de Hanzesteden aan de IJssel en in Twente zorgt Dryhouse voor droge muren en kelders.',
+    context:
+      'Deventer, Kampen en Zwolle hebben historische binnensteden met eeuwenoude baksteenpanden en kelders, dicht bij de IJssel en de Vecht. Bij hoog rivierwater stijgt ook het grondwater onder die panden. In Twente staan veel arbeiderswoningen uit de textieltijd, vaak zonder vochtkering en met verweerde gevels.',
+    common: ['opstijgend-vocht', 'kelderdichtingen', 'gevelwerken'],
+  },
+  {
+    country: 'nl',
+    slug: 'drenthe',
+    name: 'Drenthe',
+    inName: 'in Drenthe',
+    cities: ['Assen', 'Emmen', 'Hoogeveen', 'Meppel', 'Coevorden', 'Roden', 'Beilen', 'Westerbork'],
+    intro: 'Ook in Drenthe, van Assen tot Emmen en Meppel, kan je een vochtdiagnose bij ons aanvragen.',
+    context:
+      'Drenthe ligt grotendeels op zandgrond en is droger dan de rest van het noorden. De vochtproblemen zitten hier vooral in de woning zelf: condensatie en schimmel in naoorlogse rijwoningen, en vocht in de muren van oude boerderijen in de esdorpen. In de Veenkoloniën in het zuidoosten staat het grondwater hoger en zien we ook opstijgend vocht.',
+    common: ['condensatie-schimmels', 'opstijgend-vocht', 'gevelwerken'],
+  },
+  {
+    country: 'nl',
+    slug: 'groningen',
+    name: 'Groningen',
+    inName: 'in de provincie Groningen',
+    cities: ['Groningen', 'Delfzijl', 'Veendam', 'Hoogezand', 'Winschoten', 'Stadskanaal', 'Appingedam', 'Leek'],
+    intro: 'In de stad en de provincie Groningen helpen we je van vochtige muren en natte kelders af.',
+    context:
+      'Op de zware zeeklei van Noord-Groningen staan veel oude boerderijen en dorpswoningen zonder vochtkering. Bodembeweging heeft in een deel van de provincie scheuren in muren en gevels veroorzaakt, waarlangs regenwater naar binnen kan dringen. In de stad Groningen hebben de oude panden vaak kelders die bij hoog grondwater vochtig worden.',
+    common: ['doorslaand-vocht', 'opstijgend-vocht', 'gevelwerken'],
+  },
+  {
+    country: 'nl',
+    slug: 'friesland',
+    name: 'Friesland',
+    inName: 'in Friesland',
+    cities: ['Leeuwarden', 'Sneek', 'Heerenveen', 'Drachten', 'Harlingen', 'Franeker', 'Dokkum', 'Bolsward'],
+    intro: 'Tot in Friesland, van Leeuwarden tot Harlingen en Heerenveen, maken we vochtige huizen opnieuw droog.',
+    context:
+      'Friesland is een natte provincie: klei in het noorden, veen in het zuiden en overal water. De oude stelpboerderijen en de woningen in de Friese steden hebben zelden een vochtkering, en aan de Waddenkust staan de gevels pal in de wind. Opstijgend en doorslaand vocht zijn er de klachten die we het vaakst tegenkomen.',
+    common: ['opstijgend-vocht', 'doorslaand-vocht', 'condensatie-schimmels'],
+  },
 ];
 
-export const regionBySlug = (slug: string) => regions.find((r) => r.slug === slug);
+export const regionPath = (r: Region) => `/vochtbestrijding/${countries[r.country].slug}/${r.slug}`;
+export const countryPath = (c: Country) => `/vochtbestrijding/${c.slug}`;
+export const regionsIn = (code: CountryCode) => regions.filter((r) => r.country === code);

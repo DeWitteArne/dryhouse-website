@@ -1,7 +1,8 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { nav, site } from '@/data/site';
+import PhoneLink from './PhoneLink.astro';
+import { nav } from '@/data/site';
 import { services } from '@/data/services';
 
 interface Props {
@@ -18,8 +19,9 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
   class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,transform] duration-500 ease-(--ease-out-expo) data-[scrolled]:bg-sand-50/85 data-[scrolled]:shadow-[0_1px_0_rgb(12_24_34/0.06)] data-[scrolled]:backdrop-blur-xl data-[tone=light]:text-white data-[tone=light]:data-[scrolled]:text-ink data-[tone=dark]:text-ink data-[hidden]:-translate-y-full"
 >
   <div class="container-x flex h-[4.5rem] items-center justify-between gap-6">
-    <a href="/" aria-label="Dryhouse, naar de startpagina" class="relative z-10">
-      <Logo />
+    <a href="/" aria-label="Dryhouse, naar de startpagina" class="relative z-10 shrink-0">
+      <Logo class="h-9 group-data-[menu-open]/header:hidden sm:h-10" />
+      <Logo tone="white" class="hidden h-9 group-data-[menu-open]/header:block sm:h-10" />
     </a>
 
     <nav aria-label="Hoofdmenu" class="hidden lg:block">
@@ -56,11 +58,16 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
     </nav>
 
     <div class="flex items-center gap-2">
-      {site.phone && (
-        <a href={`tel:${site.phone}`} class="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold xl:flex">
-          <Icon name="phone" class="size-4" />{site.phoneDisplay}
-        </a>
-      )}
+      <div class="hidden items-center gap-1 xl:flex">
+        <div role="group" aria-label="Kies je land" class="flex rounded-full bg-current/6 p-0.5 text-xs font-semibold">
+          {(['be', 'nl'] as const).map((land) => (
+            <button type="button" data-set-land={land} aria-pressed={land === 'be' ? 'true' : 'false'} title={land === 'be' ? 'België' : 'Nederland'} class="rounded-full px-2.5 py-1 uppercase opacity-60 transition aria-pressed:bg-white aria-pressed:text-ink aria-pressed:opacity-100 aria-pressed:shadow-sm">
+              {land}
+            </button>
+          ))}
+        </div>
+        <PhoneLink class="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold" />
+      </div>
       <a href="/offerte-aanvragen" class="btn-primary hidden !py-2.5 sm:inline-flex">Gratis diagnose</a>
       <button id="menu-toggle" type="button" class="relative z-10 grid size-11 place-items-center rounded-full lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu openen">
         <span class="relative block h-3 w-6">
@@ -82,6 +89,10 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
       {nav.slice(1).map((item) => <li><a href={item.href} class="block py-2 font-display text-2xl tracking-tight">{item.label}</a></li>)}
     </ul>
     <a href="/offerte-aanvragen" class="btn-light mt-8 w-full">Gratis diagnose aanvragen</a>
+    <ul class="mt-6 grid gap-3 text-sm">
+      <li><PhoneLink country="be" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">België</span></li>
+      <li><PhoneLink country="nl" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">Nederland</span></li>
+    </ul>
   </div>
 </header>
 
@@ -107,7 +118,7 @@ const isActive = (href: string) => href !== '/#diensten' && path.startsWith(href
     toggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
     menu.hidden = !open;
     header.style.color = open ? '#fff' : '';
-    header.style.setProperty('--logo-accent', open ? 'var(--color-spark)' : '');
+    header.toggleAttribute('data-menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
 </script>

@@ -190,7 +190,7 @@ export default function Vochtcheck() {
                       </span>
                       <span>
                         <span className="block font-medium">{o.label}</span>
-                        {o.hint && <span className={`block text-sm ${on ? 'text-white/75' : 'text-ink/55'}`}>{o.hint}</span>}
+                        {o.hint && <span className={`block text-sm ${on ? 'text-white/75' : 'text-ink/65'}`}>{o.hint}</span>}
                       </span>
                     </button>
                   );
@@ -293,7 +293,7 @@ function Gauge({ pct }: { pct: number }) {
       <div className="absolute inset-0 grid place-items-center text-center">
         <span>
           <span className="block font-display text-4xl font-semibold tabular-nums">{pct}%</span>
-          <span className="block text-xs font-medium text-ink/55">match</span>
+          <span className="block text-xs font-medium text-ink/65">match</span>
         </span>
       </div>
     </div>

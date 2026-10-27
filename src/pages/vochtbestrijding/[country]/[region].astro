@@ -3,34 +3,37 @@ import Base from '@/layouts/Base.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import CtaCard from '@/components/CtaCard.astro';
 import Icon from '@/components/Icon.astro';
-import { regions, type Region } from '@/data/regions';
+import { countries, countryPath, regionPath, regionsIn, regions, type Region } from '@/data/regions';
 import { services, serviceBySlug } from '@/data/services';
 import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
 
 export function getStaticPaths() {
-  return regions.map((region) => ({ params: { region: region.slug }, props: { region } }));
+  return regions.map((region) => ({ params: { country: countries[region.country].slug, region: region.slug }, props: { region } }));
 }
 
 const { region } = Astro.props as { region: Region };
-const path = `/vochtbestrijding/${region.slug}`;
+const country = countries[region.country];
+const path = regionPath(region);
+const name = region.fullName ?? region.name;
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Werkgebied', path: '/werkgebied' },
+  { name: country.name, path: countryPath(country) },
   { name: region.name, path },
 ];
 const common = region.common.map(serviceBySlug).filter((s) => s !== undefined);
-const neighbours = regions.filter((r) => r.slug !== region.slug);
+const neighbours = regionsIn(region.country).filter((r) => r.slug !== region.slug);
 ---
 
 <Base
-  title={`Vochtbestrijding ${region.name} | Gratis diagnose`}
+  title={`Vochtbestrijding ${name} | Gratis diagnose`}
   description={`Vochtproblemen ${region.inName}? Dryhouse behandelt opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${region.cities.slice(0, 3).join(', ')} en omgeving. 30 jaar garantie.`}
-  jsonLd={[serviceSchema({ name: `Vochtbestrijding ${region.name}`, description: region.intro, path, area: region.name }), breadcrumbSchema(crumbs)]}
+  jsonLd={[serviceSchema({ name: `Vochtbestrijding ${name}`, description: region.intro, path, area: name, country: country.name }), breadcrumbSchema(crumbs)]}
 >
   <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
     <div class="container-x">
       <Breadcrumbs items={crumbs} />
-      <p class="eyebrow mt-8"><Icon name="pin" class="size-4" /> {region.name}</p>
+      <p class="eyebrow mt-8"><Icon name="pin" class="size-4" /> {region.name}, {country.name}</p>
       <h1 class="mt-4 max-w-4xl text-[clamp(2.5rem,1.6rem+3.8vw,4.75rem)] leading-[0.98] font-semibold">Vochtbestrijding {region.inName}</h1>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">{region.intro}</p>
       <div class="mt-8 flex flex-wrap gap-3">
@@ -69,7 +72,7 @@ const neighbours = regions.filter((r) => r.slug !== region.slug);
         <ul class="mt-5 flex flex-wrap gap-2">
           {region.cities.map((c) => <li class="rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-ink/8">{c}</li>)}
         </ul>
-        <p class="mt-4 text-sm text-ink/55">Staat jouw gemeente er niet bij? We werken in heel {region.name}, vraag gerust een diagnose aan.</p>
+        <p class="mt-4 text-sm text-ink/65">Staat jouw gemeente er niet bij? We werken in heel {name}, vraag gerust een diagnose aan.</p>
 
         <h2 class="mt-16 text-[1.9rem] leading-tight">Al onze diensten</h2>
         <ul class="mt-5 flex flex-wrap gap-2">
@@ -77,16 +80,16 @@ const neighbours = regions.filter((r) => r.slug !== region.slug);
         </ul>
       </div>
       <div class="lg:sticky lg:top-28 lg:self-start">
-        <CtaCard title={`Gratis diagnose ${region.inName}`} />
+        <CtaCard title={`Gratis diagnose ${region.inName}`} country={region.country} />
       </div>
     </div>
   </section>
 
   <section class="border-t border-ink/10 py-16">
     <div class="container-x">
-      <h2 class="text-xl font-semibold">Andere regio's</h2>
+      <h2 class="text-xl font-semibold">Andere provincies {country.inName}</h2>
       <ul class="mt-5 flex flex-wrap gap-2">
-        {neighbours.map((r) => <li><a href={`/vochtbestrijding/${r.slug}`} class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-ink/8 transition-colors hover:bg-tide-500 hover:text-white">{r.name}</a></li>)}
+        {neighbours.map((r) => <li><a href={regionPath(r)} class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-ink/8 transition-colors hover:bg-tide-500 hover:text-white">{r.name}</a></li>)}
       </ul>
     </div>
   </section>

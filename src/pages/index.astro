@@ -17,11 +17,11 @@ const posts = (await getPosts()).filter((p) => p.data.category === 'advies').sli
 
 <Base
   title="Vochtbestrijding met 30 jaar garantie | Dryhouse"
-  description="Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder? Dryhouse vindt de oorzaak en lost het op, met gratis diagnose en 30 jaar garantie. In heel België."
+  description="Opstijgend vocht, doorslaand vocht, schimmel of een natte kelder? Dryhouse vindt de oorzaak en lost het op, met gratis diagnose en 30 jaar garantie. In België en Nederland."
   jsonLd={[faqSchema(homeFaq)]}
 >
   <WallStory client:idle>
-    <p class="eyebrow">Vochtbestrijding in heel België</p>
+    <p class="eyebrow">Vochtbestrijding in België en Nederland</p>
     <h1 class="mt-5 text-display font-semibold">
       Wij maken je huis <span class="relative whitespace-nowrap text-tide-500">droog<svg class="absolute -bottom-[0.06em] left-0 h-[0.14em] w-full" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 120-8 196-3" fill="none" stroke="#00c0ff" stroke-width="4" stroke-linecap="round" /></svg></span>. Gegarandeerd.
     </h1>
@@ -35,7 +35,7 @@ const posts = (await getPosts()).filter((p) => p.data.category === 'advies').sli
     <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm font-medium text-ink/70">
       <li class="flex items-center gap-2"><Icon name="shield" class="size-5 text-tide-500" />30 jaar garantie</li>
       <li class="flex items-center gap-2"><Icon name="search" class="size-5 text-tide-500" />Gratis diagnose ter plaatse</li>
-      <li class="flex items-center gap-2"><Icon name="pin" class="size-5 text-tide-500" />Heel België</li>
+      <li class="flex items-center gap-2"><Icon name="pin" class="size-5 text-tide-500" />België en Nederland</li>
     </ul>
   </WallStory>
 

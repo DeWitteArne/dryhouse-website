@@ -14,7 +14,7 @@ export const homeFaq = [
   },
   {
     q: 'In welke regio werken jullie?',
-    a: 'We werken in heel België. Onze thuisbasis is Sint-Niklaas, maar we behandelen woningen van de kust tot de Ardennen.',
+    a: 'We werken in heel België en in Nederland. Onze thuisbasis is Sint-Niklaas: van daaruit behandelen we woningen van de Belgische kust tot de Ardennen, en van Zeeland en Brabant tot in het noorden van Nederland.',
   },
   {
     q: 'Moet ik mijn woning verlaten tijdens de werken?',

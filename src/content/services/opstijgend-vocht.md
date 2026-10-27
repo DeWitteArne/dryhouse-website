@@ -1,6 +1,6 @@
 ---
 seoTitle: Opstijgend vocht behandelen met 30 jaar garantie
-description: Zoutranden en bladderende verf onderaan je muur? Dryhouse stopt opstijgend vocht met een injectie, met gratis diagnose en 30 jaar garantie. In heel België.
+description: Zoutranden en bladderende verf onderaan je muur? Dryhouse stopt opstijgend vocht met een injectie, met gratis diagnose en 30 jaar garantie. In België en Nederland.
 h1: Opstijgend vocht definitief stoppen
 intro: Vocht uit de grond dat in je muren omhoog kruipt, verdwijnt niet vanzelf. Met een injectie brengen we een nieuwe vochtkering aan, waarna je muur kan uitdrogen. Met 30 jaar garantie.
 image: ../../assets/site/opstijgend-vocht/opstijgend-vocht-onderaan-muur.jpg

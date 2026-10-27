@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
+import { countries } from '@/data/regions';
 import { breadcrumbSchema } from '@/lib/schema';
 
 const crumbs = [
@@ -15,7 +16,7 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
 <Base
   title="Contact"
-  description={`Contacteer Dryhouse: ${address.street}, ${address.postalCode} ${address.city}. Bel ${site.phoneDisplay} of mail ${site.email} voor een gratis vochtdiagnose.`}
+  description={`Contacteer Dryhouse: ${address.street}, ${address.postalCode} ${address.city}. Bel ${site.phoneDisplay} (België) of ${site.phoneNlDisplay} (Nederland), of mail ${site.email} voor een gratis vochtdiagnose.`}
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <section class="bg-sand-100 pt-28 pb-24 grain sm:pt-32">
@@ -25,12 +26,16 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       <p class="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">Bel, mail of kom langs. Of vraag meteen een gratis diagnose aan.</p>
 
       <div class="mt-14 grid gap-4 md:grid-cols-3">
-        <a href={`tel:${site.phone}`} class="card group p-7 transition-shadow hover:shadow-xl">
+        <div class="card p-7">
           <Icon name="phone" class="size-7 text-tide-500" />
           <p class="mt-6 text-sm font-semibold text-ink/50">Bel ons</p>
-          <p class="mt-1 font-display text-2xl font-semibold tracking-tight">{site.phoneDisplay}</p>
-          <p class="mt-2 text-sm text-ink/60">Nederland: {site.phoneNlDisplay}</p>
-        </a>
+          {Object.values(countries).map((c) => (
+            <p class="mt-1">
+              <a href={`tel:${c.phone}`} class="font-display text-2xl font-semibold tracking-tight hover:text-tide-500">{c.phoneDisplay}</a>
+              <span class="ml-1 text-sm text-ink/65">{c.name}</span>
+            </p>
+          ))}
+        </div>
         <a href={`mailto:${site.email}`} class="card group p-7 transition-shadow hover:shadow-xl">
           <Icon name="mail" class="size-7 text-tide-500" />
           <p class="mt-6 text-sm font-semibold text-ink/50">Mail ons</p>
