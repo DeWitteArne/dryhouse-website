@@ -91,14 +91,19 @@ export const prices: Partial<Record<ServiceSlug, ServicePrice>> = {
 };
 
 /**
- * Calculators on the opstijgend-vocht and kelder pages. Unit prices INCL. 6 % btw, as in the
- * briefing, so Robbe can adjust them directly.
- * Rising damp: lm × low … lm × high (high = full re-plastering up to 1 m), at least `minimum`.
+ * Price calculator (/prijs-berekenen, and on the opstijgend-vocht and kelder pages).
+ * Amounts INCL. 6 % btw, as Robbe gave them, so he can adjust them directly. Dutch visitors see them ÷ 1,06.
+ *
+ * Rising damp, per wall, per lopende meter:
+ *   injection only:            injection[0] … injection[1]
+ *   injection + repair to 1 m: the same + repair (afkappen € 58,30 + zoutmembraan € 68,90 + pleisterwerk € 37,10)
+ *   (30 lm with repair ≈ € 8.100, Robbe's example.) A building under renovation (ruwbouw) only gets the injection.
  * Basement: perimeter ≈ 4 × √floor, walls = perimeter × height.
  *   low = walls × perM2 + perimeter × jointPerLm; high = (walls + floor) × perM2 + perimeter × jointPerLm.
+ * Every total is at least `minimum`.
  */
 export const calculator = {
-  rising: { low: 95, high: 270 },
+  rising: { injection: [95, 117] as [number, number], repair: 164.3 },
   basement: { perM2: 245, jointPerLm: 58 },
   minimum: 901,
 };

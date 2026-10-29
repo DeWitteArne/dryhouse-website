@@ -20,6 +20,7 @@ const copy = {
     h1: ['Specialist in ', 'droge en gezonde', ' gebouwen.'],
     intro: 'Van kelder tot dak: we stellen de juiste diagnose en lossen elk vochtprobleem definitief op. Voor particulieren, syndici, architecten en aannemers in België en Nederland.',
     secondary: 'Bekijk onze specialisaties',
+    calculate: 'Of bereken meteen een richtprijs',
     usps: ['Gratis diagnose ter plaatse', 'Reactie binnen 2 werkdagen', 'Tot 30 jaar garantie'],
     scene: 'Doorsnede van een gebouw: kelder, liftput, muurvoet, gevel, balkon en binnenlucht',
     zones: ['Kelder', 'Muurvoet', 'Gevel', 'Balkon en beton', 'Binnenlucht', 'Liftput'],
@@ -34,6 +35,7 @@ const copy = {
     h1: ['Spécialiste des bâtiments ', 'secs et sains', '.'],
     intro: 'De la cave au toit : nous posons le bon diagnostic et réglons chaque problème d’humidité pour de bon. Pour les particuliers, syndics, architectes et entrepreneurs, en Belgique et aux Pays-Bas.',
     secondary: 'Découvrir nos spécialités',
+    calculate: 'Ou calculez tout de suite un prix indicatif',
     usps: ['Diagnostic gratuit sur place', 'Réponse en 2 jours ouvrables', 'Jusqu’à 30 ans de garantie'],
     scene: 'Coupe d’un bâtiment : cave, fosse d’ascenseur, pied de mur, façade, balcon et air intérieur',
     zones: ['Cave', 'Pied de mur', 'Façade', 'Balcon et béton', 'Air intérieur', 'Fosse d’ascenseur'],
@@ -59,6 +61,7 @@ const [h1Before, h1Accent, h1After] = copy.h1;
         <a href={paths.offerte[lang]} class="btn-primary">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
         <a href="#specialisaties" class="btn-ghost">{copy.secondary}</a>
       </div>
+      <a href={paths.prijs[lang]} class="mt-5 inline-flex items-center gap-1.5 font-semibold text-tide-500 hover:underline">{copy.calculate} <Icon name="arrow" class="size-4" /></a>
       <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm font-medium text-ink/70">
         {(['search', 'clock', 'shield'] as const).map((icon, i) => <li class="flex items-center gap-2"><Icon name={icon} class="size-5 text-tide-500" />{copy.usps[i]}</li>)}
       </ul>

@@ -17,6 +17,7 @@ export const paths = {
   offerte: { nl: '/offerte-aanvragen', fr: '/fr/demande-devis' },
   contact: { nl: '/contact', fr: '/fr/contact' },
   bedankt: { nl: '/bedankt', fr: '/fr/merci' },
+  prijs: { nl: '/prijs-berekenen', fr: '/fr/calculer-prix' },
   privacy: { nl: '/privacy', fr: '/fr/vie-privee' },
   blog: { nl: '/blog', fr: '/blog' },
 } as const;
@@ -37,6 +38,7 @@ export const ui = {
     readMore: 'Lees meer',
     nav: [
       { label: 'Vochtcheck', key: 'vochtcheck' },
+      { label: 'Prijs berekenen', key: 'prijs' },
       { label: 'Werkgebied', key: 'werkgebied' },
       { label: 'Blog', key: 'blog' },
       { label: 'Contact', key: 'contact' },
@@ -55,6 +57,7 @@ export const ui = {
     footerCompany: 'Dryhouse',
     footerLinks: [
       { label: 'Online vochtcheck', key: 'vochtcheck' },
+      { label: 'Prijs berekenen', key: 'prijs' },
       { label: 'Offerte aanvragen', key: 'offerte' },
       { label: 'Blog & advies', key: 'blog' },
       { label: 'Contact', key: 'contact' },
@@ -79,6 +82,7 @@ export const ui = {
     readMore: 'En savoir plus',
     nav: [
       { label: 'Test d’humidité', key: 'vochtcheck' },
+      { label: 'Calculer le prix', key: 'prijs' },
       { label: 'Zone d’intervention', key: 'werkgebied' },
       { label: 'Contact', key: 'contact' },
     ] as { label: string; key: PageKey }[],
@@ -96,6 +100,7 @@ export const ui = {
     footerCompany: 'Dryhouse',
     footerLinks: [
       { label: 'Test d’humidité en ligne', key: 'vochtcheck' },
+      { label: 'Calculer le prix', key: 'prijs' },
       { label: 'Demander un devis', key: 'offerte' },
       { label: 'Contact', key: 'contact' },
       { label: 'Vie privée', key: 'privacy' },

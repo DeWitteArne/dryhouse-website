@@ -1,0 +1,117 @@
+---
+import Base from '@/layouts/Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Faq from '@/components/Faq.astro';
+import Icon from '@/components/Icon.astro';
+import PriceCalculator from '@/components/react/PriceCalculator';
+import { localService, serviceBySlug } from '@/data/services';
+import { MINIMUM } from '@/data/pricing';
+import { euro, withVat } from '@/lib/price';
+import { breadcrumbSchema, faqSchema } from '@/lib/schema';
+import { langFromUrl, other, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const minimum = euro(withVat(MINIMUM), lang);
+const [rising, basement] = ['opstijgend-vocht', 'kelder-waterdicht-maken'].map((slug) => localService(serviceBySlug(slug)!, lang));
+const copy = {
+  nl: {
+    crumb: 'Prijs berekenen',
+    title: 'Prijs vochtbehandeling berekenen',
+    description: 'Bereken zelf een richtprijs voor de behandeling van opstijgend vocht, muur per muur, of om je kelder waterdicht te maken. Meteen een prijsvork, zonder je gegevens achter te laten.',
+    eyebrow: 'Rekenmodule',
+    h1: 'Bereken de prijs van je vochtbehandeling',
+    intro: 'Vul je situatie in en je ziet meteen een prijsvork. Zonder je gegevens achter te laten. Wil je een exacte prijs, dan komen we gratis langs voor een diagnose.',
+    included: 'Wat zit er in de prijs?',
+    blocks: [
+      { title: 'Opstijgend vocht, bewoond', items: ['Injectie in de muurvoet', 'Afkappen van het aangetaste pleisterwerk', 'Zoutmembraan', 'Nieuw pleisterwerk tot 1 m hoog'], link: rising },
+      { title: 'Opstijgend vocht, in renovatie', items: ['Injectie van de blote muren', 'De afwerking doet je aannemer of stukadoor'], link: rising },
+      { title: 'Kelder waterdicht maken', items: ['Voorbereiding', 'Kimnaadversteviging', 'Tweecomponentensysteem', 'Afgedichte leidingdoorvoeren', 'Afwerking'], link: basement },
+    ],
+    more: (name: string) => `Meer over ${name.toLowerCase()}`,
+    stepsTitle: 'Van richtprijs tot offerte',
+    steps: ['Je berekent een richtprijs en vraagt advies of een offerte aan.', 'We nemen binnen 2 werkdagen contact op.', 'We komen gratis langs voor een diagnose ter plaatse.', 'Je ontvangt de offerte binnen een week na de diagnose.'],
+    faqTitle: 'Over de rekenmodule',
+    faq: [
+      { q: 'Hoe nauwkeurig is de berekende prijs?', a: `Het is een richtprijs op basis van onze eenheidsprijzen. De exacte prijs hangt af van de dikte en het type van de muur, de toegankelijkheid en de staat van het pleisterwerk. Die bepalen we tijdens de gratis diagnose ter plaatse. Per opdracht geldt een minimumbedrag van ${minimum}.` },
+      { q: 'Waarom zie ik geen prijs per m² voor een kelder?', a: 'Omdat een kelder waterdicht maken meer is dan een laag op de muur. In onze projectprijs zitten de voorbereiding, de kimnaadversteviging, het tweecomponentensysteem, de afgedichte doorvoeren en de afwerking. Een kale m²-prijs laat die onderdelen weg en is dus niet te vergelijken.' },
+      { q: 'Moet ik mijn gegevens invullen om de prijs te zien?', a: 'Nee. Je ziet de prijsvork meteen. Pas als je advies of een offerte wil, vul je het formulier in; je berekening gaat dan automatisch mee.' },
+      { q: 'Zijn de prijzen inclusief btw?', a: 'Voor België tonen we prijzen inclusief 6 % btw: dat tarief geldt voor renovatie van privéwoningen ouder dan 10 jaar. Anders geldt 21 %, en voor professionelen wordt de btw verlegd. Kies je bovenaan Nederland, dan zie je de prijzen exclusief btw.' },
+    ],
+  },
+  fr: {
+    crumb: 'Calculer le prix',
+    title: 'Calculer le prix d’un traitement contre l’humidité',
+    description: 'Calculez vous-même un prix indicatif pour traiter l’humidité ascensionnelle, mur par mur, ou pour rendre votre cave étanche. Une fourchette immédiate, sans laisser vos coordonnées.',
+    eyebrow: 'Calculateur',
+    h1: 'Calculez le prix de votre traitement',
+    intro: 'Indiquez votre situation et vous voyez tout de suite une fourchette de prix. Sans laisser vos coordonnées. Pour un prix exact, nous passons gratuitement chez vous pour un diagnostic.',
+    included: 'Qu’est-ce qui est compris ?',
+    blocks: [
+      { title: 'Humidité ascensionnelle, habité', items: ['Injection au pied du mur', 'Piquage de l’enduit abîmé', 'Membrane anti-sels', 'Nouvel enduit jusqu’à 1 m de haut'], link: rising },
+      { title: 'Humidité ascensionnelle, en rénovation', items: ['Injection des murs nus', 'La finition est pour votre entrepreneur ou votre plafonneur'], link: rising },
+      { title: 'Étanchéité de cave', items: ['Préparation', 'Renfort du joint mur-sol', 'Système bicomposant', 'Traversées de conduites étanchées', 'Finition'], link: basement },
+    ],
+    more: () => 'En savoir plus',
+    stepsTitle: 'Du prix indicatif au devis',
+    steps: ['Vous calculez un prix indicatif et demandez conseil ou un devis.', 'Nous vous contactons dans les 2 jours ouvrables.', 'Nous passons gratuitement pour un diagnostic sur place.', 'Vous recevez le devis dans la semaine qui suit le diagnostic.'],
+    faqTitle: 'À propos du calculateur',
+    faq: [
+      { q: 'Le prix calculé est-il précis ?', a: `C’est un prix indicatif basé sur nos prix unitaires. Le prix exact dépend de l’épaisseur et du type de mur, de l’accessibilité et de l’état de l’enduit. Nous les déterminons lors du diagnostic gratuit sur place. Un montant minimum de ${minimum} s’applique par chantier.` },
+      { q: 'Pourquoi pas de prix au m² pour une cave ?', a: 'Parce que rendre une cave étanche, c’est plus qu’une couche sur le mur. Notre prix de projet comprend la préparation, le renfort du joint mur-sol, le système bicomposant, les traversées étanchées et la finition. Un simple prix au m² omet ces éléments et n’est donc pas comparable.' },
+      { q: 'Dois-je laisser mes coordonnées pour voir le prix ?', a: 'Non. Vous voyez la fourchette tout de suite. Ce n’est que si vous souhaitez un conseil ou un devis que vous remplissez le formulaire ; votre calcul y est alors repris automatiquement.' },
+      { q: 'Les prix sont-ils TVA comprise ?', a: 'Pour la Belgique, nous affichons les prix TVA 6 % comprise : ce taux s’applique à la rénovation de logements privés de plus de 10 ans. Sinon, c’est 21 %, et pour les professionnels la TVA est autoliquidée. Si vous choisissez les Pays-Bas en haut de la page, vous voyez les prix hors TVA.' },
+    ],
+  },
+}[lang];
+const crumbs = [
+  { name: t.home, path: paths.home[lang] },
+  { name: copy.crumb, path: paths.prijs[lang] },
+];
+---
+
+<Base title={copy.title} description={copy.description} alternate={paths.prijs[other(lang)]} jsonLd={[breadcrumbSchema(crumbs), faqSchema(copy.faq)]}>
+  <section class="bg-sand-100 pt-28 pb-20 grain sm:pt-32">
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:items-start lg:gap-14">
+        <div class="lg:sticky lg:top-28">
+          <p class="eyebrow">{copy.eyebrow}</p>
+          <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.75rem)] leading-[1] font-semibold">{copy.h1}</h1>
+          <p class="mt-6 text-lg leading-relaxed text-ink/70">{copy.intro}</p>
+          <h2 class="mt-10 text-xl font-semibold">{copy.stepsTitle}</h2>
+          <ol class="mt-4 space-y-3">
+            {copy.steps.map((s, i) => (
+              <li class="flex gap-3">
+                <span class="grid size-7 shrink-0 place-items-center rounded-full bg-white font-display text-sm font-semibold text-tide-500 ring-1 ring-ink/5">{i + 1}</span>
+                <span class="leading-snug text-ink/75">{s}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div class="sm:card -mx-1 sm:mx-0 sm:p-4">
+          <PriceCalculator client:load lang={lang} kind="both" quote={paths.offerte[lang]} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 sm:py-24">
+    <div class="container-x">
+      <h2 class="text-title">{copy.included}</h2>
+      <div class="mt-10 grid gap-4 md:grid-cols-3">
+        {copy.blocks.map((b) => (
+          <div class="card flex flex-col p-6">
+            <h3 class="text-xl font-semibold">{b.title}</h3>
+            <ul class="mt-4 flex-1 space-y-2">
+              {b.items.map((item) => <li class="flex gap-2.5 text-ink/75"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-tide-500" />{item}</li>)}
+            </ul>
+            <a href={`${b.link.path}#prijs`} class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-tide-500 hover:underline">{copy.more(b.link.name)} <Icon name="arrow" class="size-4" /></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={copy.faq} title={copy.faqTitle} />
+</Base>

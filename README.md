@@ -48,7 +48,7 @@ npm run check      # typecheck
 - **Nieuw blogartikel:** maak `src/content/blog/<slug>.md` met dezelfde frontmatter als de bestaande artikels.
   Zet afbeeldingen in `src/assets/blog/<slug>/`; Astro maakt er automatisch AVIF/WebP in de juiste formaten van.
 - **Dienst aanpassen:** bewerk het bestand in `src/content/services/`. De structured data (Service, FAQ) wordt automatisch gegenereerd.
-- **Prijzen en garanties:** enkel in `src/data/pricing.ts` (bedragen excl. btw; Belgische bezoekers zien ze incl. 6 % btw, Nederlandse excl. btw). Daar staan ook de rekenregels van de prijscalculator op de pagina's opstijgend vocht en kelderdichting, en de garantie per dienst (30 jaar opstijgend vocht, 10 jaar andere werken, 2 jaar toestellen).
+- **Prijzen en garanties:** enkel in `src/data/pricing.ts` (bedragen excl. btw; Belgische bezoekers zien ze incl. 6 % btw, Nederlandse excl. btw). Daar staan ook de rekenregels van de prijscalculator (`/prijs-berekenen`, en ook op de pagina's opstijgend vocht en kelderdichting; opzet naar sanumur.be: staat van het gebouw, muur per muur, herstel ja/nee), en de garantie per dienst (30 jaar opstijgend vocht, 10 jaar andere werken, 2 jaar toestellen).
 - **Ontbrekende prijzen en garanties:** in de teksten staan open plekken als `[PRIJS: …]` en `[GARANTIE: …]`; op de site zijn ze geel gemarkeerd. `npm run todo` toont ze allemaal. Vul ze in vóór de lancering.
 - **Bedrijfsgegevens:** enkel in `src/data/site.ts`.
 - **Share-afbeelding en icoon** opnieuw genereren: `npm run brand`.

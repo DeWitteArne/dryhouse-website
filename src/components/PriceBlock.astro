@@ -90,7 +90,7 @@ const both = (excl: number, to?: number) => ({ be: range(withVat(excl), to && wi
       {p.pro ? copy.pro : <><span class="when-be">{copy.vatBe}</span><span class="when-nl">{copy.vatNl}</span></>} {copy.note}
     </p>
 
-    {p.calculator && <PriceCalculator client:idle lang={lang} kind={p.calculator} quote={`${paths.offerte[lang]}?probleem=${slug}`} />}
+    {p.calculator && <div class="mt-8"><PriceCalculator client:idle lang={lang} kind={p.calculator} quote={paths.offerte[lang]} /></div>}
 
     <ul class="mt-6 grid gap-2 text-sm">
       <li class="flex gap-2"><Icon name="shield" class="size-5 shrink-0 text-tide-500" />{copy.guarantee}{devices && `; ${copy.devices}`}.</li>

@@ -70,7 +70,7 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
     </nav>
 
     <div class="flex items-center gap-2">
-      <div class:list={['hidden items-center gap-1', lang === 'fr' ? '2xl:flex' : 'xl:flex']}>
+      <div class="hidden items-center gap-1 2xl:flex">
         <div role="group" aria-label={t.chooseCountry} class="flex rounded-full bg-current/6 p-0.5 text-xs font-semibold">
           {(['be', 'nl'] as const).map((land) => (
             <button type="button" data-set-land={land} aria-pressed={land === 'be' ? 'true' : 'false'} title={t.countries[land]} class="rounded-full px-2.5 py-1 uppercase opacity-60 transition aria-pressed:bg-white aria-pressed:text-ink aria-pressed:opacity-100 aria-pressed:shadow-sm">
