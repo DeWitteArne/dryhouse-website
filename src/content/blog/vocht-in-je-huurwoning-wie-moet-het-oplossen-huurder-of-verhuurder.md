@@ -2,6 +2,7 @@
 title: "Vocht in je huurwoning: wie moet het oplossen, huurder of verhuurder?"
 description: "Een schimmelplek in de slaapkamer, een klamme muur in de living of een muffe geur die maar niet verdwijnt: vochtproblemen in een huurwoning leiden bijna…"
 pubDate: 2026-08-14
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/vocht-in-je-huurwoning-wie-moet-het-oplossen-huurder-of-verhuurder/cover.jpg"
 heroAlt: "Vocht in je huurwoning: wie moet het oplossen, huurder of verhuurder?"
 wixSlug: "vocht-in-je-huurwoning-wie-moet-het-oplossen-huurder-of-verhuurder"
@@ -57,7 +58,7 @@ Of je nu huurder bent en wilt aantonen dat het probleem niet aan jou ligt, of ve
 - Gratis en vrijblijvende vochtdiagnose ter plaatse
 - Objectieve vaststelling van de oorzaak: structureel gebrek of gebruiksprobleem
 - Definitieve behandeling van opstijgend vocht, doorslaand vocht, condensatie en keldervocht
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Laat een vochtprobleem geen slepend conflict worden. Neem vandaag nog contact op met Dryhouse voor een gratis vochtdiagnose — en zorg dat de woning weer gezond en droog wordt, voor bewoner én eigenaar.

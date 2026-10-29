@@ -2,6 +2,7 @@
 title: "Je kelder als extra leefruimte: zo maak je van een vochtige kelder een droge, bruikbare ruimte"
 description: "Veel woningen hebben een kelder die nauwelijks gebruikt wordt: een donkere, klamme ruimte waar je hooguit wat oude spullen of de wasmachine kwijt kunt."
 pubDate: 2026-06-05
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/je-kelder-als-extra-leefruimte-zo-maak-je-van-een-vochtige-kelder-een-droge-bruikbare-ruimte/cover.jpg"
 heroAlt: "Je kelder als extra leefruimte: zo maak je van een vochtige kelder een droge, bruikbare ruimte"
 wixSlug: "je-kelder-als-extra-leefruimte-zo-maak-je-van-een-vochtige-kelder-een-droge-bruikbare-ruimte"
@@ -75,7 +76,7 @@ Droom je van een extra kamer, maar staat een vochtige kelder je in de weg? Dryho
 
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Kelderbekuiping, injectie tegen opstijgend vocht en waterdichting op maat
-- 30 jaar garantie op onze vochtbehandelingen
+- 10 jaar garantie op kelderdichting, 30 jaar op de injectie tegen opstijgend vocht
 - Vakkundige aanpak van A tot Z, met oog voor een nette afwerking
 - Gevestigd in Sint-Niklaas, actief in heel België
 

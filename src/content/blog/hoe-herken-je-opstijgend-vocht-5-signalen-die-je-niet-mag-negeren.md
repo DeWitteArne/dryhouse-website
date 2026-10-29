@@ -8,45 +8,47 @@ wixSlug: "hoe-herken-je-opstijgend-vocht-5-signalen-die-je-niet-mag-negeren"
 category: "advies"
 draft: false
 ---
-Opstijgend vocht is een van de meest voorkomende vochtproblemen in Belgische woningen. Toch wordt het vaak pas laat herkend, wanneer de schade al aanzienlijk is. In dit artikel leggen we uit hoe je opstijgend vocht vroegtijdig kunt herkennen en wat je eraan kunt doen.
+Opstijgend vocht is een van de meest voorkomende vochtproblemen in Belgische woningen. Toch wordt het vaak pas laat herkend, wanneer pleister en verf al beschadigd zijn. In dit artikel lees je aan welke vijf signalen je opstijgend vocht herkent en wat je eraan doet.
 
 ## 1. Vochtplekken onderaan de muur
 
-Het meest zichtbare teken van opstijgend vocht zijn donkere vlekken of verkleuringen aan de onderkant van binnenmuren. Deze vlekken bevinden zich doorgaans tot 1 meter hoogte en zijn het gevolg van grondwater dat via de muur naar boven trekt.
+Het duidelijkste teken van opstijgend vocht zijn donkere vlekken of verkleuringen onderaan de muur, vaak met een horizontale rand. Ze reiken doorgaans tot ongeveer 1 meter hoogte. Ze ontstaan doordat grondvocht via de capillairen in de steen omhoog trekt, omdat een goede waterkering ontbreekt.
 
-Let vooral op in kamers op het gelijkvloers — daar manifesteert het probleem zich het eerst.
+Controleer vooral de kamers op het gelijkvloers, ook de binnenmuren. Daar zie je het probleem het eerst.
 
 ## 2. Afbladderende verf en loszittend behang
 
-Wanneer vocht door de muur trekt, duwt het de afwerkingslaag letterlijk van de muur. Je merkt dit aan verf die begint te bladderen, behang dat loslaat of pleisterwerk dat afbrokkelt.
+Vocht en zouten in de muur doen de afwerking loskomen. Je ziet verf die bladdert, behang dat loslaat of pleister die afbrokkelt, vooral onderaan de muur.
 
-Dit is geen cosmetisch probleem — het wijst op een structureel vochtprobleem dat zo snel mogelijk aangepakt moet worden.
+Dat is geen cosmetisch probleem. Het vocht zit in de muur zelf, dus een nieuwe laag verf lost niets op.
 
 ## 3. Witte uitbloeiingen (zoutafzetting)
 
-Zie je een wit, poederachtig laagje op je muren? Dat zijn zouten die door het opstijgende vocht worden meegevoerd en achterblijven wanneer het water verdampt.
+Zie je een wit, poederachtig laagje op je muren? Dat zijn zouten die het opstijgende vocht uit de grond meebrengt. Ze blijven achter wanneer het water aan het oppervlak verdampt. In de volksmond heet dat salpeter.
 
-Deze zoutuitbloeiingen zijn een duidelijk signaal dat er actief vochttransport plaatsvindt in je muren.
+Zoutuitbloei is een duidelijk signaal dat er vocht door je muur beweegt. Meer daarover lees je in [Salpeter op de muur: oorzaak en oplossing](/post/salpeter-op-de-muur-oorzaak-en-oplossing).
 
 ## 4. Muffe geur en schimmelvorming
 
-Een aanhoudende muffe geur in bepaalde kamers is vaak een teken van verborgen vochtproblemen. In combinatie met zichtbare schimmelplekken — vooral in hoeken en achter meubels — wijst dit sterk op opstijgend vocht of een ander chronisch vochtprobleem.
+Een aanhoudende muffe geur in bepaalde kamers wijst op vocht in de muren. Let wel op de plaats van de schimmel. Schimmel onderaan de muur, samen met een vochtrand, past bij opstijgend vocht. Zwarte stippen hoog in hoeken, rond ramen of achter kasten tegen een buitenmuur wijzen eerder op condensatie. In [Condens of opstijgend vocht? Zo zie je het verschil](/post/condens-of-opstijgend-vocht-zo-zie-je-het-verschil) lees je hoe je beide onderscheidt.
 
 ## 5. Koude en vochtige muren
 
-Voel eens aan de onderkant van je muren. Voelen ze koud en klam aan? Dan is de kans groot dat er vocht in de muur zit.
+Voel aan de onderkant van je muren. Voelen ze koud en klam aan, ook in een droge periode? Dan zit er waarschijnlijk vocht in de muur. Een vochtmeter geeft meer zekerheid, maar zouten in de pleister kunnen de meting vertekenen.
 
-Vochtige muren verliezen bovendien hun isolerend vermogen, waardoor je stookkosten onnodig stijgen.
+Een vochtige muur isoleert bovendien slechter, waardoor je meer verwarmt.
 
 ## Wat kun je eraan doen?
 
-Als je een of meerdere van bovenstaande signalen herkent, is het belangrijk om snel te handelen. Hoe langer je wacht, hoe groter de schade en hoe duurder de herstelling.
+Herken je een of meerdere van deze signalen? Wacht dan niet te lang. Hoe langer het vocht in de muur zit, hoe meer pleister vervangen moet worden.
 
-Bij Dryhouse bieden we een gratis vochtdiagnose aan waarbij we het probleem nauwkeurig in kaart brengen:
+De oplossing voor opstijgend vocht is een [injectie](/opstijgend-vocht): een rij gaatjes net boven de vloer, gevuld met een waterafstotende crème die een nieuwe vochtkering vormt. Wat dat kost, lees je in [Wat kost muurinjectie tegen opstijgend vocht?](/post/muren-injecteren-info-prijzen) Twijfel je nog over de oorzaak? Doe dan eerst de online [vochtcheck](/vochtcheck).
+
+Bij Dryhouse begint elke behandeling met een diagnose ter plaatse:
 
 - Gratis en vrijblijvende vochtanalyse ter plaatse
 - Professionele muurinjectie met 30 jaar garantie
 - Vakkundige afwerking en herstel van beschadigde muren
 - Advies op maat voor jouw specifieke situatie
 
-**Neem vandaag nog contact op met Dryhouse** voor een gratis inspectie. Hoe sneller je het probleem aanpakt, hoe beter je woning beschermd is.
+[Vraag een gratis diagnose aan](/offerte-aanvragen?probleem=opstijgend-vocht). We werken vanuit Sint-Niklaas in België en Nederland.

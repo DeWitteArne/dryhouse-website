@@ -4,6 +4,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import CtaCard from '@/components/CtaCard.astro';
 import Icon from '@/components/Icon.astro';
 import { countries, localCountry, localRegion, regionsIn, type Region } from '@/data/regions';
+import { citiesIn, cityPath } from '@/data/cities';
 import { localService, services, serviceBySlug } from '@/data/services';
 import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
 import { langFromUrl, other, paths, ui } from '@/i18n';
@@ -28,10 +29,12 @@ const common = region.common.map(serviceBySlug).filter((s) => s !== undefined).m
 const neighbours = regionsIn(region.country).filter((r) => r.slug !== region.slug).map((r) => localRegion(r, lang));
 const allServices = services.map((s) => localService(s, lang));
 const cityList = region.cities.slice(0, 3).join(', ');
+// City pages are Dutch only.
+const cityPages = lang === 'nl' ? citiesIn(region.country, region.slug) : [];
 const copy = {
   nl: {
     title: `Vochtbestrijding ${name} | Gratis diagnose`,
-    description: `Vochtproblemen ${region.inName}? Dryhouse behandelt opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${cityList} en omgeving. 30 jaar garantie.`,
+    description: `Vochtproblemen ${region.inName}? Dryhouse behandelt opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${cityList} en omgeving. Tot 30 jaar garantie.`,
     serviceName: `Vochtbestrijding ${name}`,
     h1: `Vochtbestrijding ${region.inName}`,
     problems: `Vochtproblemen ${region.inName}`,
@@ -46,7 +49,7 @@ const copy = {
   },
   fr: {
     title: `Traitement de l’humidité ${region.inName} | Diagnostic gratuit`,
-    description: `Problème d’humidité ${region.inName} ? Dryhouse traite l’humidité ascensionnelle, les infiltrations, les moisissures et les caves humides à ${cityList} et environs. 30 ans de garantie.`,
+    description: `Problème d’humidité ${region.inName} ? Dryhouse traite l’humidité ascensionnelle, les infiltrations, les moisissures et les caves humides à ${cityList} et environs. Jusqu’à 30 ans de garantie.`,
     serviceName: `Traitement de l’humidité ${region.inName}`,
     h1: `Traitement de l’humidité ${region.inName}`,
     problems: `Problèmes d’humidité ${region.inName}`,
@@ -75,7 +78,7 @@ const copy = {
       <h1 class="mt-4 max-w-4xl text-[clamp(2.5rem,1.6rem+3.8vw,4.75rem)] leading-[0.98] font-semibold">{copy.h1}</h1>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">{region.intro}</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href={paths.offerte[lang]} class="btn-primary">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
+        <a href={paths.offerte[lang]} class="btn-primary">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
         <a href={paths.vochtcheck[lang]} class="btn-ghost">{t.doVochtcheck}</a>
       </div>
     </div>
@@ -109,6 +112,11 @@ const copy = {
           {region.cities.map((c) => <li class="rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-ink/8">{c}</li>)}
         </ul>
         <p class="mt-4 text-sm text-ink/65">{copy.townsMissing}</p>
+        {cityPages.length > 0 && (
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {cityPages.map((c) => <li><a href={cityPath(c)} class="inline-flex items-center gap-1.5 rounded-full bg-tide-50 px-4 py-2 text-sm font-semibold text-tide-600 transition-colors hover:bg-tide-500 hover:text-white">Vochtbestrijding {c.name} <Icon name="arrow" class="size-3.5" /></a></li>)}
+          </ul>
+        )}
 
         <h2 class="mt-16 text-[1.9rem] leading-tight">{copy.allServices}</h2>
         <ul class="mt-5 flex flex-wrap gap-2">

@@ -2,6 +2,7 @@
 title: "Schimmel in de badkamer? Zo pak je het probleem definitief aan"
 description: "Zwarte vlekken in de voegen, een muffe geur en schimmelplekken op het plafond — schimmel in de badkamer is een probleem waar veel Belgische huiseigenaren…"
 pubDate: 2026-05-22
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/schimmel-in-de-badkamer-zo-pak-je-het-probleem-definitief-aan/cover.jpg"
 heroAlt: "Schimmel in de badkamer? Zo pak je het probleem definitief aan"
 wixSlug: "schimmel-in-de-badkamer-zo-pak-je-het-probleem-definitief-aan"
@@ -84,7 +85,7 @@ Bij Dryhouse zijn we gespecialiseerd in het opsporen en behandelen van alle soor
 
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Meer dan 20 jaar ervaring in vochtbestrijding
-- Professionele behandeling met 30 jaar garantie
+- Professionele behandeling met tot 30 jaar garantie
 - Vakkundige afwerking en herstelwerken
 
 Neem vandaag nog contact op met Dryhouse voor een gratis inspectie. Samen zorgen we ervoor dat uw badkamer — en uw hele woning — weer gezond en droog wordt.

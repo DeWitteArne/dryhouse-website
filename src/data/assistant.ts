@@ -17,7 +17,7 @@ export interface ChatNode {
   options: Option[];
 }
 
-const diagnose = (slug?: string): Option => ({ label: 'Gratis diagnose aanvragen', href: slug ? `/offerte-aanvragen?probleem=${slug}` : '/offerte-aanvragen' });
+const diagnose = (slug?: string): Option => ({ label: 'Vraag advies of offerte aan', href: slug ? `/offerte-aanvragen?probleem=${slug}` : '/offerte-aanvragen' });
 const back: Option = { label: 'Andere vraag', next: 'menu' };
 
 export const nodes: Record<string, ChatNode> = {
@@ -25,6 +25,7 @@ export const nodes: Record<string, ChatNode> = {
     say: ['Hallo! Ik ben de digitale assistent van Dryhouse.', 'Waarmee kan ik je helpen? Kies hieronder of typ je vraag.'],
     options: [
       { label: 'Ik heb een vochtprobleem', next: 'probleem' },
+      { label: 'Gevel, isolatie, coatings of ander werk', next: 'werken' },
       { label: 'Wat kost een behandeling?', next: 'prijs' },
       { label: 'Komen jullie bij mij langs?', next: 'regio' },
       { label: 'Hoeveel garantie krijg ik?', next: 'garantie' },
@@ -35,6 +36,7 @@ export const nodes: Record<string, ChatNode> = {
     say: ['Waarmee kan ik je nog helpen?'],
     options: [
       { label: 'Ik heb een vochtprobleem', next: 'probleem' },
+      { label: 'Gevel, isolatie, coatings of ander werk', next: 'werken' },
       { label: 'Wat kost een behandeling?', next: 'prijs' },
       { label: 'Komen jullie bij mij langs?', next: 'regio' },
       { label: 'Ik wil iemand spreken', next: 'contact' },
@@ -53,8 +55,8 @@ export const nodes: Record<string, ChatNode> = {
   },
   opstijgend: {
     say: [
-      'Dat klinkt als opstijgend vocht: grondvocht dat via de poriën omhoog in de muur trekt. Typisch is een horizontale zoutrand tot zo’n meter hoog, met bladderende verf en een muffe geur.',
-      'We stoppen het met een injectie die een nieuwe vochtkering in de muur vormt, met tot 30 jaar garantie. Meer uitleg vind je bij [opstijgend vocht](/opstijgend-vocht).',
+      'Dat klinkt als opstijgend vocht: grondvocht dat via de poriën omhoog in de muur trekt. Typisch is een horizontale zoutrand tot zo’n meter hoog, met loskomende pleister en afbladderende verf.',
+      'We stoppen het met een injectie die een nieuwe vochtkering in de muur vormt, met 30 jaar garantie. Meer uitleg vind je bij [opstijgend vocht](/opstijgend-vocht).',
     ],
     options: [diagnose('opstijgend-vocht'), { label: 'Doe de vochtcheck', href: '/vochtcheck' }, back],
   },
@@ -63,28 +65,35 @@ export const nodes: Record<string, ChatNode> = {
       'Vlekken die groter worden na regen wijzen meestal op doorslaand vocht: regenwater dat door de gevel dringt, via poreuze stenen, slechte voegen of scheuren.',
       'We zoeken waar het water binnenkomt, herstellen dat en maken de gevel waterafstotend. Lees meer over [doorslaand vocht](/doorslaand-vocht).',
     ],
-    options: [diagnose('doorslaand-vocht'), { label: 'Meer over gevelwerken', href: '/gevelwerken' }, back],
+    options: [diagnose('doorslaand-vocht'), { label: 'Meer over gevelrenovatie', href: '/gevelrenovatie' }, back],
   },
   condensatie: {
     say: [
       'Beslagen ramen en schimmel in koude hoeken of achter kasten komen bijna altijd door condensatie: vochtige binnenlucht die neerslaat op koude oppervlakken.',
-      'Schimmel wegpoetsen helpt maar even. We pakken de oorzaak aan, meestal met ventilatie op maat. Meer bij [condensatie & schimmel](/condensatie-schimmels).',
+      'Schimmel wegpoetsen helpt maar even. We pakken de oorzaak aan, meestal met ventilatie op maat. Meer bij [condensatie & schimmel](/ventilatie-schimmel).',
     ],
-    options: [diagnose('condensatie-schimmels'), { label: 'Doe de vochtcheck', href: '/vochtcheck' }, back],
+    options: [diagnose('ventilatie-schimmel'), { label: 'Doe de vochtcheck', href: '/vochtcheck' }, back],
   },
   kelder: {
     say: [
       'Een natte kelder kan van grondwater komen dat door muren en vloer drukt, of van scheuren en lekkende naden. Dryhouse maakte al meer dan 1.000 kelders waterdicht.',
-      'Ook bij grondwaterdruk maken we je kelder droog. Lees meer over [kelderdichting](/kelderdichtingen).',
+      'Ook bij grondwaterdruk maken we je kelder droog: met een bekuiping aan de binnenkant, [drainage naar een pompput](/kelderdrainage) of een [afdichting langs de buitenzijde](/buitenafdichting-kelder). Lees meer over [kelderdichting](/kelder-waterdicht-maken).',
     ],
-    options: [diagnose('kelderdichtingen'), back],
+    options: [diagnose('kelder-waterdicht-maken'), back],
   },
   beton: {
     say: [
       'Scheuren waar water door komt dichten we met een betoninjectie. Zie je roestvlekken of brokkelt het beton af, dan gaat het vaak om betonrot: de wapening roest en duwt het beton weg.',
-      'Meer uitleg: [betoninjectie](/betoninjectie), [betonrot](/betonrot) en [liftputten](/liftputten).',
+      'Meer uitleg: [betoninjectie](/betoninjectie), [betonrot](/betonrot-herstellen) en [liftputten](/liftputten).',
     ],
     options: [diagnose('betoninjectie'), back],
+  },
+  werken: {
+    say: [
+      'Naast vochtbestrijding doen we ook [gevelrenovatie](/gevelrenovatie), [gevelreiniging](/reinigingstechnieken), [isolatie](/isolatie), [coatings](/coatings) voor vloeren, daken en terrassen, [betonrotherstel](/betonrot-herstellen) en [ventilatie](/ventilatie-schimmel).',
+      'Vertel ons wat je wil laten doen, dan komen we gratis kijken en krijg je een heldere offerte.',
+    ],
+    options: [diagnose(), { label: 'Bel ons', href: '$tel' }, back],
   },
   onbekend: {
     say: [
@@ -95,8 +104,8 @@ export const nodes: Record<string, ChatNode> = {
   },
   prijs: {
     say: [
-      'Elke woning en elk vochtprobleem is anders, dus een prijs geven zonder de situatie te zien zou niet eerlijk zijn.',
-      'Wat wel vastligt: de diagnose bij je thuis is gratis en vrijblijvend. We meten het vocht, zoeken de oorzaak en je krijgt een duidelijke offerte.',
+      'Enkele richtprijzen in België, incl. 6 % btw: een muurinjectie tegen opstijgend vocht kost € 95 – € 117 per lopende meter, een kelder waterdicht maken € 5.300 – € 21.200 als project, alles inbegrepen. Op de pagina’s [opstijgend vocht](/opstijgend-vocht#prijs) en [kelderdichting](/kelder-waterdicht-maken#prijs) bereken je zelf een vork.',
+      'De exacte prijs volgt na de diagnose bij je thuis, en die is gratis en vrijblijvend. We nemen binnen 2 werkdagen contact op en de offerte volgt binnen een week na de diagnose.',
     ],
     options: [diagnose(), { label: 'Bel ons', href: '$tel' }, { label: 'Zijn er premies?', next: 'premie' }, back],
   },
@@ -123,7 +132,7 @@ export const nodes: Record<string, ChatNode> = {
     options: [diagnose(), { label: 'Bel ons', href: '$tel' }, back],
   },
   garantie: {
-    say: ['Op onze behandelingen tegen vocht krijg je tot 30 jaar garantie. Welke garantie precies bij jouw behandeling hoort, staat zwart op wit in je offerte.'],
+    say: ['Op de behandeling tegen opstijgend vocht krijg je 30 jaar garantie, op al onze andere werken 10 jaar. Voor elektrische toestellen, zoals een ventilatie-unit of een pomp, geldt 2 jaar, soms 5 jaar na registratie bij de leverancier. Je garantie staat zwart op wit in je offerte.'],
     options: [diagnose(), back],
   },
   duur: {

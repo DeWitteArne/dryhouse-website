@@ -6,7 +6,7 @@
 export const site = {
   name: 'Dryhouse',
   legalName: 'Dryhouse BV',
-  tagline: 'Vochtbestrijding met 30 jaar garantie',
+  tagline: 'Specialist in droge en gezonde gebouwen',
   url: 'https://www.dryhouse.be',
   email: 'info@dryhouse.be',
   phone: '+32486201010',

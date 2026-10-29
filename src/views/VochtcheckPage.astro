@@ -3,13 +3,13 @@ import Base from '@/layouts/Base.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Faq from '@/components/Faq.astro';
 import Vochtcheck from '@/components/react/Vochtcheck';
-import { localService, services } from '@/data/services';
+import { localService, serviceBySlug } from '@/data/services';
 import { breadcrumbSchema, faqSchema } from '@/lib/schema';
 import { langFromUrl, other, paths, ui } from '@/i18n';
 
 const lang = langFromUrl(Astro.url);
 const t = ui[lang];
-const types = services.filter((s) => s.group === 'vocht').map((s) => localService(s, lang));
+const types = ['opstijgend-vocht', 'doorslaand-vocht', 'ventilatie-schimmel', 'kelder-waterdicht-maken'].map((slug) => localService(serviceBySlug(slug)!, lang));
 const copy = {
   nl: {
     crumb: 'Vochtcheck',
@@ -17,7 +17,7 @@ const copy = {
     description: 'Vochtvlekken, schimmel of een zoutrand? Beantwoord 5 vragen en ontdek in één minuut welk vochtprobleem je waarschijnlijk hebt en wat eraan te doen is.',
     eyebrow: 'Gratis & anoniem',
     h1: 'Welk vocht­probleem heb je?',
-    intro: 'Vijf korte vragen, één minuut. Je krijgt meteen een inschatting van het probleem en wat je eraan kan doen.',
+    intro: 'Vijf korte vragen, één minuut. Eerst: waar zit het probleem? Je krijgt meteen een inschatting van het probleem en wat je eraan kan doen.',
     typesTitle: 'De vier meest voorkomende vochtproblemen',
     readMore: 'Lees meer →',
     faqTitle: 'Over de vochtcheck',

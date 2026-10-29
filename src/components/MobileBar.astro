@@ -1,0 +1,19 @@
+---
+/**
+ * Fixed bar at the bottom of the screen on phones: call or ask for a quote,
+ * from anywhere on the site. The phone number follows the BE/NL choice.
+ */
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+import { langFromUrl, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+---
+
+<div class="fixed inset-x-0 bottom-0 z-30 border-t border-ink/8 bg-sand-50/92 px-3 pt-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] backdrop-blur-xl md:hidden">
+  <div class="mr-[4.25rem] grid grid-cols-[auto_1fr] gap-2">
+    <a href={`tel:${site.phone}`} data-phone class="btn-ghost !gap-1.5 !px-4 !py-3 text-[0.95rem] whitespace-nowrap"><Icon name="phone" class="size-4" />{t.callUs}</a>
+    <a href={paths.offerte[lang]} class="btn-primary !px-4 !py-3 text-[0.95rem] whitespace-nowrap">{t.quoteShort}</a>
+  </div>
+</div>

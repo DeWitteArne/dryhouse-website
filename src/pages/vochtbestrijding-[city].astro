@@ -1,0 +1,10 @@
+---
+import City from '@/views/City.astro';
+import { cities } from '@/data/cities';
+
+export function getStaticPaths() {
+  return cities.map((city) => ({ params: { city: city.slug }, props: { city } }));
+}
+---
+
+<City city={Astro.props.city} />

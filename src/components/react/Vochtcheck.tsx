@@ -26,15 +26,26 @@ interface Question {
 
 const QUESTIONS: Question[] = [
   {
+    id: 'zone',
+    title: 'Waar doet het probleem zich voor?',
+    options: [
+      { label: 'In de kelder', score: { basement: 4 } },
+      { label: 'Aan een muur binnen', score: { rising: 2, condensation: 1 } },
+      { label: 'Aan de gevel', hint: 'de buitenkant van de muur', score: { penetrating: 4 } },
+      { label: 'Aan het plafond', score: { condensation: 2, penetrating: 1 } },
+      { label: 'In beton', hint: 'balkon, garage, terras, liftput', score: { concrete: 4 } },
+    ],
+  },
+  {
     id: 'waar',
-    title: 'Waar zie je het vochtprobleem?',
+    title: 'Waar zie je het precies?',
     options: [
       { label: 'Onderaan de muur', hint: 'tot ongeveer een meter hoog', score: { rising: 3 } },
-      { label: 'Hoger op de muur of aan het plafond', score: { penetrating: 2, condensation: 1 } },
-      { label: 'In de kelder', score: { basement: 3 } },
+      { label: 'Hoger op de muur', score: { penetrating: 2, condensation: 1 } },
+      { label: 'Waar muur en vloer samenkomen', score: { basement: 2, rising: 1 } },
       { label: 'Rond ramen, in hoeken of achter kasten', score: { condensation: 3 } },
       { label: 'In de badkamer', score: { condensation: 3 } },
-      { label: 'In beton', hint: 'garage, terras, liftput', score: { concrete: 3 } },
+      { label: 'Op meerdere plaatsen', score: {} },
     ],
   },
   {
@@ -63,16 +74,6 @@ const QUESTIONS: Question[] = [
     ],
   },
   {
-    id: 'muur',
-    title: 'Over welke muur gaat het?',
-    options: [
-      { label: 'Een buitenmuur aan de weerkant', hint: 'meestal west of zuidwest', score: { penetrating: 2, condensation: 1 } },
-      { label: 'Een binnenmuur of tussenmuur', score: { rising: 2 } },
-      { label: 'Een keldermuur', score: { basement: 2 } },
-      { label: 'Meerdere muren of ik weet het niet', score: {} },
-    ],
-  },
-  {
     id: 'leeftijd',
     title: 'Hoe oud is je woning?',
     options: [
@@ -86,15 +87,19 @@ const QUESTIONS: Question[] = [
 
 /** French wording per question id: [title, help?] and one [label, hint?] per option, in the same order. */
 const QUESTIONS_FR: Record<string, { title: string; help?: string; options: [string, string?][] }> = {
+  zone: {
+    title: 'Où se situe le problème ?',
+    options: [['Dans la cave'], ['Sur un mur intérieur'], ['En façade', 'la face extérieure du mur'], ['Au plafond'], ['Dans du béton', 'balcon, garage, terrasse, fosse d’ascenseur']],
+  },
   waar: {
-    title: 'Où voyez-vous le problème d’humidité ?',
+    title: 'Où le voyez-vous exactement ?',
     options: [
       ['En bas du mur', 'jusqu’à environ un mètre de hauteur'],
-      ['Plus haut sur le mur ou au plafond'],
-      ['Dans la cave'],
+      ['Plus haut sur le mur'],
+      ['À la jonction du mur et du sol'],
       ['Autour des fenêtres, dans les coins ou derrière les meubles'],
       ['Dans la salle de bain'],
-      ['Dans du béton', 'garage, terrasse, fosse d’ascenseur'],
+      ['À plusieurs endroits'],
     ],
   },
   wat: {
@@ -112,15 +117,6 @@ const QUESTIONS_FR: Record<string, { title: string; help?: string; options: [str
   wanneer: {
     title: 'Quand est-ce le pire ?',
     options: [['Après une averse'], ['En hiver, quand il fait froid'], ['En été'], ['Toute l’année'], ['Aucune idée']],
-  },
-  muur: {
-    title: 'De quel mur s’agit-il ?',
-    options: [
-      ['Un mur extérieur exposé aux intempéries', 'généralement ouest ou sud-ouest'],
-      ['Un mur intérieur ou un mur de refend'],
-      ['Un mur de cave'],
-      ['Plusieurs murs, ou je ne sais pas'],
-    ],
   },
   leeftijd: {
     title: 'Quel est l’âge de votre habitation ?',
@@ -172,7 +168,7 @@ const UI = {
     next: 'Volgende',
     unsureTitle: 'We kunnen het niet goed inschatten.',
     unsureText: 'Geen probleem: een vochtdiagnose ter plaatse geeft zekerheid, en die is gratis.',
-    requestDiagnose: 'Gratis diagnose aanvragen',
+    requestDiagnose: 'Vraag advies of offerte aan',
     likely: 'Waarschijnlijk gaat het om',
     tip: 'Tip: ',
     alsoPossible: 'Ook mogelijk: ',
@@ -190,7 +186,7 @@ const UI = {
     next: 'Suivant',
     unsureTitle: 'Nous ne pouvons pas bien l’estimer.',
     unsureText: 'Pas de souci : un diagnostic sur place vous donne une certitude, et il est gratuit.',
-    requestDiagnose: 'Demander un diagnostic gratuit',
+    requestDiagnose: 'Demandez conseil ou un devis',
     likely: 'Il s’agit probablement de',
     tip: 'Conseil : ',
     alsoPossible: 'Également possible : ',
@@ -208,7 +204,7 @@ const RESULTS: Record<Problem, { name: string; slug: string; summary: string; ti
   rising: {
     name: 'Opstijgend vocht',
     slug: 'opstijgend-vocht',
-    summary: 'Vocht uit de grond kruipt omhoog in je muren, omdat er geen (werkende) vochtkering is. Dat zie je aan een zoutrand en schade onderaan de muur.',
+    summary: 'Vocht uit de grond trekt op in je muren, omdat er geen (werkende) vochtkering is. Dat zie je aan een zoutrand en schade onderaan de muur.',
     tip: 'Verf of folie verstopt het probleem enkel. Een injectie met een vochtscherm pakt de oorzaak aan.',
   },
   penetrating: {
@@ -219,13 +215,13 @@ const RESULTS: Record<Problem, { name: string; slug: string; summary: string; ti
   },
   condensation: {
     name: 'Condensatie en schimmel',
-    slug: 'condensatie-schimmels',
+    slug: 'ventilatie-schimmel',
     summary: 'Er zit te veel vocht in de lucht in huis. Dat slaat neer op koude plekken en zorgt voor schimmel.',
     tip: 'Verlucht dagelijks kort en krachtig, en zet geen kasten tegen koude buitenmuren. Blijft het terugkomen, dan is ventilatie op maat nodig.',
   },
   basement: {
     name: 'Vochtige kelder',
-    slug: 'kelderdichtingen',
+    slug: 'kelder-waterdicht-maken',
     summary: 'Je kelder krijgt water binnen van buitenaf (infiltratie), heeft last van condensatie, of beide.',
     tip: 'Is je kelder vooral in de zomer vochtig? Verlucht dan net niet op warme dagen: de warme lucht brengt vocht mee naar binnen.',
   },

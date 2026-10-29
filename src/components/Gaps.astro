@@ -1,0 +1,10 @@
+---
+/**
+ * Highlights content gaps such as "[PRIJS: kelderbekuiping per m²]" or "[GARANTIE: termijn bevestigen]"
+ * in rendered Markdown, so they stand out until Dryhouse fills them in. `npm run todo` lists them all.
+ */
+const html = await Astro.slots.render('default');
+const marked = html.replace(/\[(?:PRIJS|GARANTIE):[^\]<]+\]/g, (gap) => `<mark class="gap">${gap}</mark>`);
+---
+
+<Fragment set:html={marked} />

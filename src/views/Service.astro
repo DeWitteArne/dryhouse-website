@@ -1,4 +1,6 @@
 ---
+import Gaps from '@/components/Gaps.astro';
+import PriceBlock from '@/components/PriceBlock.astro';
 import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
@@ -6,6 +8,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import CtaCard from '@/components/CtaCard.astro';
 import Faq from '@/components/Faq.astro';
 import Icon from '@/components/Icon.astro';
+import WallStory from '@/components/react/WallStory';
 import { localService, serviceBySlug } from '@/data/services';
 import { countries, localCountry, localRegion, regionsIn } from '@/data/regions';
 import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema';
@@ -43,6 +46,9 @@ const copy = {
     related: 'Gerelateerde diensten',
     areaTitle: `${meta.name} in België en Nederland`,
     areaText: `We behandelen ${lower} in elke provincie. Bekijk wat we in jouw regio doen:`,
+    storyEyebrow: 'Zo werkt een injectie',
+    storyTitle: 'Van natte muurvoet tot droge muur',
+    storyText: 'Scroll mee: we boren net boven de vloer, injecteren een vochtscherm in het metselwerk en laten de muur daarboven uitdrogen. Daarna werken we af met een aangepaste pleister.',
   },
   fr: {
     eyebrow: 'Service',
@@ -75,7 +81,7 @@ const copy = {
         <h1 class="mt-4 text-[clamp(2.5rem,1.6rem+3.8vw,4.75rem)] leading-[0.98] font-semibold">{d.h1}</h1>
         <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">{d.intro}</p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={`${paths.offerte[lang]}?probleem=${slug}`} class="btn-primary">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
+          <a href={`${paths.offerte[lang]}?probleem=${slug}`} class="btn-primary">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
           <a href={paths.vochtcheck[lang]} class="btn-ghost">{t.doVochtcheck}</a>
         </div>
       </div>
@@ -114,11 +120,23 @@ const copy = {
     </section>
   )}
 
-  <section class="pb-20 sm:pb-28">
+  {slug === 'opstijgend-vocht' && (
+    <WallStory client:idle lang={lang}>
+      <p class="eyebrow">{copy.storyEyebrow}</p>
+      <h2 class="mt-4 text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] leading-tight">{copy.storyTitle}</h2>
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink/70">{copy.storyText}</p>
+      <a href={`${paths.offerte[lang]}?probleem=${slug}`} class="btn-primary mt-8">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
+    </WallStory>
+  )}
+
+  <section class:list={['pb-20 sm:pb-28', slug === 'opstijgend-vocht' && 'pt-20 sm:pt-24']}>
     <div class="container-x grid gap-14 lg:grid-cols-[1fr_22rem]">
-      <article class="prose-dh">
-        <Content />
-      </article>
+      <div>
+        <article class="prose-dh">
+          <Gaps><Content /></Gaps>
+        </article>
+        <PriceBlock slug={base.slug} lang={lang} />
+      </div>
       <div class="lg:sticky lg:top-28 lg:self-start">
         <CtaCard />
       </div>

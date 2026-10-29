@@ -26,12 +26,14 @@ npm run check      # typecheck
 | `src/i18n/index.ts` | Talen: Nederlands (zonder prefix) en Frans (`/fr/...`). Vaste URL's per taal en gedeelde teksten (menu, footer, knoppen). |
 | `src/views/*.astro` | De pagina's zelf, één sjabloon voor beide talen. De routes in `src/pages` en `src/pages/fr` zijn enkel doorgeefluiken. Paginateksten staan bovenaan elk sjabloon in een `nl`- en een `fr`-blok. |
 | `src/data/site.ts` | Bedrijfsgegevens (adres, telefoon, BTW, sociale media). Eén bron voor header, footer, contact en structured data. |
-| `src/data/services.ts` | De diensten, menuvolgorde en korte omschrijving. Slugs = de oude Wix-URL's. |
+| `src/data/services.ts` | De diensten in menuvolgorde = volgorde van de kaarten "Onze specialisaties" op de homepage. Hernoemde slugs hebben een 301 in `public/_redirects`. |
 | `src/content/services/*.md` | Inhoud per dienstpagina: SEO-titel, symptomen, aanpak, FAQ en tekst. Franse versie in `src/content/services/fr/` (zelfde bestandsnaam). |
 | `src/content/blog/*.md` | Blogartikels (`/post/<slug>`, zelfde URL's als op Wix). |
 | `src/data/regions.fr.ts` | Franse namen, URL's en teksten van landen en provincies. |
 | `src/data/regions.ts` | Werkgebied in België en Nederland: één pagina per land (`/vochtbestrijding/<land>`) en per provincie (`/vochtbestrijding/<land>/<provincie>`). |
-| `src/components/react/WallStory.tsx` | De scroll-animatie op de homepage (muur wordt droog). |
+| `src/data/cities.ts` | Stadspagina's (`/vochtbestrijding-<stad>`, enkel Nederlands), elk met eigen lokale tekst. `projects` blijft leeg tot er echte projecten uit die stad zijn. |
+| `src/components/react/Building.tsx` | Doorsnede van een volledig gebouw (5 zones), gebruikt in de hero en in `BuildingStory.tsx`, het scrollverhaal op de homepage. |
+| `src/components/react/WallStory.tsx` | De scroll-animatie van opstijgend vocht (muur wordt droog), op de pagina opstijgend vocht. |
 | `src/components/react/Vochtcheck.tsx` | De online vochtcheck. |
 | `src/data/assistant.ts` | De chat-assistent rechtsonder (vervangt de Smartsupp-chat): antwoorden, knoppen en herkende trefwoorden. Frans: `assistant.fr.ts`. |
 | `public/images/brand/` | Het Dryhouse-logo als SVG (kleur, wit, enkel het huisje). `npm run brand` maakt er favicon, OG-beeld en logo.png van. |
@@ -46,6 +48,8 @@ npm run check      # typecheck
 - **Nieuw blogartikel:** maak `src/content/blog/<slug>.md` met dezelfde frontmatter als de bestaande artikels.
   Zet afbeeldingen in `src/assets/blog/<slug>/`; Astro maakt er automatisch AVIF/WebP in de juiste formaten van.
 - **Dienst aanpassen:** bewerk het bestand in `src/content/services/`. De structured data (Service, FAQ) wordt automatisch gegenereerd.
+- **Prijzen en garanties:** enkel in `src/data/pricing.ts` (bedragen excl. btw; Belgische bezoekers zien ze incl. 6 % btw, Nederlandse excl. btw). Daar staan ook de rekenregels van de prijscalculator op de pagina's opstijgend vocht en kelderdichting, en de garantie per dienst (30 jaar opstijgend vocht, 10 jaar andere werken, 2 jaar toestellen).
+- **Ontbrekende prijzen en garanties:** in de teksten staan open plekken als `[PRIJS: …]` en `[GARANTIE: …]`; op de site zijn ze geel gemarkeerd. `npm run todo` toont ze allemaal. Vul ze in vóór de lancering.
 - **Bedrijfsgegevens:** enkel in `src/data/site.ts`.
 - **Share-afbeelding en icoon** opnieuw genereren: `npm run brand`.
 

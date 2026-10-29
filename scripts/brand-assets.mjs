@@ -9,12 +9,12 @@ const markPaths = await svgInner('dryhouse-mark.svg'); // viewBox 0 0 103 108
 const logoWhite = await svgInner('dryhouse-logo-white.svg'); // viewBox 0 0 445 108
 const logoColor = await svgInner('dryhouse-logo.svg');
 
-const font = (await readFile('node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2')).toString('base64');
+const font = (await readFile('node_modules/@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2')).toString('base64');
 
 const og = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <style>@font-face { font-family: 'Bricolage'; src: url(data:font/woff2;base64,${font}); } text { font-family: 'Bricolage', 'Helvetica Neue', Arial, sans-serif; }</style>
+    <style>@font-face { font-family: 'Archivo'; src: url(data:font/woff2;base64,${font}); } text { font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif; }</style>
     <radialGradient id="glow" cx="0.85" cy="0.1" r="0.8">
       <stop offset="0" stop-color="#0a5086"/><stop offset="1" stop-color="#031a2c"/>
     </radialGradient>

@@ -1,0 +1,90 @@
+---
+/**
+ * Homepage hero: the full offer at a glance. On the right a calm cross-section of a whole
+ * building; each zone links to its service, the scroll story further down explains them.
+ */
+import Building, { VIEW, ZONES } from '@/components/react/Building';
+import Icon from '@/components/Icon.astro';
+import { localService, serviceBySlug } from '@/data/services';
+import { site } from '@/data/site';
+import { langFromUrl, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const zoneServices = ['kelder-waterdicht-maken', 'opstijgend-vocht', 'gevelrenovatie', 'betonrot-herstellen', 'ventilatie-schimmel'].map((slug) => localService(serviceBySlug(slug)!, lang));
+const copy = {
+  nl: {
+    eyebrow: 'Vochtbestrijding · Waterdichting · Renovatie · Ventilatie',
+    h1: ['Specialist in ', 'droge en gezonde', ' gebouwen.'],
+    intro: 'Van kelder tot dak: we stellen de juiste diagnose en lossen elk vochtprobleem definitief op. Voor particulieren, syndici, architecten en aannemers in België en Nederland.',
+    secondary: 'Bekijk onze specialisaties',
+    usps: ['Gratis diagnose ter plaatse', 'Reactie binnen 2 werkdagen', 'Tot 30 jaar garantie'],
+    scene: 'Doorsnede van een gebouw: kelder, muurvoet, gevel, balkon en binnenlucht',
+    zones: ['Kelder', 'Muurvoet', 'Gevel', 'Balkon en beton', 'Binnenlucht'],
+    figures: [
+      [`Tot ${site.guaranteeYears} jaar`, 'garantie'],
+      [`${site.basementsSealed.toLocaleString('nl-BE')}+`, 'kelders waterdicht'],
+      [`${site.yearsExperience}+ jaar`, 'ervaring'],
+    ],
+  },
+  fr: {
+    eyebrow: 'Humidité · Étanchéité · Rénovation · Ventilation',
+    h1: ['Spécialiste des bâtiments ', 'secs et sains', '.'],
+    intro: 'De la cave au toit : nous posons le bon diagnostic et réglons chaque problème d’humidité pour de bon. Pour les particuliers, syndics, architectes et entrepreneurs, en Belgique et aux Pays-Bas.',
+    secondary: 'Découvrir nos spécialités',
+    usps: ['Diagnostic gratuit sur place', 'Réponse en 2 jours ouvrables', 'Jusqu’à 30 ans de garantie'],
+    scene: 'Coupe d’un bâtiment : cave, pied de mur, façade, balcon et air intérieur',
+    zones: ['Cave', 'Pied de mur', 'Façade', 'Balcon et béton', 'Air intérieur'],
+    figures: [
+      [`Jusqu’à ${site.guaranteeYears} ans`, 'de garantie'],
+      [`${site.basementsSealed.toLocaleString('fr-BE')}+`, 'caves rendues étanches'],
+      [`${site.yearsExperience}+ ans`, 'd’expérience'],
+    ],
+  },
+}[lang];
+const [h1Before, h1Accent, h1After] = copy.h1;
+---
+
+<section class="relative overflow-hidden bg-sand-100 grain">
+  <div class="container-x grid items-center gap-12 pt-28 pb-20 sm:pt-32 lg:min-h-[min(100dvh,60rem)] lg:grid-cols-[1.08fr_1fr] lg:gap-16 lg:pt-28 lg:pb-16">
+    <div>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1 class="mt-5 text-[clamp(2.5rem,1.6rem+3.4vw,4.6rem)] leading-[1] font-semibold">
+        {h1Before}<span class="relative text-tide-500">{h1Accent}<svg class="absolute -bottom-[0.08em] left-0 h-[0.14em] w-full" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9c40-6 120-8 196-3" fill="none" stroke="#00c0ff" stroke-width="4" stroke-linecap="round" /></svg></span>{h1After}
+      </h1>
+      <p class="mt-7 max-w-xl text-lg leading-relaxed text-ink/70 sm:text-xl">{copy.intro}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href={paths.offerte[lang]} class="btn-primary">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
+        <a href="#specialisaties" class="btn-ghost">{copy.secondary}</a>
+      </div>
+      <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm font-medium text-ink/70">
+        {(['search', 'clock', 'shield'] as const).map((icon, i) => <li class="flex items-center gap-2"><Icon name={icon} class="size-5 text-tide-500" />{copy.usps[i]}</li>)}
+      </ul>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-[34rem] pb-10">
+      <div class="hero-reveal relative aspect-[480/520] overflow-hidden rounded-[2rem] bg-white shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)] ring-1 ring-ink/5">
+        <Building id="hero" states={['treated', 'treated', 'treated', 'treated', 'treated']} label={copy.scene} />
+        <ol>
+          {ZONES.map((z, i) => (
+            <li class:list={['absolute -translate-y-1/2', { center: '-translate-x-1/2', start: '', end: '-translate-x-full' }[z.align]]} style={`left:${(z.marker[0] / VIEW.w) * 100}%;top:${(z.marker[1] / VIEW.h) * 100}%`}>
+              <a href={zoneServices[i].path} class="group/pin flex items-center gap-1.5 rounded-full whitespace-nowrap bg-white/95 py-1 pr-1 pl-1 text-xs font-semibold shadow-md ring-1 ring-ink/10 transition-all hover:bg-tide-500 hover:text-white focus-visible:bg-tide-500 focus-visible:text-white sm:pr-3">
+                <span class="grid size-6 place-items-center rounded-full bg-tide-500 text-[0.7rem] text-white tabular-nums group-hover/pin:bg-white group-hover/pin:text-tide-500">{i + 1}</span>
+                <span class="max-sm:sr-only">{copy.zones[i]}</span>
+                <span class="sr-only">: {zoneServices[i].name}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <dl class="absolute inset-x-4 bottom-0 grid grid-cols-3 divide-x divide-ink/8 rounded-2xl bg-white px-2 py-3.5 shadow-xl ring-1 ring-ink/5 sm:inset-x-8">
+        {copy.figures.map(([value, label]) => (
+          <div class="flex flex-col-reverse px-3 text-center">
+            <dt class="mt-0.5 text-xs leading-tight text-ink/60">{label}</dt>
+            <dd class="font-display text-lg leading-none font-semibold tracking-tight text-tide-600 sm:text-xl">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>

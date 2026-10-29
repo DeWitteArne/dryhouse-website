@@ -2,6 +2,7 @@
 title: "Beslagen ramen in het stookseizoen? Waarom ventileren in de winter geen energieverspilling is"
 description: "De verwarming staat weer aan, de ramen blijven dicht en elke ochtend begroeten je beslagen ruiten. Herkenbaar?"
 pubDate: 2026-10-16
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/beslagen-ramen-in-het-stookseizoen-waarom-ventileren-in-de-winter-geen-energieverspilling-is/cover.jpg"
 heroAlt: "Beslagen ramen in het stookseizoen? Waarom ventileren in de winter geen energieverspilling is"
 wixSlug: "beslagen-ramen-in-het-stookseizoen-waarom-ventileren-in-de-winter-geen-energieverspilling-is"
@@ -66,7 +67,7 @@ Blijf je sukkelen met beslagen ramen, klamme muren of terugkerende schimmel, ond
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Eerlijk advies: is het een ventilatiekwestie, dan zeggen we je dat gewoon
 - Definitieve behandeling van condensatie, schimmel, opstijgend en doorslaand vocht
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Ga de winter in met droge lucht, heldere ramen en een gezonde woning. Neem vandaag nog contact op met Dryhouse voor je gratis vochtdiagnose.

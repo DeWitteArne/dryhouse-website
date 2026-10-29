@@ -2,6 +2,7 @@
 title: "Bouwvocht in een nieuwbouw: waarom verse muren vochtig blijven en wanneer je moet ingrijpen"
 description: "Net in je nieuwbouw getrokken of een grondige renovatie achter de rug? Dan kan het je verbazen dat de muren toch klam aanvoelen, dat ramen 's ochtends…"
 pubDate: 2026-06-19
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/bouwvocht-in-een-nieuwbouw-waarom-verse-muren-vochtig-blijven-en-wanneer-je-moet-ingrijpen/cover.jpg"
 heroAlt: "Bouwvocht in een nieuwbouw: waarom verse muren vochtig blijven en wanneer je moet ingrijpen"
 wixSlug: "bouwvocht-in-een-nieuwbouw-waarom-verse-muren-vochtig-blijven-en-wanneer-je-moet-ingrijpen"
@@ -69,7 +70,7 @@ Niet zeker of het in jouw woning om onschuldig bouwvocht gaat of om een echt voc
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Duidelijk onderscheid tussen tijdelijk bouwvocht en structurele vochtproblemen
 - Behandeling van opstijgend vocht, doorslaand vocht en condensatie
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Voelt je nieuwbouw na lange tijd nog steeds klam aan, of zie je vochtplekken die maar niet verdwijnen? Neem vandaag nog contact op met Dryhouse voor een gratis inspectie. Wij geven je duidelijkheid en, indien nodig, een duurzame oplossing — zodat je met een gerust hart van je nieuwe woning kunt genieten.

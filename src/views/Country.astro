@@ -28,7 +28,7 @@ const provinceList = provinces.slice(0, 4).map((r) => r.name).join(', ');
 const copy = {
   nl: {
     title: `Vochtbestrijding ${country.inName} | Gratis diagnose`,
-    description: `Dryhouse lost vochtproblemen op ${country.inName}: opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${provinceList} en verder. Gratis diagnose, 30 jaar garantie.`,
+    description: `Dryhouse lost vochtproblemen op ${country.inName}: opstijgend vocht, doorslaand vocht, schimmel en natte kelders in ${provinceList} en verder. Gratis diagnose, tot 30 jaar garantie.`,
     serviceName: `Vochtbestrijding ${country.name}`,
     h1: `Vochtbestrijding ${country.inName}.`,
     problems: `Vochtproblemen ${country.inName}`,
@@ -42,7 +42,7 @@ const copy = {
   },
   fr: {
     title: `Traitement de l’humidité ${country.inName} | Diagnostic gratuit`,
-    description: `Dryhouse traite les problèmes d’humidité partout ${country.inName} : humidité ascensionnelle, infiltrations, moisissures et caves humides. Diagnostic gratuit, 30 ans de garantie.`,
+    description: `Dryhouse traite les problèmes d’humidité partout ${country.inName} : humidité ascensionnelle, infiltrations, moisissures et caves humides. Diagnostic gratuit, jusqu’à 30 ans de garantie.`,
     serviceName: `Traitement de l’humidité ${country.inName}`,
     h1: `Traitement de l’humidité ${country.inName}.`,
     problems: `Problèmes d’humidité ${country.inName}`,
@@ -70,7 +70,7 @@ const copy = {
       <h1 class="mt-4 max-w-4xl text-display font-semibold">{copy.h1}</h1>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">{country.intro}</p>
       <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a href={paths.offerte[lang]} class="btn-primary">{t.requestDiagnose} <Icon name="arrow" class="size-4" /></a>
+        <a href={paths.offerte[lang]} class="btn-primary">{t.requestQuote} <Icon name="arrow" class="size-4" /></a>
         <a href={`tel:${country.phone}`} class="btn-ghost"><Icon name="phone" class="size-4" /> {country.phoneDisplay}</a>
       </div>
     </div>

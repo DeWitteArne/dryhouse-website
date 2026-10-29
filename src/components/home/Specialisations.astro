@@ -1,0 +1,56 @@
+---
+/** "Onze specialisaties": the full offer as equal cards, each with the quote button. */
+import Icon from '../Icon.astro';
+import { localService, services, specialisations } from '@/data/services';
+import { langFromUrl, paths, ui } from '@/i18n';
+
+const lang = langFromUrl(Astro.url);
+const t = ui[lang];
+const cards = specialisations.map((s) => localService(s, lang));
+const more = services.filter((s) => 'more' in s).map((s) => localService(s, lang));
+const copy = {
+  nl: {
+    title: 'Onze specialisaties',
+    text: 'Eén partner voor vocht, waterdichting en renovatie, van kelder tot dak.',
+    more: 'Meer info',
+    also: 'Ook:',
+  },
+  fr: {
+    title: 'Nos spécialités',
+    text: 'Un seul partenaire pour l’humidité, l’étanchéité et la rénovation, de la cave au toit.',
+    more: 'En savoir plus',
+    also: 'Aussi :',
+  },
+}[lang];
+---
+
+<section id="specialisaties" class="relative scroll-mt-20 py-24 sm:py-28">
+  <span id="diensten" class="absolute -top-20" aria-hidden="true"></span>
+  <div class="container-x">
+    <div class="max-w-2xl">
+      <h2 class="text-title" data-reveal>{copy.title}</h2>
+      <p class="mt-4 text-lg text-ink/65 sm:text-xl" data-reveal>{copy.text}</p>
+    </div>
+
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {cards.map((s, i) => (
+        <li class="card group relative flex flex-col p-6 transition-shadow duration-300 hover:shadow-xl sm:p-7" data-reveal style={`--reveal-i:${i % 3}`}>
+          <span class="grid size-12 place-items-center rounded-2xl bg-tide-50 text-tide-500"><Icon name={s.icon} /></span>
+          <h3 class="mt-6 text-2xl font-semibold tracking-tight">
+            <a href={s.path} class="after:absolute after:inset-0 after:rounded-3xl">{s.card.name}</a>
+          </h3>
+          <p class="mt-2 flex-1 leading-relaxed text-ink/65">{s.card.short}</p>
+          <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-tide-500">{copy.more} <Icon name="arrow" class="size-4 transition-transform group-hover:translate-x-1" /></span>
+            <a href={`${paths.offerte[lang]}?probleem=${s.slug}`} class="relative z-10 inline-flex items-center gap-1.5 rounded-full bg-tide-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-tide-600">{t.requestQuote}</a>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-6 flex flex-wrap items-center gap-2 text-sm" data-reveal>
+      <span class="font-medium text-ink/55">{copy.also}</span>
+      {more.map((s) => <a href={s.path} class="inline-flex items-center gap-2 rounded-full bg-sand-100 px-3.5 py-1.5 font-medium ring-1 ring-ink/5 transition-colors hover:bg-tide-500 hover:text-white"><Icon name={s.icon} class="size-4" />{s.name}</a>)}
+    </p>
+  </div>
+</section>

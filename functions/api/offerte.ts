@@ -16,7 +16,8 @@ interface Env {
 
 const MAX_FILES = 3;
 const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
-const REQUIRED = ['voornaam', 'familienaam', 'email', 'telefoon', 'straat', 'postcode', 'gemeente', 'omschrijving'] as const;
+const REQUIRED = ['naam', 'email', 'telefoon', 'adres'] as const;
+const TYPES: Record<string, string> = { kelder: 'Kelder', muur: 'Muur', gevel: 'Gevel', schimmel: 'Schimmel', andere: 'Andere' };
 const CHAT_REQUIRED = ['naam', 'contact', 'bericht'] as const;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -59,19 +60,21 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   }
 
   const rows: [string, string][] = [
-    ['Probleem', problems.join(', ')],
-    ['Naam', `${value('voornaam')} ${value('familienaam')}`],
-    ['E-mail', value('email')],
+    ['Probleem', problems.map((p) => TYPES[p] ?? p).join(', ')],
+    ...(value('dienst') ? [['Via de pagina', value('dienst')] as [string, string]] : []),
+    ['Naam', value('naam')],
     ['Telefoon', value('telefoon')],
-    ['Adres', `${value('straat')}, ${value('postcode')} ${value('gemeente')} (${value('land') || 'België'})`],
-    ['Omschrijving', value('omschrijving')],
+    ['E-mail', value('email')],
+    ['Adres', `${value('adres')} (${value('land') || 'België'})`],
+    ['Toelichting', value('omschrijving') || '–'],
+    ['Foto’s', attachments.length ? `${attachments.length} in bijlage` : 'geen'],
     ['Taal', taal],
   ];
-  const html = `<h2>Nieuwe aanvraag voor een vochtdiagnose</h2>${table(rows)}`;
+  const html = `<h2>Nieuwe aanvraag voor advies of offerte</h2>${table(rows)}`;
 
   const sent = await sendMail(env, {
     reply_to: value('email'),
-    subject: `Diagnose-aanvraag: ${value('voornaam')} ${value('familienaam')}, ${value('gemeente')}`,
+    subject: `Aanvraag advies/offerte: ${value('naam')} (${problems.map((p) => TYPES[p] ?? p).join(', ')})`,
     html,
     text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
     attachments,

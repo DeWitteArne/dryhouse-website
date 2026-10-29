@@ -5,7 +5,7 @@
 /offerte                                /offerte-aanvragen        301
 /nieuws                                 /blog                     301
 /garantie                               /                         301
-/ontmossen                              /gevelwerken              301
+/ontmossen                              /gevelrenovatie              301
 
 /onze-diensten                          /                         301
 /onze-diensten/                         /                         301
@@ -13,15 +13,23 @@
 /onze-diensten/opstijgend-vocht/*       /opstijgend-vocht         301
 /onze-diensten/doorslaand-vocht         /doorslaand-vocht         301
 /onze-diensten/doorslaand-vocht/*       /doorslaand-vocht         301
-/onze-diensten/kelderdichting           /kelderdichtingen         301
-/onze-diensten/kelderdichting/*         /kelderdichtingen         301
-/onze-diensten/condensatie-en-schimmels /condensatie-schimmels    301
-/onze-diensten/condensatie-en-schimmels/* /condensatie-schimmels  301
-/onze-diensten/gevelrenovatie           /gevelwerken              301
-/onze-diensten/gevelrenovatie/*         /gevelwerken              301
-/onze-diensten/ontmossen                /gevelwerken              301
-/onze-diensten/ontmossen/*              /gevelwerken              301
+/onze-diensten/kelderdichting           /kelder-waterdicht-maken         301
+/onze-diensten/kelderdichting/*         /kelder-waterdicht-maken         301
+/onze-diensten/condensatie-en-schimmels /ventilatie-schimmel    301
+/onze-diensten/condensatie-en-schimmels/* /ventilatie-schimmel  301
+/onze-diensten/gevelrenovatie           /gevelrenovatie              301
+/onze-diensten/gevelrenovatie/*         /gevelrenovatie              301
+/onze-diensten/ontmossen                /gevelrenovatie              301
+/onze-diensten/ontmossen/*              /gevelrenovatie              301
 /onze-diensten/*                        /                         301
+
+# Service pages renamed in the homepage briefing (2026-10-29).
+/kelderdichtingen                       /kelder-waterdicht-maken  301
+/condensatie-schimmels                  /ventilatie-schimmel      301
+/gevelwerken                            /gevelrenovatie           301
+/betonrot                               /betonrot-herstellen      301
+/fr/condensation-moisissures            /fr/ventilation-moisissures 301
+/fr/beton-degrade                       /fr/reparation-beton      301
 
 /blog/categories/*                      /blog                     301
 /blog/page/*                            /blog                     301

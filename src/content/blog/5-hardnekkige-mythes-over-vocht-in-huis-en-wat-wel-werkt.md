@@ -2,6 +2,7 @@
 title: "5 hardnekkige mythes over vocht in huis (en wat wél werkt)"
 description: "Over vocht in huis doen heel wat 'wijsheden' de ronde. Van een bakje zout op de vensterbank tot een laagje speciale verf: iedereen kent wel een…"
 pubDate: 2026-08-28
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/5-hardnekkige-mythes-over-vocht-in-huis-en-wat-wel-werkt/cover.jpg"
 heroAlt: "5 hardnekkige mythes over vocht in huis (en wat wél werkt)"
 wixSlug: "5-hardnekkige-mythes-over-vocht-in-huis-en-wat-wél-werkt"
@@ -49,7 +50,7 @@ Alle mythes hebben één ding gemeen: ze pakken de symptomen aan in plaats van d
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Eerlijke analyse: soms volstaat beter ventileren, en ook dat zeggen we je gewoon
 - Definitieve oplossingen voor opstijgend vocht, doorslaand vocht, condensatie en keldervocht
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Bespaar jezelf de bakjes zout en de zoveelste laag speciale verf. Neem vandaag nog contact op met Dryhouse voor een gratis vochtdiagnose en pak het probleem één keer goed aan — bij de bron.

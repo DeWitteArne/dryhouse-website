@@ -12,7 +12,7 @@ import {
 } from 'motion/react';
 
 /**
- * Homepage hero: a wall in a living room, told in four scroll steps.
+ * Rising damp, told in four scroll steps on a wall in a living room (opstijgend-vocht page).
  * 1. moisture rises from the floor  2. we drill and inject a barrier
  * 3. the wall above the barrier dries out  4. 30 years guarantee.
  *
@@ -23,7 +23,7 @@ import {
 const TEXT = {
   nl: {
     steps: [
-      { title: 'Vocht trekt op uit de grond', body: 'Grondwater kruipt via de poriën van baksteen en voegen omhoog. Zoutkringen, bladderende verf en een muffe geur volgen.' },
+      { title: 'Vocht trekt op uit de grond', body: 'Grondwater trekt via de poriën van baksteen en voegen omhoog. Gevolg: zoutkringen, loszittende pleister en afbladderende verf.' },
       { title: 'We injecteren een vochtscherm', body: 'Net boven de vloer boren we een rij gaatjes en injecteren een waterafstotende crème die een ondoordringbare barrière vormt.' },
       { title: 'Je muur droogt uit', body: 'Boven de barrière kan geen nieuw vocht meer omhoog. De muur droogt, en daarna werken we hem strak af.' },
       { title: '30 jaar garantie', body: 'We staan achter ons werk: op de behandeling tegen opstijgend vocht krijg je 30 jaar garantie.' },
@@ -37,7 +37,7 @@ const TEXT = {
   },
   fr: {
     steps: [
-      { title: 'L’humidité remonte du sol', body: 'L’eau du sol monte par les pores des briques et des joints. Auréoles de salpêtre, peinture qui cloque et odeur de moisi suivent.' },
+      { title: 'L’humidité remonte du sol', body: 'L’eau du sol monte par les pores des briques et des joints. Résultat : salpêtre, enduit qui se détache et peinture qui s’écaille.' },
       { title: 'Nous injectons une barrière', body: 'Juste au-dessus du sol, nous forons une rangée de trous et injectons une crème hydrofuge qui forme une barrière étanche.' },
       { title: 'Votre mur sèche', body: 'Au-dessus de la barrière, l’humidité ne peut plus remonter. Le mur sèche, puis nous le refaisons proprement.' },
       { title: '30 ans de garantie', body: 'Nous assumons notre travail : le traitement contre l’humidité ascensionnelle est garanti 30 ans.' },
@@ -58,6 +58,7 @@ const BARRIER_Y = 405;
 const HOLES = [28, 85, 142, 199, 256, 313, 370];
 
 export default function WallStory({ children, lang = 'nl' }: { children: ReactNode; lang?: 'nl' | 'fr' }) {
+  // Used in the middle of a page, so no room is kept for the fixed header above it.
   const t = TEXT[lang];
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
@@ -88,7 +89,7 @@ export default function WallStory({ children, lang = 'nl' }: { children: ReactNo
   return (
     <section ref={sectionRef} className="relative bg-sand-100 grain lg:h-[260vh]" aria-label={t.section}>
       <div className="lg:sticky lg:top-0 lg:flex lg:h-dvh lg:items-center lg:pt-16">
-        <div className="container-x grid items-center gap-10 pt-28 pb-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-0">
+        <div className="container-x grid items-center gap-10 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-0">
           <div>{children}</div>
           <Scene progress={progress} pinned={pinned && !reduce} t={t} />
         </div>

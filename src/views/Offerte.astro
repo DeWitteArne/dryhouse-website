@@ -13,60 +13,58 @@ const field = 'mt-2 block w-full rounded-xl border-0 bg-sand-50 px-4 py-3.5 text
 const label = 'block text-sm font-semibold';
 const copy = {
   nl: {
-    crumb: 'Gratis diagnose',
-    title: 'Gratis vochtdiagnose en offerte aanvragen',
-    description: 'Vraag gratis en vrijblijvend een vochtdiagnose aan. Een specialist van Dryhouse meet het vocht, zoekt de oorzaak en bezorgt je een heldere offerte.',
-    h1: 'Gratis vochtdiagnose aanvragen',
-    intro: 'Vertel ons kort wat er aan de hand is. Een specialist neemt contact met je op om een diagnose bij je thuis in te plannen. Gratis en vrijblijvend.',
-    steps: ['Je vult het formulier in', 'We bellen je om een afspraak te maken', 'We meten ter plaatse en zoeken de oorzaak', 'Je krijgt een heldere offerte met garantie'],
+    crumb: 'Advies of offerte',
+    title: 'Advies of offerte aanvragen, gratis diagnose',
+    description: 'Vraag gratis en vrijblijvend advies of een offerte aan. Een specialist van Dryhouse komt ter plaatse, zoekt de oorzaak en bezorgt je een heldere offerte.',
+    h1: 'Vraag advies of offerte aan',
+    intro: 'Laat je gegevens achter en vertel kort waar het probleem zit. We nemen binnen 2 werkdagen contact met je op om een gratis diagnose ter plaatse in te plannen. De offerte ontvang je binnen een week na de diagnose.',
+    steps: ['Je vult het formulier in', 'We nemen binnen 2 werkdagen contact op', 'Gratis diagnose ter plaatse', 'Je offerte binnen een week na de diagnose'],
     callOrMail: 'Liever bellen of mailen?',
     error: ['Er ging iets mis bij het versturen. Probeer het opnieuw, of bel ons op ', ' (België) of ', ' (Nederland).'],
-    what: 'Waarvoor wil je een diagnose?',
-    other: 'Iets anders',
-    firstName: 'Voornaam',
-    lastName: 'Familienaam',
+    what: 'Waar zit het probleem?',
+    types: ['Kelder', 'Muur', 'Gevel', 'Schimmel', 'Andere'],
+    service: 'Gekozen dienst:',
+    name: 'Naam',
     email: 'E-mail',
     phone: 'Telefoon',
-    street: 'Straat en nummer',
-    postcode: 'Postcode',
-    town: 'Gemeente',
+    address: 'Adres van het gebouw',
+    addressPlaceholder: 'Straat, nummer, postcode en gemeente',
     country: 'Land',
-    describe: 'Omschrijf je probleem of stel je vraag',
-    placeholder: 'Bv. sinds de winter zie ik een witte rand onderaan de muur in de woonkamer…',
+    describe: 'Toelichting (optioneel)',
+    placeholder: 'Bv. sinds de winter staat er water in de kelder na hevige regen…',
     photos: 'Foto’s (optioneel, max. 3)',
     photosHelp: 'Een foto helpt ons om je situatie al in te schatten.',
     consent: ['Ik ga akkoord dat Dryhouse mijn gegevens gebruikt om mijn aanvraag te behandelen, zoals beschreven in de ', 'privacyverklaring', '.'],
     submit: 'Verstuur aanvraag',
     sending: 'Versturen…',
-    choose: 'Kies waarvoor je een diagnose wil.',
+    choose: 'Kies waar het probleem zit.',
   },
   fr: {
-    crumb: 'Diagnostic gratuit',
-    title: 'Demander un diagnostic d’humidité et un devis gratuits',
-    description: 'Demandez un diagnostic d’humidité gratuit et sans engagement. Un spécialiste de Dryhouse mesure l’humidité, cherche la cause et vous remet un devis clair.',
-    h1: 'Demander un diagnostic gratuit',
-    intro: 'Décrivez-nous brièvement la situation. Un spécialiste vous contacte pour planifier un diagnostic chez vous. Gratuit et sans engagement.',
-    steps: ['Vous remplissez le formulaire', 'Nous vous appelons pour fixer un rendez-vous', 'Nous mesurons sur place et cherchons la cause', 'Vous recevez un devis clair avec garantie'],
-    callOrMail: 'Vous préférez appeler ou écrire ?',
+    crumb: 'Conseil ou devis',
+    title: 'Demander conseil ou un devis, diagnostic gratuit',
+    description: 'Demandez conseil ou un devis, gratuitement et sans engagement. Un spécialiste de Dryhouse vient sur place, cherche la cause et vous remet un devis clair.',
+    h1: 'Demandez conseil ou un devis',
+    intro: 'Laissez vos coordonnées et dites-nous brièvement où se situe le problème. Nous vous contactons dans les 2 jours ouvrables pour planifier un diagnostic gratuit sur place. Vous recevez le devis dans la semaine qui suit le diagnostic.',
+    steps: ['Vous remplissez le formulaire', 'Nous vous contactons dans les 2 jours ouvrables', 'Diagnostic gratuit sur place', 'Votre devis dans la semaine qui suit le diagnostic'],
+    callOrMail: 'Vous préférez appeler ou écrire ?',
     error: ['Un problème est survenu lors de l’envoi. Réessayez, ou appelez-nous au ', ' (Belgique) ou au ', ' (Pays-Bas).'],
-    what: 'Pour quel problème souhaitez-vous un diagnostic ?',
-    other: 'Autre chose',
-    firstName: 'Prénom',
-    lastName: 'Nom',
+    what: 'Où se situe le problème ?',
+    types: ['Cave', 'Mur', 'Façade', 'Moisissures', 'Autre'],
+    service: 'Service choisi :',
+    name: 'Nom',
     email: 'E-mail',
     phone: 'Téléphone',
-    street: 'Rue et numéro',
-    postcode: 'Code postal',
-    town: 'Commune',
+    address: 'Adresse du bâtiment',
+    addressPlaceholder: 'Rue, numéro, code postal et commune',
     country: 'Pays',
-    describe: 'Décrivez votre problème ou posez votre question',
-    placeholder: 'P. ex. depuis l’hiver, je vois une bande blanche en bas du mur du salon…',
+    describe: 'Précisions (facultatif)',
+    placeholder: 'P. ex. depuis l’hiver, il y a de l’eau dans la cave après de fortes pluies…',
     photos: 'Photos (facultatif, max. 3)',
     photosHelp: 'Une photo nous aide à évaluer déjà votre situation.',
     consent: ['J’accepte que Dryhouse utilise mes données pour traiter ma demande, comme décrit dans la ', 'déclaration de confidentialité', '.'],
     submit: 'Envoyer la demande',
     sending: 'Envoi…',
-    choose: 'Choisissez pour quel problème vous souhaitez un diagnostic.',
+    choose: 'Indiquez où se situe le problème.',
   },
 }[lang];
 const crumbs = [
@@ -74,7 +72,16 @@ const crumbs = [
   { name: copy.crumb, path: paths.offerte[lang] },
 ];
 // Values stay Dutch: the e-mail to Dryhouse is always in Dutch.
-const problems = [...services.map((s) => ({ value: s.slug, name: localService(s, lang).name })), { value: 'iets-anders', name: copy.other }];
+const problems = ['kelder', 'muur', 'gevel', 'schimmel', 'andere'].map((value, i) => ({ value, name: copy.types[i] }));
+/** ?probleem=<service slug> (service pages, vochtcheck, assistant) preselects the matching type. */
+const typeOf: Record<string, string> = {
+  'kelder-waterdicht-maken': 'kelder', kelderdrainage: 'kelder', 'buitenafdichting-kelder': 'kelder', betoninjectie: 'kelder', liftputten: 'kelder',
+  'opstijgend-vocht': 'muur',
+  gevelrenovatie: 'gevel', 'doorslaand-vocht': 'gevel', isolatie: 'gevel', reinigingstechnieken: 'gevel',
+  'ventilatie-schimmel': 'schimmel',
+  'betonrot-herstellen': 'andere', coatings: 'andere',
+};
+const serviceInfo = Object.fromEntries(services.map((s) => [s.slug, { type: typeOf[s.slug], nl: s.name, local: localService(s, lang).name }]));
 ---
 
 <Base title={copy.title} description={copy.description} alternate={paths.offerte[other(lang)]} jsonLd={[breadcrumbSchema(crumbs)]}>
@@ -112,6 +119,7 @@ const problems = [...services.map((s) => ({ value: s.slug, name: localService(s,
           data-choose={copy.choose}
           data-sending={copy.sending}
           data-submit={copy.submit}
+          data-services={JSON.stringify(serviceInfo)}
         >
           <input type="hidden" name="taal" value={lang} />
           <div id="form-error" hidden class="rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200" role="alert">
@@ -129,18 +137,16 @@ const problems = [...services.map((s) => ({ value: s.slug, name: localService(s,
             </div>
           </fieldset>
 
+          <p id="dienst-note" hidden class="-mt-2 text-sm text-ink/65">{copy.service} <strong class="font-semibold text-ink" data-dienst-name></strong></p>
+          <input type="hidden" name="dienst" value="" />
+
           <div class="grid gap-5 sm:grid-cols-2">
-            <label class={label}>{copy.firstName} <span class="text-tide-500">*</span><input name="voornaam" required autocomplete="given-name" class={field} /></label>
-            <label class={label}>{copy.lastName} <span class="text-tide-500">*</span><input name="familienaam" required autocomplete="family-name" class={field} /></label>
-            <label class={label}>{copy.email} <span class="text-tide-500">*</span><input name="email" type="email" required autocomplete="email" class={field} /></label>
+            <label class:list={[label, 'sm:col-span-2']}>{copy.name} <span class="text-tide-500">*</span><input name="naam" required autocomplete="name" class={field} /></label>
             <label class={label}>{copy.phone} <span class="text-tide-500">*</span><input name="telefoon" type="tel" required autocomplete="tel" class={field} /></label>
+            <label class={label}>{copy.email} <span class="text-tide-500">*</span><input name="email" type="email" required autocomplete="email" class={field} /></label>
           </div>
           <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
-            <label class={label}>{copy.street} <span class="text-tide-500">*</span><input name="straat" required autocomplete="street-address" class={field} /></label>
-            <label class={label}>{copy.postcode} <span class="text-tide-500">*</span><input name="postcode" required autocomplete="postal-code" class={field} /></label>
-          </div>
-          <div class="grid gap-5 sm:grid-cols-[2fr_1fr]">
-            <label class={label}>{copy.town} <span class="text-tide-500">*</span><input name="gemeente" required autocomplete="address-level2" class={field} /></label>
+            <label class={label}>{copy.address} <span class="text-tide-500">*</span><input name="adres" required autocomplete="street-address" placeholder={copy.addressPlaceholder} class={field} /></label>
             <label class={label}>{copy.country}
               <select name="land" autocomplete="country-name" class={field}>
                 <option value="België">{t.countries.be}</option>
@@ -149,7 +155,7 @@ const problems = [...services.map((s) => ({ value: s.slug, name: localService(s,
             </label>
           </div>
           <label class={label}>{copy.describe} <span class="text-tide-500">*</span>
-            <textarea name="omschrijving" required rows="5" placeholder={copy.placeholder} class={field}></textarea>
+            <textarea name="omschrijving" rows="4" placeholder={copy.placeholder} class={field}></textarea>
           </label>
           <label class={label}>{copy.photos}
             <span class="mt-1 block text-sm font-normal text-ink/65">{copy.photosHelp}</span>
@@ -176,9 +182,18 @@ const problems = [...services.map((s) => ({ value: s.slug, name: localService(s,
   const params = new URLSearchParams(location.search);
   const text = form.dataset;
 
-  // Prefill the problem type when coming from the vochtcheck or a service page.
+  // Coming from a service page, the vochtcheck or the assistant: preselect the type, remember the service.
   const pre = params.get('probleem');
-  if (pre) form.querySelector<HTMLInputElement>(`input[name="probleem"][value="${CSS.escape(pre)}"]`)?.click();
+  const service = pre ? (JSON.parse(text.services ?? '{}') as Record<string, { type: string; nl: string; local: string }>)[pre] : undefined;
+  if (service) {
+    form.querySelector<HTMLInputElement>(`input[name="probleem"][value="${service.type}"]`)?.click();
+    form.querySelector<HTMLInputElement>('input[name="dienst"]')!.value = service.nl;
+    document.querySelector('[data-dienst-name]')!.textContent = service.local;
+    document.getElementById('dienst-note')!.hidden = false;
+  }
+  // From the price calculator: its input and price range, so we don't have to ask again.
+  const info = params.get('info');
+  if (info) form.querySelector<HTMLTextAreaElement>('textarea[name="omschrijving"]')!.value = info.slice(0, 400);
   if (params.has('fout')) error.hidden = false;
   if (currentLand() === 'nl') form.querySelector<HTMLSelectElement>('select[name="land"]')!.value = 'Nederland';
 

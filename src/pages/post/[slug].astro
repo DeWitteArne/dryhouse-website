@@ -1,4 +1,5 @@
 ---
+import Gaps from '@/components/Gaps.astro';
 import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
@@ -58,7 +59,7 @@ const more = posts.filter((p) => p.id !== post.id && p.data.category === d.categ
 
     <div class="container-x grid gap-14 py-16 lg:grid-cols-[1fr_20rem] lg:py-20">
       <div class="prose-dh mx-auto w-full lg:mx-0">
-        <Content />
+        <Gaps><Content /></Gaps>
       </div>
       <div class="lg:sticky lg:top-28 lg:self-start">
         <CtaCard title="Twijfel je over je situatie?" />

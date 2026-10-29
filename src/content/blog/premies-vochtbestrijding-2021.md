@@ -17,9 +17,9 @@ De overkoepelende renovatiepremie kan je aanvragen voor renovatiewerken. Ook wer
 **Welke vochtbestrijdingswerken komen in aanmerking?**
 
 - Behandelen van muren tegen [optrekkend vocht](/opstijgend-vocht).
-- Behandelen van ondergrondse muren door middel van [kelderdichting](/kelderdichtingen).
+- Behandelen van ondergrondse muren door middel van [kelderdichting](/kelder-waterdicht-maken).
 - Bescherming tegen doorslaand vocht (regeninslag) op de gevel via [impregneren](/doorslaand-vocht).
-- Behandelen van vochtige muren of houten draagvloeren tegen [condensatie en schimmels](/condensatie-schimmels).
+- Behandelen van vochtige muren of houten draagvloeren tegen [condensatie en schimmels](/ventilatie-schimmel).
 
 **Hoeveel bedraagt deze premie voor vochtbestrijding?**
 

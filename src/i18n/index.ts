@@ -26,8 +26,13 @@ export const ui = {
   nl: {
     home: 'Home',
     services: 'Diensten',
-    diagnose: 'Gratis diagnose',
-    requestDiagnose: 'Gratis diagnose aanvragen',
+    /** Header button, mobile bar. */
+    quote: 'Offerte aanvragen',
+    /** Mobile bar: little room. */
+    quoteShort: 'Offerte aanvragen',
+    /** The main call to action, the same everywhere on the site. */
+    requestQuote: 'Vraag advies of offerte aan',
+    callUs: 'Bel ons',
     doVochtcheck: 'Doe de vochtcheck',
     readMore: 'Lees meer',
     nav: [
@@ -45,7 +50,7 @@ export const ui = {
     skip: 'Naar de inhoud',
     breadcrumb: 'Kruimelpad',
     countries: { be: 'België', nl: 'Nederland' },
-    footerClaim: ['Een droog huis, ', 'gegarandeerd', ' voor 30 jaar.'],
+    footerClaim: ['Specialist in ', 'droge en gezonde', ' gebouwen.'],
     footerArea: 'Werkgebied',
     footerCompany: 'Dryhouse',
     footerLinks: [
@@ -59,15 +64,17 @@ export const ui = {
     rights: 'Alle rechten voorbehouden.',
     footerNote: (city: string) => `Vochtbestrijding in België en Nederland, vanuit ${city}.`,
     treatmentIn: 'Vochtbestrijding',
-    cta: { title: 'Gratis vochtdiagnose', points: ['We meten en zoeken de oorzaak', 'Heldere offerte, vrijblijvend', 'Tot 30 jaar garantie'], button: 'Vraag je diagnose aan' },
+    cta: { title: 'Advies of offerte op maat', points: ['Gratis diagnose ter plaatse', 'Heldere offerte, vrijblijvend', 'Tot 30 jaar garantie'], button: 'Vraag advies of offerte aan' },
     faqTitle: 'Veelgestelde vragen',
     officeHours: 'Kantoor: ma–vr 9u – 17u30',
   },
   fr: {
     home: 'Accueil',
     services: 'Services',
-    diagnose: 'Diagnostic gratuit',
-    requestDiagnose: 'Demander un diagnostic gratuit',
+    quote: 'Demander un devis',
+    quoteShort: 'Devis gratuit',
+    requestQuote: 'Demandez conseil ou un devis',
+    callUs: 'Appeler',
     doVochtcheck: 'Faire le test d’humidité',
     readMore: 'En savoir plus',
     nav: [
@@ -84,7 +91,7 @@ export const ui = {
     skip: 'Aller au contenu',
     breadcrumb: 'Fil d’Ariane',
     countries: { be: 'Belgique', nl: 'Pays-Bas' },
-    footerClaim: ['Une maison sèche, ', 'garantie', ' 30 ans.'],
+    footerClaim: ['Spécialiste des bâtiments ', 'secs et sains', '.'],
     footerArea: 'Zone d’intervention',
     footerCompany: 'Dryhouse',
     footerLinks: [
@@ -97,7 +104,7 @@ export const ui = {
     rights: 'Tous droits réservés.',
     footerNote: (city: string) => `Traitement de l’humidité en Belgique et aux Pays-Bas, depuis ${city}.`,
     treatmentIn: 'Traitement de l’humidité',
-    cta: { title: 'Diagnostic gratuit', points: ['Nous mesurons et trouvons la cause', 'Devis clair, sans engagement', 'Jusqu’à 30 ans de garantie'], button: 'Demander votre diagnostic' },
+    cta: { title: 'Conseil ou devis sur mesure', points: ['Diagnostic gratuit sur place', 'Devis clair, sans engagement', 'Jusqu’à 30 ans de garantie'], button: 'Demandez conseil ou un devis' },
     faqTitle: 'Questions fréquentes',
     officeHours: 'Bureau : lu–ve 9h – 17h30',
   },

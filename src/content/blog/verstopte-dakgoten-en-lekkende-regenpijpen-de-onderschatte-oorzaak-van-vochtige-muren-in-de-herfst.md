@@ -2,6 +2,7 @@
 title: "Verstopte dakgoten en lekkende regenpijpen: de onderschatte oorzaak van vochtige muren in de herfst"
 description: "De bladeren vallen, de regen komt met bakken uit de lucht en plots zie je het: een donkere vochtvlek op de buitengevel, een afbladderende plek op de…"
 pubDate: 2026-10-23
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/verstopte-dakgoten-en-lekkende-regenpijpen-de-onderschatte-oorzaak-van-vochtige-muren-in-de-herfst/cover.jpg"
 heroAlt: "Verstopte dakgoten en lekkende regenpijpen: de onderschatte oorzaak van vochtige muren in de herfst"
 wixSlug: "verstopte-dakgoten-en-lekkende-regenpijpen-de-onderschatte-oorzaak-van-vochtige-muren-in-de-herfst"
@@ -73,7 +74,7 @@ Twijfel je of die vochtvlek van je dakgoot komt, van een verweerde gevel of van 
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Duidelijk advies over de echte oorzaak: dakgoot, gevel, voegwerk of opstijgend vocht
 - Professionele gevelbehandeling, hydrofuge en muurinjectie
-- 30 jaar garantie op onze vochtbehandelingen
+- 30 jaar garantie op muurinjectie, 10 jaar op gevelwerken
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Laat de herfstregen je woning niet ondermijnen. Neem vandaag nog contact op met Dryhouse voor je gratis vochtdiagnose en ga de winter in met droge muren.

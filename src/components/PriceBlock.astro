@@ -1,0 +1,101 @@
+---
+/**
+ * "Prijsindicatie" on a service page, from src/data/pricing.ts. Both price versions are in the HTML:
+ * incl. 6 % btw for Belgium (default) and excl. btw for the Netherlands; the BE/NL choice
+ * (html[data-land], lib/country.ts) shows the right one.
+ */
+import Icon from './Icon.astro';
+import PriceCalculator from './react/PriceCalculator';
+import { deviceGuarantee, guarantee, MINIMUM, prices } from '@/data/pricing';
+import type { ServiceSlug } from '@/data/services';
+import { euro, range, round50, withVat } from '@/lib/price';
+import { paths, ui, type Lang } from '@/i18n';
+
+interface Props {
+  slug: ServiceSlug;
+  lang: Lang;
+}
+const { slug, lang } = Astro.props;
+const p = prices[slug];
+const years = guarantee(slug);
+const devices = slug === 'ventilatie-schimmel' || slug === 'kelderdrainage';
+const copy = {
+  nl: {
+    title: 'Prijsindicatie',
+    example: 'Rekenvoorbeeld',
+    included: 'Inbegrepen',
+    minimum: 'Minimumbedrag per opdracht',
+    vatBe: 'Bedragen incl. 6 % btw (renovatie van een privéwoning ouder dan 10 jaar).',
+    vatNl: 'Bedragen excl. btw.',
+    pro: 'Prijs voor professionelen, excl. btw.',
+    note: 'Indicatief. Exacte prijs na gratis diagnose ter plaatse. Professionelen: prijzen excl. btw op aanvraag.',
+    guarantee: years === 30 ? '30 jaar garantie op de behandeling tegen opstijgend vocht' : `${years} jaar garantie op de uitgevoerde werken`,
+    devices: `${deviceGuarantee.years} jaar op elektrische toestellen, ${deviceGuarantee.registered} jaar na registratie bij de leverancier`,
+    response: 'We nemen binnen 2 werkdagen contact op, de offerte volgt binnen een week na de diagnose.',
+  },
+  fr: {
+    title: 'Indication de prix',
+    example: 'Exemple chiffré',
+    included: 'Compris',
+    minimum: 'Montant minimum par chantier',
+    vatBe: 'Montants TVA 6 % comprise (rénovation d’un logement privé de plus de 10 ans).',
+    vatNl: 'Montants hors TVA.',
+    pro: 'Prix pour professionnels, hors TVA.',
+    note: 'Indicatif. Prix exact après le diagnostic gratuit sur place. Professionnels : prix hors TVA sur demande.',
+    guarantee: years === 30 ? 'Garantie de 30 ans sur le traitement de l’humidité ascensionnelle' : `Garantie de ${years} ans sur les travaux réalisés`,
+    devices: `${deviceGuarantee.years} ans sur les appareils électriques, ${deviceGuarantee.registered} ans après enregistrement auprès du fournisseur`,
+    response: 'Nous vous contactons dans les 2 jours ouvrables, le devis suit dans la semaine du diagnostic.',
+  },
+}[lang];
+// French puts a (non-breaking) space before the colon.
+const colon = lang === 'fr' ? '\u00a0:' : ':';
+const both = (excl: number, to?: number) => ({ be: range(withVat(excl), to && withVat(to), lang), nl: range(excl, to, lang) });
+---
+
+{p && (
+  <section id="prijs" class="card mt-14 scroll-mt-28 p-6 sm:p-8" aria-labelledby="prijs-title">
+    <h2 id="prijs-title" class="text-[1.9rem] leading-tight">{copy.title}</h2>
+    <dl class="mt-5 divide-y divide-ink/8">
+      {p.lines.map((line) => {
+        const amount = line.from !== undefined && both(line.from, line.to);
+        return (
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3">
+            <dt class="font-semibold">{line.label[lang]}</dt>
+            {amount && (
+              <dd class="font-display text-lg font-semibold text-tide-600 tabular-nums">
+                {p.pro ? <span>{amount.nl}</span> : <><span class="when-be">{amount.be}</span><span class="when-nl">{amount.nl}</span></>}
+                {line.unit && <span class="ml-1 font-sans text-sm font-normal text-ink/60">{line.unit[lang]}</span>}
+              </dd>
+            )}
+          </div>
+        );
+      })}
+    </dl>
+    {p.example && (
+      <p class="mt-4 text-ink/75">
+        <strong class="font-semibold text-ink">{copy.example}{colon}</strong> {p.example.text[lang]}:{' '}
+        <span class="when-be font-semibold whitespace-nowrap">± {euro(round50(withVat(p.example.amount)), lang)}</span><span class="when-nl font-semibold whitespace-nowrap">± {euro(round50(p.example.amount), lang)}</span>
+      </p>
+    )}
+    {p.included && (
+      <p class="mt-3 text-ink/75"><strong class="font-semibold text-ink">{copy.included}{colon}</strong> {p.included[lang].join(', ')}.</p>
+    )}
+    {!p.pro && (
+      <p class="mt-3 text-ink/75">
+        <strong class="font-semibold text-ink">{copy.minimum}{colon}</strong>{' '}
+        <span class="when-be">{euro(withVat(MINIMUM), lang)}</span><span class="when-nl">{euro(MINIMUM, lang)}</span>
+      </p>
+    )}
+    <p class="mt-4 text-sm text-ink/60">
+      {p.pro ? copy.pro : <><span class="when-be">{copy.vatBe}</span><span class="when-nl">{copy.vatNl}</span></>} {copy.note}
+    </p>
+
+    {p.calculator && <PriceCalculator client:idle lang={lang} kind={p.calculator} quote={`${paths.offerte[lang]}?probleem=${slug}`} />}
+
+    <ul class="mt-6 grid gap-2 text-sm">
+      <li class="flex gap-2"><Icon name="shield" class="size-5 shrink-0 text-tide-500" />{copy.guarantee}{devices && `; ${copy.devices}`}.</li>
+      <li class="flex gap-2"><Icon name="clock" class="size-5 shrink-0 text-tide-500" />{copy.response}</li>
+    </ul>
+    {!p.calculator && <a href={`${paths.offerte[lang]}?probleem=${slug}`} class="btn-primary mt-6">{ui[lang].requestQuote} <Icon name="arrow" class="size-4" /></a>}
+  </section>
+)}

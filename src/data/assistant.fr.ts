@@ -7,7 +7,7 @@ import type { ChatNode, Option } from './assistant';
  * slug in `?probleem=`.
  */
 const diagnose = (slug?: string): Option => ({
-  label: 'Demander un diagnostic gratuit',
+  label: 'Demander conseil ou un devis',
   href: slug ? `/fr/demande-devis?probleem=${slug}` : '/fr/demande-devis',
 });
 const back: Option = { label: 'Autre question', next: 'menu' };
@@ -18,6 +18,7 @@ export const nodes: Record<string, ChatNode> = {
     say: ['Bonjour ! Je suis l’assistant numérique de Dryhouse.', 'Comment puis-je vous aider ? Choisissez ci-dessous ou tapez votre question.'],
     options: [
       { label: 'J’ai un problème d’humidité', next: 'probleem' },
+      { label: 'Façade, isolation, revêtements ou autres travaux', next: 'werken' },
       { label: 'Combien coûte un traitement ?', next: 'prijs' },
       { label: 'Intervenez-vous chez moi ?', next: 'regio' },
       { label: 'Quelle garantie offrez-vous ?', next: 'garantie' },
@@ -28,6 +29,7 @@ export const nodes: Record<string, ChatNode> = {
     say: ['Puis-je vous aider pour autre chose ?'],
     options: [
       { label: 'J’ai un problème d’humidité', next: 'probleem' },
+      { label: 'Façade, isolation, revêtements ou autres travaux', next: 'werken' },
       { label: 'Combien coûte un traitement ?', next: 'prijs' },
       { label: 'Intervenez-vous chez moi ?', next: 'regio' },
       { label: 'Je voudrais parler à quelqu’un', next: 'contact' },
@@ -47,7 +49,7 @@ export const nodes: Record<string, ChatNode> = {
   opstijgend: {
     say: [
       'Cela ressemble à de l’humidité ascensionnelle : l’humidité du sol remonte dans le mur par les pores. Signe typique : une auréole de salpêtre horizontale jusqu’à environ un mètre de haut, avec de la peinture qui s’écaille et une odeur de moisi.',
-      'Nous l’arrêtons par une injection qui crée une nouvelle barrière anti-humidité dans le mur, avec jusqu’à 30 ans de garantie. Plus d’explications : [humidité ascensionnelle](/fr/humidite-ascensionnelle).',
+      'Nous l’arrêtons par une injection qui crée une nouvelle barrière anti-humidité dans le mur, avec 30 ans de garantie. Plus d’explications : [humidité ascensionnelle](/fr/humidite-ascensionnelle).',
     ],
     options: [diagnose('opstijgend-vocht'), test, back],
   },
@@ -61,23 +63,30 @@ export const nodes: Record<string, ChatNode> = {
   condensatie: {
     say: [
       'Des vitres embuées et des moisissures dans les coins froids ou derrière les armoires viennent presque toujours de la condensation : l’air intérieur humide se dépose sur les surfaces froides.',
-      'Nettoyer les moisissures n’aide qu’un temps. Nous traitons la cause, le plus souvent avec une ventilation sur mesure. Plus d’explications : [condensation et moisissures](/fr/condensation-moisissures).',
+      'Nettoyer les moisissures n’aide qu’un temps. Nous traitons la cause, le plus souvent avec une ventilation sur mesure. Plus d’explications : [ventilation et moisissures](/fr/ventilation-moisissures).',
     ],
-    options: [diagnose('condensatie-schimmels'), test, back],
+    options: [diagnose('ventilatie-schimmel'), test, back],
   },
   kelder: {
     say: [
       'Une cave humide peut venir de l’eau souterraine qui pousse à travers les murs et le sol, ou de fissures et de joints qui fuient. Dryhouse a déjà rendu étanches plus de 1 000 caves.',
       'Même quand la nappe phréatique exerce une pression, nous asséchons votre cave. Plus d’explications : [étanchéité de cave](/fr/etancheite-cave).',
     ],
-    options: [diagnose('kelderdichtingen'), back],
+    options: [diagnose('kelder-waterdicht-maken'), back],
   },
   beton: {
     say: [
       'Les fissures du béton par lesquelles l’eau passe, nous les colmatons par injection. Vous voyez des taches de rouille ou le béton s’effrite ? Il s’agit souvent de béton dégradé : les armatures rouillent et font éclater le béton.',
-      'Plus d’explications : [injection de béton](/fr/injection-beton), [béton dégradé](/fr/beton-degrade) et [fosses d’ascenseur](/fr/fosses-ascenseur).',
+      'Plus d’explications : [injection de béton](/fr/injection-beton), [réparation de béton](/fr/reparation-beton) et [fosses d’ascenseur](/fr/fosses-ascenseur).',
     ],
     options: [diagnose('betoninjectie'), back],
+  },
+  werken: {
+    say: [
+      'En plus du traitement de l’humidité, nous réalisons la [rénovation de façade](/fr/renovation-facade), le [nettoyage de façade](/fr/techniques-de-nettoyage), l’[isolation](/fr/isolation), des [revêtements](/fr/revetements) pour sols, toitures et terrasses, la [réparation de béton](/fr/reparation-beton) et la [ventilation](/fr/ventilation-moisissures).',
+      'Dites-nous ce que vous souhaitez faire réaliser : nous venons voir gratuitement et vous recevez un devis clair.',
+    ],
+    options: [diagnose(), { label: 'Appelez-nous', href: '$tel' }, back],
   },
   onbekend: {
     say: [
@@ -88,8 +97,8 @@ export const nodes: Record<string, ChatNode> = {
   },
   prijs: {
     say: [
-      'Chaque maison et chaque problème d’humidité est différent. Donner un prix sans avoir vu la situation ne serait donc pas honnête.',
-      'Ce qui est sûr : le diagnostic chez vous est gratuit et sans engagement. Nous mesurons l’humidité, cherchons la cause et vous recevez un devis clair.',
+      'Quelques prix indicatifs en Belgique, TVA 6 % comprise : une injection contre l’humidité ascensionnelle coûte de 95 € à 117 € par mètre courant, l’étanchéité d’une cave de 5 300 € à 21 200 € pour l’ensemble du projet. Sur les pages [humidité ascensionnelle](/fr/humidite-ascensionnelle#prijs) et [étanchéité de cave](/fr/etancheite-cave#prijs), vous calculez vous-même une fourchette.',
+      'Le prix exact suit le diagnostic chez vous, gratuit et sans engagement. Nous vous contactons dans les 2 jours ouvrables et le devis suit dans la semaine du diagnostic.',
     ],
     options: [diagnose(), { label: 'Nous appeler', href: '$tel' }, { label: 'Existe-t-il des primes ?', next: 'premie' }, back],
   },
@@ -120,7 +129,7 @@ export const nodes: Record<string, ChatNode> = {
     options: [diagnose(), { label: 'Nous appeler', href: '$tel' }, back],
   },
   garantie: {
-    say: ['Nos traitements contre l’humidité sont garantis jusqu’à 30 ans. La garantie exacte de votre traitement figure noir sur blanc dans votre devis.'],
+    say: ['Le traitement de l’humidité ascensionnelle est garanti 30 ans, tous nos autres travaux 10 ans. Pour les appareils électriques, comme une unité de ventilation ou une pompe, la garantie est de 2 ans, parfois 5 ans après enregistrement auprès du fournisseur. Votre garantie figure noir sur blanc dans votre devis.'],
     options: [diagnose(), back],
   },
   duur: {

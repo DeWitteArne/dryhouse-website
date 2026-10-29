@@ -2,6 +2,7 @@
 title: "Zomercondensatie: waarom je kelder net in de zomer vochtig wordt (en verluchten soms averechts werkt)"
 description: "Het is hartje zomer, buiten is het warm en droog — en toch ruikt je kelder muffer dan ooit."
 pubDate: 2026-07-17
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/zomercondensatie-waarom-je-kelder-net-in-de-zomer-vochtig-wordt-en-verluchten-soms-averechts-werkt/cover.jpg"
 heroAlt: "Zomercondensatie: waarom je kelder net in de zomer vochtig wordt (en verluchten soms averechts werkt)"
 wixSlug: "zomercondensatie-waarom-je-kelder-net-in-de-zomer-vochtig-wordt-en-verluchten-soms-averechts-werkt"
@@ -58,7 +59,7 @@ Niet zeker of het in jouw kelder om onschuldige zomercondensatie gaat of om een 
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Duidelijk onderscheid tussen condensatie, infiltratie en opstijgend vocht
 - Definitieve oplossingen: kelderdichting, kelderbekuiping en vochtbehandeling
-- 30 jaar garantie op onze vochtbehandelingen
+- 10 jaar garantie op kelderdichting, 30 jaar op de behandeling tegen opstijgend vocht
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Zo geniet je onbezorgd van de zomer — en van een droge, frisse kelder, het hele jaar door. Neem vandaag nog contact op met Dryhouse voor je gratis vochtdiagnose.

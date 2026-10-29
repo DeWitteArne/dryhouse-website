@@ -261,7 +261,7 @@ export default function Assistant({ lang = 'nl' }: { lang?: Lang }) {
   return (
     <div className="print:hidden" onKeyDown={(e) => e.key === 'Escape' && open && toggle(false)}>
       {teaser && !open && (
-        <div className="fixed right-5 bottom-24 z-40 flex max-w-[16rem] animate-[chat-in_.5s_var(--ease-out-expo)_both] items-start gap-2 rounded-2xl rounded-br-md bg-white p-4 text-sm shadow-xl ring-1 ring-ink/5">
+        <div className="fixed right-5 bottom-[5.5rem] z-40 flex max-w-[16rem] md:bottom-24 animate-[chat-in_.5s_var(--ease-out-expo)_both] items-start gap-2 rounded-2xl rounded-br-md bg-white p-4 text-sm shadow-xl ring-1 ring-ink/5">
           <button type="button" onClick={() => toggle(true)} className="text-left">
             <span className="block font-semibold">{t.teaser[0]}</span>
             <span className="mt-0.5 block text-ink/65">{t.teaser[1]}</span>
@@ -279,7 +279,7 @@ export default function Assistant({ lang = 'nl' }: { lang?: Lang }) {
         aria-expanded={open}
         aria-controls="dh-assistant"
         aria-label={open ? t.closeAssistant : t.openAssistant}
-        className={`fixed right-5 bottom-5 z-40 grid size-15 place-items-center rounded-full bg-tide-500 text-white shadow-[0_10px_30px_-8px_rgb(10_80_134/0.7)] transition-[transform,background-color] duration-300 ease-(--ease-out-expo) hover:scale-105 hover:bg-tide-600 active:scale-95 ${open ? 'max-sm:hidden' : ''}`}
+        className={`fixed right-3 bottom-2.5 z-40 grid size-15 md:right-5 md:bottom-5 place-items-center rounded-full bg-tide-500 text-white shadow-[0_10px_30px_-8px_rgb(10_80_134/0.7)] transition-[transform,background-color] duration-300 ease-(--ease-out-expo) hover:scale-105 hover:bg-tide-600 active:scale-95 ${open ? 'max-sm:hidden' : ''}`}
       >
         {!open && msgs.length === 0 && <span aria-hidden="true" className="absolute inset-0 animate-[chat-ping_2.8s_ease-out_infinite] rounded-full bg-tide-500" />}
         <svg viewBox="0 0 24 24" className={`relative size-7 transition-transform duration-300 ${open ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

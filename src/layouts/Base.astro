@@ -1,10 +1,11 @@
 ---
 import '@/styles/global.css';
-import geistWoff2 from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
-import bricolageWoff2 from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import archivoWoff2 from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
 import Seo, { type Props as SeoProps } from '@/components/seo/Seo.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import MobileBar from '@/components/MobileBar.astro';
 import Assistant from '@/components/react/Assistant';
 import { businessSchema, websiteSchema } from '@/lib/schema';
 import { langFromUrl, ui } from '@/i18n';
@@ -27,12 +28,12 @@ const lang = langFromUrl(Astro.url);
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preload" href={bricolageWoff2} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivoWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
     <Seo {...seo} jsonLd={[businessSchema(lang), websiteSchema(), ...jsonLd]} />
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
-  <body class="min-h-dvh overflow-x-clip">
+  <body class="min-h-dvh overflow-x-clip max-md:pb-[4.5rem]">
     <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2">
       {ui[lang].skip}
     </a>
@@ -41,6 +42,7 @@ const lang = langFromUrl(Astro.url);
       <slot />
     </main>
     <Footer />
+    <MobileBar />
     <Assistant client:idle lang={lang} />
     <script>
       import { initReveal } from '@/lib/reveal';

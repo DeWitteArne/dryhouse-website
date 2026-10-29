@@ -27,8 +27,8 @@ export function businessSchema(lang: Lang = 'nl') {
     ...(site.vat && { vatID: site.vat }),
     description:
       lang === 'fr'
-        ? 'Dryhouse résout tous les problèmes d’humidité : humidité ascensionnelle, infiltrations, condensation et moisissures, étanchéité de cave et rénovation de façade. Diagnostic gratuit et 30 ans de garantie, en Belgique et aux Pays-Bas.'
-        : 'Dryhouse lost elk vochtprobleem op: opstijgend vocht, doorslaand vocht, condensatie en schimmel, kelderdichting en gevelwerken. Gratis diagnose en 30 jaar garantie, in België en Nederland.',
+        ? 'Dryhouse résout tous les problèmes d’humidité : humidité ascensionnelle, infiltrations, condensation et moisissures, étanchéité de cave et rénovation de façade. Diagnostic gratuit et jusqu’à 30 ans de garantie, en Belgique et aux Pays-Bas.'
+        : 'Dryhouse is specialist in droge en gezonde gebouwen: vochtbestrijding, kelderdichting en drainage, gevelrenovatie, betonrotherstel, isolatie, coatings en ventilatie. Gratis diagnose en tot 30 jaar garantie, in België en Nederland.',
     address: {
       '@type': 'PostalAddress',
       ...(address.street && { streetAddress: address.street }),
@@ -52,7 +52,7 @@ export function businessSchema(lang: Lang = 'nl') {
       })),
     }),
     ...(Object.keys(site.social).length && { sameAs: Object.values(site.social) }),
-    knowsAbout: ['opstijgend vocht', 'doorslaand vocht', 'condensatie', 'schimmel', 'kelderdichting', 'betonrot', 'gevelrenovatie'],
+    knowsAbout: ['vochtbestrijding', 'kelderdichting', 'kelderdrainage', 'opstijgend vocht', 'doorslaand vocht', 'gevelrenovatie', 'betonrotherstel', 'isolatie', 'coatings', 'ventilatie', 'schimmel', 'buitenafdichting', 'gevelreiniging'],
   };
 }
 

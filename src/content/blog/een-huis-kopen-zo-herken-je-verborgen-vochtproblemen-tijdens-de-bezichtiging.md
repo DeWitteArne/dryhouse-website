@@ -2,6 +2,7 @@
 title: "Een huis kopen? Zo herken je verborgen vochtproblemen tijdens de bezichtiging"
 description: "Een huis kopen is voor de meeste mensen de grootste aankoop van hun leven. Toch nemen kopers hun beslissing vaak na één of twee korte bezichtigingen — en…"
 pubDate: 2026-07-10
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/een-huis-kopen-zo-herken-je-verborgen-vochtproblemen-tijdens-de-bezichtiging/cover.jpg"
 heroAlt: "Een huis kopen? Zo herken je verborgen vochtproblemen tijdens de bezichtiging"
 wixSlug: "een-huis-kopen-zo-herken-je-verborgen-vochtproblemen-tijdens-de-bezichtiging"
@@ -66,7 +67,7 @@ Sta je op het punt een woning te kopen en wil je zeker weten wat die vochtplek i
 - Gratis en vrijblijvende vochtdiagnose
 - Duidelijke diagnose: opstijgend vocht, doorslaand vocht, condensatie of kelderlekkage
 - Transparante offerte, handig als objectief argument bij prijsonderhandelingen
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Koop je droomhuis met een gerust hart. Neem vandaag nog contact op met Dryhouse voor een gratis vochtdiagnose — vóór je tekent, of meteen na de sleuteloverdracht. Zo weet je exact waar je aan toe bent en geniet je zonder zorgen van je nieuwe thuis.

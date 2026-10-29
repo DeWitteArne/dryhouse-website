@@ -2,6 +2,7 @@
 title: "Vochtproblemen en je energiefactuur: waarom een vochtige woning meer kost"
 description: "Wist je dat vochtproblemen in je woning een directe impact hebben op je energiefactuur?"
 pubDate: 2026-05-29
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/vochtproblemen-en-je-energiefactuur-waarom-een-vochtige-woning-meer-kost/cover.jpg"
 heroAlt: "Vochtproblemen en je energiefactuur: waarom een vochtige woning meer kost"
 wixSlug: "vochtproblemen-en-je-energiefactuur-waarom-een-vochtige-woning-meer-kost"
@@ -72,7 +73,7 @@ Bij Dryhouse helpen we je niet alleen van vochtproblemen af, maar zorgen we er o
 
 - Gratis en vrijblijvende vochtdiagnose bij u thuis
 - Professionele behandeling van opstijgend vocht, doorslaand vocht en condensatie
-- 30 jaar garantie op onze vochtbehandelingen
+- Tot 30 jaar garantie op onze vochtbehandelingen
 - Vakkundige afwerking en herstel van beschadigde muren
 - Gevestigd in Sint-Niklaas, actief in heel België
 

@@ -2,6 +2,7 @@
 title: "Maak je gevel klaar voor de herfst: waarom de zomer hét moment is voor gevelonderhoud"
 description: "Je gevel is de eerste verdedigingslinie van je woning. Regen, wind, vorst en zon beuken er het hele jaar op in — en toch krijgt hij zelden de aandacht die…"
 pubDate: 2026-07-31
+updatedDate: 2026-10-29
 heroImage: "../../assets/blog/maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-het-moment-is-voor-gevelonderhoud/cover.jpg"
 heroAlt: "Maak je gevel klaar voor de herfst: waarom de zomer hét moment is voor gevelonderhoud"
 wixSlug: "maak-je-gevel-klaar-voor-de-herfst-waarom-de-zomer-hét-moment-is-voor-gevelonderhoud"
@@ -61,7 +62,7 @@ Twijfel je of je gevel nog voldoende beschermd is, of zag je bij de gevelcheck �
 
 - Gratis en vrijblijvende diagnose van je gevel en eventuele vochtproblemen
 - Gevelreiniging, voegwerken, hydrofobering, gevelrenovatie en gevelschilderen in één hand
-- Behandeling van doorslaand vocht met 30 jaar garantie
+- Behandeling van doorslaand vocht met 10 jaar garantie
 - Gevestigd in Sint-Niklaas, actief in heel België
 
 Wacht niet tot de eerste herfststormen je gevel op de proef stellen. Neem vandaag nog contact op met Dryhouse en ga met een droge, beschermde gevel de winter in.

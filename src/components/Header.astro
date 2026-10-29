@@ -17,6 +17,8 @@ const path = Astro.url.pathname;
 const home = paths.home[lang];
 const servicesAnchor = lang === 'fr' ? '/fr#diensten' : '/#diensten';
 const items = services.map((s) => localService(s, lang));
+const main = items.filter((s) => !('more' in s));
+const more = items.filter((s) => 'more' in s);
 const nav = t.nav.map((n) => ({ label: n.label, href: paths[n.key][lang] }));
 const isActive = (href: string) => path.startsWith(href);
 const switchTo = { lang: other(lang), href: alternate ?? paths.home[other(lang)] };
@@ -26,7 +28,7 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
 <header
   id="site-header"
   data-tone={tone}
-  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,transform] duration-500 ease-(--ease-out-expo) data-[scrolled]:bg-sand-50/85 data-[scrolled]:shadow-[0_1px_0_rgb(12_24_34/0.06)] data-[scrolled]:backdrop-blur-xl data-[tone=light]:text-white data-[tone=light]:data-[scrolled]:text-ink data-[tone=dark]:text-ink data-[hidden]:-translate-y-full"
+  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,transform] duration-500 ease-(--ease-out-expo) data-[scrolled]:bg-sand-50/85 data-[scrolled]:shadow-[0_1px_0_rgb(12_24_34/0.06)] data-[scrolled]:backdrop-blur-xl data-[tone=light]:text-white data-[tone=light]:data-[scrolled]:text-ink data-[tone=dark]:text-ink"
 >
   <div class="container-x flex h-[4.5rem] items-center justify-between gap-6">
     <a href={home} aria-label={t.toHome} class="relative z-10 shrink-0">
@@ -41,9 +43,10 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
             {t.services}
             <svg viewBox="0 0 12 12" class="size-3 transition-transform group-hover/dd:rotate-180" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
           </a>
-          <div class="invisible absolute top-full left-1/2 w-[38rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-300 ease-(--ease-out-expo) group-focus-within/dd:visible group-focus-within/dd:translate-y-0 group-focus-within/dd:opacity-100 group-hover/dd:visible group-hover/dd:translate-y-0 group-hover/dd:opacity-100">
-            <ul class="card grid grid-cols-2 gap-1 p-3 text-ink">
-              {items.map((s) => (
+          <div class="invisible absolute top-full left-1/2 w-[42rem] -translate-x-1/2 translate-y-2 pt-3 opacity-0 transition-all duration-300 ease-(--ease-out-expo) group-focus-within/dd:visible group-focus-within/dd:translate-y-0 group-focus-within/dd:opacity-100 group-hover/dd:visible group-hover/dd:translate-y-0 group-hover/dd:opacity-100">
+            <div class="card p-3 text-ink">
+            <ul class="grid grid-cols-2 gap-1">
+              {main.map((s) => (
                 <li>
                   <a href={s.path} class="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-sand-100">
                     <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-tide-50 text-tide-500"><Icon name={s.icon} class="size-5" /></span>
@@ -55,6 +58,10 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
                 </li>
               ))}
             </ul>
+            <ul class="mt-2 flex flex-wrap gap-2 border-t border-ink/8 px-3 pt-3 text-sm">
+              {more.map((s) => <li><a href={s.path} class="inline-flex items-center gap-2 rounded-full bg-sand-100 px-3 py-1.5 font-medium transition-colors hover:bg-tide-500 hover:text-white"><Icon name={s.icon} class="size-4" />{s.name}</a></li>)}
+            </ul>
+            </div>
           </div>
         </li>
         {nav.map((item) => (
@@ -76,12 +83,12 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
             </button>
           ))}
         </div>
-        <PhoneLink class="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold" />
+        <PhoneLink class="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold whitespace-nowrap" />
       </div>
       <a href={switchTo.href} hreflang={switchTo.lang} lang={switchTo.lang} title={langLabel[switchTo.lang]} class="relative z-10 grid h-9 min-w-9 place-items-center rounded-full px-2 text-xs font-bold tracking-wide uppercase ring-1 ring-current/20 transition-colors hover:bg-current/8">
         {switchTo.lang}
       </a>
-      <a href={paths.offerte[lang]} class="btn-primary hidden !py-2.5 whitespace-nowrap sm:inline-flex">{t.diagnose}</a>
+      <a href={paths.offerte[lang]} class="btn-primary hidden !py-2.5 whitespace-nowrap md:inline-flex">{t.quote}</a>
       <button id="menu-toggle" type="button" data-label-open={t.menuOpen} data-label-close={t.menuClose} class="relative z-10 grid size-11 place-items-center rounded-full lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label={t.menuOpen}>
         <span class="relative block h-3 w-6">
           <span class="absolute inset-x-0 top-0 h-0.5 rounded bg-current transition-transform duration-300 [[aria-expanded=true]_&]:translate-y-[5px] [[aria-expanded=true]_&]:rotate-45"></span>
@@ -94,14 +101,17 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
   <div id="mobile-menu" hidden class="fixed inset-0 overflow-y-auto bg-tide-800 px-5 pt-24 pb-10 text-white lg:hidden">
     <p class="eyebrow !text-spark">{t.services}</p>
     <ul class="mt-4 grid gap-1">
-      {items.map((s) => (
+      {main.map((s) => (
         <li><a href={s.path} class="flex items-center gap-3 py-2 font-display text-2xl tracking-tight"><Icon name={s.icon} class="size-5 text-spark" />{s.name}</a></li>
       ))}
+    </ul>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {more.map((s) => <li><a href={s.path} class="inline-flex rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium">{s.name}</a></li>)}
     </ul>
     <ul class="mt-8 grid gap-1 border-t border-white/10 pt-6">
       {nav.map((item) => <li><a href={item.href} class="block py-2 font-display text-2xl tracking-tight">{item.label}</a></li>)}
     </ul>
-    <a href={paths.offerte[lang]} class="btn-light mt-8 w-full">{t.requestDiagnose}</a>
+    <a href={paths.offerte[lang]} class="btn-light mt-8 w-full">{t.requestQuote}</a>
     <ul class="mt-6 grid gap-3 text-sm">
       <li><PhoneLink country="be" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">{t.countries.be}</span></li>
       <li><PhoneLink country="nl" class="flex items-center gap-2 font-semibold" /> <span class="ml-6 text-white/60">{t.countries.nl}</span></li>
@@ -114,13 +124,9 @@ const langLabel = { nl: 'Nederlands', fr: 'Français' };
   const toggle = document.getElementById('menu-toggle')!;
   const menu = document.getElementById('mobile-menu')!;
 
-  let lastY = window.scrollY;
   const onScroll = () => {
     const y = window.scrollY;
     header.toggleAttribute('data-scrolled', y > 24);
-    // Hide on scroll down, show on scroll up: more room for the content.
-    header.toggleAttribute('data-hidden', y > 400 && y > lastY && menu.hidden === true);
-    lastY = y;
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
