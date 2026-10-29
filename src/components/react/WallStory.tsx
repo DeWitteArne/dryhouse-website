@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
-  animate,
   motion,
   useMotionValue,
   useMotionValueEvent,
@@ -16,7 +15,7 @@ import {
  * 1. moisture rises from the floor  2. we drill and inject a barrier
  * 3. the wall above the barrier dries out  4. 30 years guarantee.
  *
- * Desktop: the scene is pinned and driven by scroll. Small screens: it plays on a loop.
+ * Scroll drives it on every screen: the scene is pinned (on phones under the header) while a tall track scrolls past.
  * Reduced motion: the finished, dry state, no movement.
  */
 
@@ -60,38 +59,25 @@ const HOLES = [28, 85, 142, 199, 256, 313, 370];
 export default function WallStory({ children, lang = 'nl' }: { children: ReactNode; lang?: 'nl' | 'fr' }) {
   // Used in the middle of a page, so no room is kept for the fixed header above it.
   const t = TEXT[lang];
-  const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const [pinned, setPinned] = useState(true);
 
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px) and (min-height: 640px)');
-    const update = () => setPinned(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const loop = useMotionValue(0);
+  // Scroll drives the story on every screen size: the scene stays pinned while the track scrolls past.
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] });
   const scrollSmooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
-
-  // Small screens: autoplay the story while the scene is in view.
-  useEffect(() => {
-    if (pinned || reduce) return;
-    const controls = animate(loop, [0, 0, 1, 1], { duration: 11, times: [0, 0.08, 0.85, 1], ease: 'easeInOut', repeat: Infinity });
-    return () => controls.stop();
-  }, [pinned, reduce, loop]);
-
   const finished = useMotionValue(1);
-  const progress = reduce ? finished : pinned ? scrollSmooth : loop;
+  const progress = reduce ? finished : scrollSmooth;
 
   return (
-    <section ref={sectionRef} className="relative bg-sand-100 grain lg:h-[260vh]" aria-label={t.section}>
-      <div className="lg:sticky lg:top-0 lg:flex lg:h-dvh lg:items-center lg:pt-16">
-        <div className="container-x grid items-center gap-10 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-0">
-          <div>{children}</div>
-          <Scene progress={progress} pinned={pinned && !reduce} t={t} />
+    <section className="relative bg-sand-100 grain" aria-label={t.section}>
+      {/* Small screens: the text scrolls away first, then the scene pins under the header. */}
+      <div className="container-x pt-20 lg:hidden">{children}</div>
+      <div ref={trackRef} className={reduce ? '' : 'h-[260svh] lg:h-[260vh]'}>
+        <div className={reduce ? '' : 'sticky top-[4.5rem] lg:top-0 lg:flex lg:h-dvh lg:items-center lg:pt-16'}>
+          <div className="container-x grid items-center gap-10 py-4 max-lg:pb-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-0">
+            <div className="hidden lg:block">{children}</div>
+            <Scene progress={progress} pinned={!reduce} t={t} />
+          </div>
         </div>
       </div>
     </section>
@@ -136,7 +122,7 @@ function Scene({ progress, pinned, t }: { progress: MotionValue<number>; pinned:
 
   return (
     <div className="relative mx-auto w-full max-w-[34rem]">
-      <div className="relative aspect-[4/5] max-h-[calc(100dvh-16rem)] w-full overflow-hidden rounded-[2rem] bg-sand-200 shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)] ring-1 ring-ink/5">
+      <div className="relative mx-auto aspect-[4/5] h-[min(46svh,30rem)] overflow-hidden rounded-[2rem] lg:h-auto lg:max-h-[calc(100dvh-16rem)] lg:w-full bg-sand-200 shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)] ring-1 ring-ink/5">
         <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 size-full" role="img" aria-label={t.scene}>
           <defs>
             <pattern id="bricks" width="56" height="26" patternUnits="userSpaceOnUse">

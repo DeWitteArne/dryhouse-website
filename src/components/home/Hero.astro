@@ -11,7 +11,9 @@ import { langFromUrl, paths, ui } from '@/i18n';
 
 const lang = langFromUrl(Astro.url);
 const t = ui[lang];
-const zoneServices = ['kelder-waterdicht-maken', 'opstijgend-vocht', 'gevelrenovatie', 'betonrot-herstellen', 'ventilatie-schimmel'].map((slug) => localService(serviceBySlug(slug)!, lang));
+// Numbered like the scroll story further down: bottom to top, the lift pit right after the basement.
+const storyNumber = (zone: number) => [0, 5, 1, 2, 3, 4].indexOf(zone) + 1;
+const zoneServices = ['kelder-waterdicht-maken', 'opstijgend-vocht', 'gevelrenovatie', 'betonrot-herstellen', 'ventilatie-schimmel', 'liftputten'].map((slug) => localService(serviceBySlug(slug)!, lang));
 const copy = {
   nl: {
     eyebrow: 'Vochtbestrijding · Waterdichting · Renovatie · Ventilatie',
@@ -19,8 +21,8 @@ const copy = {
     intro: 'Van kelder tot dak: we stellen de juiste diagnose en lossen elk vochtprobleem definitief op. Voor particulieren, syndici, architecten en aannemers in België en Nederland.',
     secondary: 'Bekijk onze specialisaties',
     usps: ['Gratis diagnose ter plaatse', 'Reactie binnen 2 werkdagen', 'Tot 30 jaar garantie'],
-    scene: 'Doorsnede van een gebouw: kelder, muurvoet, gevel, balkon en binnenlucht',
-    zones: ['Kelder', 'Muurvoet', 'Gevel', 'Balkon en beton', 'Binnenlucht'],
+    scene: 'Doorsnede van een gebouw: kelder, liftput, muurvoet, gevel, balkon en binnenlucht',
+    zones: ['Kelder', 'Muurvoet', 'Gevel', 'Balkon en beton', 'Binnenlucht', 'Liftput'],
     figures: [
       [`Tot ${site.guaranteeYears} jaar`, 'garantie'],
       [`${site.basementsSealed.toLocaleString('nl-BE')}+`, 'kelders waterdicht'],
@@ -33,8 +35,8 @@ const copy = {
     intro: 'De la cave au toit : nous posons le bon diagnostic et réglons chaque problème d’humidité pour de bon. Pour les particuliers, syndics, architectes et entrepreneurs, en Belgique et aux Pays-Bas.',
     secondary: 'Découvrir nos spécialités',
     usps: ['Diagnostic gratuit sur place', 'Réponse en 2 jours ouvrables', 'Jusqu’à 30 ans de garantie'],
-    scene: 'Coupe d’un bâtiment : cave, pied de mur, façade, balcon et air intérieur',
-    zones: ['Cave', 'Pied de mur', 'Façade', 'Balcon et béton', 'Air intérieur'],
+    scene: 'Coupe d’un bâtiment : cave, fosse d’ascenseur, pied de mur, façade, balcon et air intérieur',
+    zones: ['Cave', 'Pied de mur', 'Façade', 'Balcon et béton', 'Air intérieur', 'Fosse d’ascenseur'],
     figures: [
       [`Jusqu’à ${site.guaranteeYears} ans`, 'de garantie'],
       [`${site.basementsSealed.toLocaleString('fr-BE')}+`, 'caves rendues étanches'],
@@ -64,12 +66,12 @@ const [h1Before, h1Accent, h1After] = copy.h1;
 
     <div class="relative mx-auto w-full max-w-[34rem] pb-10">
       <div class="hero-reveal relative aspect-[480/520] overflow-hidden rounded-[2rem] bg-white shadow-[0_40px_80px_-40px_rgb(12_24_34/0.45)] ring-1 ring-ink/5">
-        <Building id="hero" states={['treated', 'treated', 'treated', 'treated', 'treated']} label={copy.scene} />
+        <Building id="hero" states={['treated', 'treated', 'treated', 'treated', 'treated', 'treated']} label={copy.scene} />
         <ol>
           {ZONES.map((z, i) => (
             <li class:list={['absolute -translate-y-1/2', { center: '-translate-x-1/2', start: '', end: '-translate-x-full' }[z.align]]} style={`left:${(z.marker[0] / VIEW.w) * 100}%;top:${(z.marker[1] / VIEW.h) * 100}%`}>
               <a href={zoneServices[i].path} class="group/pin flex items-center gap-1.5 rounded-full whitespace-nowrap bg-white/95 py-1 pr-1 pl-1 text-xs font-semibold shadow-md ring-1 ring-ink/10 transition-all hover:bg-tide-500 hover:text-white focus-visible:bg-tide-500 focus-visible:text-white sm:pr-3">
-                <span class="grid size-6 place-items-center rounded-full bg-tide-500 text-[0.7rem] text-white tabular-nums group-hover/pin:bg-white group-hover/pin:text-tide-500">{i + 1}</span>
+                <span class="grid size-6 place-items-center rounded-full bg-tide-500 text-[0.7rem] text-white tabular-nums group-hover/pin:bg-white group-hover/pin:text-tide-500">{storyNumber(i)}</span>
                 <span class="max-sm:sr-only">{copy.zones[i]}</span>
                 <span class="sr-only">: {zoneServices[i].name}</span>
               </a>

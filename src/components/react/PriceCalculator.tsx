@@ -112,7 +112,7 @@ export default function PriceCalculator({ lang, kind, quote }: Props) {
       </div>
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-t border-ink/10 pt-5">
         <div>
-          <p className="text-xs font-semibold tracking-[0.14em] text-ink/55 uppercase">{t.result}</p>
+          <p className="text-xs font-semibold tracking-[0.14em] text-ink/65 uppercase">{t.result}</p>
           <p className="mt-1 font-display text-2xl font-semibold tracking-tight text-tide-600 tabular-nums sm:text-3xl" aria-live="polite">{price}</p>
           <p className="mt-1 text-sm text-ink/60">{t.vat[land]} · {t.note}</p>
         </div>

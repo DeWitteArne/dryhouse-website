@@ -1,25 +1,22 @@
 ---
 /** "Onze specialisaties": the full offer as equal cards, each with the quote button. */
 import Icon from '../Icon.astro';
-import { localService, services, specialisations } from '@/data/services';
+import { localService, specialisations } from '@/data/services';
 import { langFromUrl, paths, ui } from '@/i18n';
 
 const lang = langFromUrl(Astro.url);
 const t = ui[lang];
 const cards = specialisations.map((s) => localService(s, lang));
-const more = services.filter((s) => 'more' in s).map((s) => localService(s, lang));
 const copy = {
   nl: {
     title: 'Onze specialisaties',
     text: 'Eén partner voor vocht, waterdichting en renovatie, van kelder tot dak.',
     more: 'Meer info',
-    also: 'Ook:',
   },
   fr: {
     title: 'Nos spécialités',
     text: 'Un seul partenaire pour l’humidité, l’étanchéité et la rénovation, de la cave au toit.',
     more: 'En savoir plus',
-    also: 'Aussi :',
   },
 }[lang];
 ---
@@ -47,10 +44,5 @@ const copy = {
         </li>
       ))}
     </ul>
-
-    <p class="mt-6 flex flex-wrap items-center gap-2 text-sm" data-reveal>
-      <span class="font-medium text-ink/55">{copy.also}</span>
-      {more.map((s) => <a href={s.path} class="inline-flex items-center gap-2 rounded-full bg-sand-100 px-3.5 py-1.5 font-medium ring-1 ring-ink/5 transition-colors hover:bg-tide-500 hover:text-white"><Icon name={s.icon} class="size-4" />{s.name}</a>)}
-    </p>
   </div>
 </section>

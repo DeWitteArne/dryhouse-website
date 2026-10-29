@@ -35,13 +35,13 @@ const copy = {
     allPosts: '',
   },
 }[lang];
-const storyLinks = ['kelder-waterdicht-maken', 'opstijgend-vocht', 'gevelrenovatie', 'betonrot-herstellen', 'ventilatie-schimmel'].map((slug) => localService(serviceBySlug(slug)!, lang).path);
+const storyLinks = ['kelder-waterdicht-maken', 'liftputten', 'opstijgend-vocht', 'gevelrenovatie', 'betonrot-herstellen', 'ventilatie-schimmel'].map((slug) => localService(serviceBySlug(slug)!, lang).path);
 ---
 
 <Base title={copy.title} description={copy.description} alternate={paths.home[other(lang)]} jsonLd={[faqSchema(faq)]}>
   <Hero />
   <Specialisations />
-  <BuildingStory client:visible lang={lang} links={storyLinks} cta={{ label: ui[lang].requestQuote, href: paths.offerte[lang] }} />
+  <BuildingStory client:idle lang={lang} links={storyLinks} cta={{ label: ui[lang].requestQuote, href: paths.offerte[lang] }} />
 
   <Process />
   <VochtcheckTeaser />

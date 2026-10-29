@@ -1,8 +1,8 @@
 import type { Lang } from '@/i18n';
 
 /**
- * The services, in menu order. The first ten follow the order of the homepage cards
- * ("Onze specialisaties"); the last three are kept as pages but get no card.
+ * The services, in menu order = the order of the homepage cards ("Onze specialisaties"),
+ * as Robbe set it: kelder, opstijgend vocht, ventilatie, gevel, beton, buitenafdichting, liftputten, then the rest.
  * Long-form content per service lives in src/content/services/<slug>.md (French: fr/<slug>.md).
  * Renamed slugs keep their old URL as a 301 in public/_redirects.
  */
@@ -26,12 +26,28 @@ export const services = [
     fr: { slug: 'humidite-ascensionnelle', name: 'Humidité ascensionnelle', short: 'Une injection qui coupe définitivement les remontées dans la maçonnerie, avec un enduit adapté.' },
   },
   {
+    slug: 'ventilatie-schimmel', name: 'Ventilatie en schimmel', short: 'Ventilatiesystemen C en D tegen condens, schimmel en slechte binnenlucht.', icon: 'mould',
+    fr: { slug: 'ventilation-moisissures', name: 'Ventilation et moisissures', short: 'Ventilation simple ou double flux contre la condensation, les moisissures et l’air vicié.' },
+  },
+  {
     slug: 'gevelrenovatie', name: 'Gevelrenovatie', short: 'Herstel, reiniging en waterafstotende bescherming van gevels tegen doorslaand vocht.', icon: 'facade',
     fr: { slug: 'renovation-facade', name: 'Rénovation de façade', short: 'Réparation, nettoyage et protection hydrofuge des façades contre les infiltrations.' },
   },
   {
     slug: 'betonrot-herstellen', name: 'Betonrotherstel', short: 'Herstel van aangetaste wapening en beton aan balkons, gevels en kelders.', icon: 'concrete',
     fr: { slug: 'reparation-beton', name: 'Réparation de béton', short: 'Réparation des armatures rouillées et du béton des balcons, façades et caves.' },
+  },
+  {
+    slug: 'betoninjectie', name: 'Betoninjectie', short: 'Scheuren en lekken in beton waterdicht injecteren.', icon: 'inject',
+    fr: { slug: 'injection-beton', name: 'Injection de béton', short: 'Fissures et fuites dans le béton rendues étanches par injection.' },
+  },
+  {
+    slug: 'buitenafdichting-kelder', name: 'Buitenafdichting', short: 'Afdichting van funderingen en keldermuren langs de buitenzijde.', icon: 'seal',
+    fr: { slug: 'etancheite-exterieure-cave', name: 'Étanchéité extérieure', short: 'Étanchéité des fondations et des murs de cave par l’extérieur.' },
+  },
+  {
+    slug: 'liftputten', name: 'Liftputten', short: 'Lekkende liftputten droogleggen zonder grote afbraak.', icon: 'shaft',
+    fr: { slug: 'fosses-ascenseur', name: 'Fosses d’ascenseur', short: 'Assécher une fosse d’ascenseur qui fuit, sans gros travaux de démolition.' },
   },
   {
     slug: 'isolatie', name: 'Isolatie', short: 'Gevel- en binnenisolatie die vocht en warmteverlies tegengaat.', icon: 'insulation',
@@ -42,28 +58,12 @@ export const services = [
     fr: { slug: 'revetements', name: 'Revêtements', short: 'Revêtements étanches et protecteurs pour sols, murs, toitures et terrasses.' },
   },
   {
-    slug: 'ventilatie-schimmel', name: 'Ventilatie en schimmel', short: 'Ventilatiesystemen C en D tegen condens, schimmel en slechte binnenlucht.', icon: 'mould',
-    fr: { slug: 'ventilation-moisissures', name: 'Ventilation et moisissures', short: 'Ventilation simple ou double flux contre la condensation, les moisissures et l’air vicié.' },
-  },
-  {
-    slug: 'buitenafdichting-kelder', name: 'Buitenafdichting', short: 'Afdichting van funderingen en keldermuren langs de buitenzijde.', icon: 'seal',
-    fr: { slug: 'etancheite-exterieure-cave', name: 'Étanchéité extérieure', short: 'Étanchéité des fondations et des murs de cave par l’extérieur.' },
-  },
-  {
     slug: 'reinigingstechnieken', name: 'Reinigingstechnieken', short: 'Professionele reiniging van gevels en oppervlakken.', icon: 'clean',
     fr: { slug: 'techniques-de-nettoyage', name: 'Techniques de nettoyage', short: 'Nettoyage professionnel des façades et des surfaces.' },
   },
   {
-    slug: 'doorslaand-vocht', name: 'Doorslaand vocht', short: 'Regen die door de gevel dringt: oorzaak opsporen en gevel waterafstotend maken.', icon: 'rain', more: true,
+    slug: 'doorslaand-vocht', name: 'Doorslaand vocht', short: 'Regen die door de gevel dringt: oorzaak opsporen en gevel waterafstotend maken.', icon: 'rain',
     fr: { slug: 'humidite-par-infiltration', name: 'Humidité par infiltration', short: 'La pluie traverse la façade : trouver la cause et rendre la façade hydrofuge.' },
-  },
-  {
-    slug: 'betoninjectie', name: 'Betoninjectie', short: 'Scheuren en lekken in beton waterdicht injecteren.', icon: 'inject', more: true,
-    fr: { slug: 'injection-beton', name: 'Injection de béton', short: 'Fissures et fuites dans le béton rendues étanches par injection.' },
-  },
-  {
-    slug: 'liftputten', name: 'Liftputten', short: 'Lekkende liftputten droogleggen zonder grote afbraak.', icon: 'shaft', more: true,
-    fr: { slug: 'fosses-ascenseur', name: 'Fosses d’ascenseur', short: 'Assécher une fosse d’ascenseur qui fuit, sans gros travaux de démolition.' },
   },
 ] as const satisfies readonly {
   slug: string;
@@ -72,8 +72,6 @@ export const services = [
   icon: ServiceIcon;
   /** Homepage card text, when it differs from the page. */
   card?: { name: string; short: string };
-  /** Kept as a page, but not one of the homepage specialisations. */
-  more?: boolean;
   fr: { slug: string; name: string; short: string; card?: { name: string; short: string } };
 }[];
 
@@ -91,4 +89,4 @@ export function localService(s: Service, lang: Lang) {
 }
 
 /** The homepage cards ("Onze specialisaties"), all equal. Kelderdrainage is part of the first card. */
-export const specialisations = services.filter((s) => !('more' in s) && s.slug !== 'kelderdrainage');
+export const specialisations = services.filter((s) => s.slug !== 'kelderdrainage');

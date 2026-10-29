@@ -45,6 +45,8 @@
 
 @layer base {
   html {
+    /* Decorative shapes that stick out may never make the page scroll sideways on a phone. */
+    overflow-x: clip;
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 6rem;
@@ -141,6 +143,18 @@
   /* Long-form text (blog posts, service pages, privacy) */
   .prose-dh {
     @apply max-w-[68ch] text-[1.075rem] leading-[1.75] text-ink/85;
+    overflow-wrap: break-word;
+  }
+  .prose-dh a {
+    overflow-wrap: anywhere;
+  }
+  /* Wide tables scroll inside the text column instead of widening the page. */
+  .prose-dh table {
+    @apply block max-w-full overflow-x-auto text-[0.95rem];
+  }
+  .prose-dh th,
+  .prose-dh td {
+    @apply border-b border-ink/10 px-3 py-2 text-left align-top;
   }
   .prose-dh > * + * {
     @apply mt-5;

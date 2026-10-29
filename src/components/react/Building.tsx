@@ -1,7 +1,7 @@
 /**
- * Cross-section of a whole building, drawn like a technical sheet. Five zones, each with
+ * Cross-section of a whole building, drawn like a technical sheet. Six zones, each with
  * a "problem" layer and a "treated" layer:
- *   0 kelder · 1 muurvoet · 2 gevel · 3 balkon en beton · 4 binnenlucht
+ *   0 kelder · 1 muurvoet · 2 gevel · 3 balkon en beton · 4 binnenlucht · 5 liftput
  * The homepage hero shows it treated and calm; BuildingStory walks through the zones.
  * No hooks, so Astro can also render it as static HTML.
  */
@@ -17,6 +17,7 @@ export const ZONES = [
   { marker: [18, 166], align: 'start', box: [12, 78, 88, 224] },
   { marker: [470, 160], align: 'end', box: [394, 140, 72, 62] },
   { marker: [240, 128], align: 'center', box: [90, 18, 300, 170] },
+  { marker: [301, 470], align: 'center', box: [270, 196, 62, 266] },
 ] as const;
 
 export const VIEW = { w: 480, h: 520 };
@@ -100,6 +101,14 @@ export default function Building({ states, active = -1, id, label }: { states: Z
       </g>
       <path d="M389 112v72m8-72v72" stroke={LINE} strokeOpacity="0.4" />
       <path d="M400 150h58m-2 0v34m-18-34v34m-18-34v34" fill="none" stroke={LINE} strokeOpacity="0.55" strokeWidth="1.5" />
+
+      {/* Lift shaft from the ground floor down into a pit under the basement floor */}
+      <path d="M280 196v224m42-224v224" stroke={LINE} strokeOpacity="0.35" strokeDasharray="3 3" />
+      <path d="M301 196v54" stroke={LINE} strokeOpacity="0.4" />
+      <rect x="286" y="250" width="30" height="44" rx="2" fill="#fff" stroke={LINE} strokeOpacity="0.55" />
+      <path d="M301 254v36" stroke={LINE} strokeOpacity="0.3" />
+      <rect x="276" y="420" width="50" height="38" fill={SLAB} stroke={LINE} strokeOpacity="0.55" />
+      <rect x="282" y="420" width="38" height="32" fill="#f3eee6" />
 
       {/* 0 · Kelder: water through the kimnaad → bekuiping, drainage, pompput */}
       <g {...p(0)}>
@@ -185,6 +194,19 @@ export default function Building({ states, active = -1, id, label }: { states: Z
           <path d="M140 140c30-30 60-44 84-48" />
           <path d="M256 96v100" />
         </g>
+      </g>
+
+      {/* 5 · Liftput: groundwater through the pit's joints → bekuiping and injection */}
+      <g {...p(5)}>
+        <rect x="282" y="438" width="38" height="14" fill={WATER} opacity="0.55" />
+        <g fill="none" stroke={WATER} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M301 500v-40m-6 7 6-7 6 7" />
+          <path d="M346 446h-20m6-6-6 6 6 6" />
+        </g>
+      </g>
+      <g {...f(5)}>
+        <path d="M283.5 421v29.5h35V421" fill="none" stroke={FIX} strokeWidth="3" />
+        {[290, 301, 312].map((x) => <circle key={x} cx={x} cy="454" r="1.8" fill={SPARK} />)}
       </g>
 
       {/* Active zone */}
